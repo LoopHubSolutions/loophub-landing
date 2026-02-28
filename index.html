@@ -460,6 +460,33 @@
     }
 
     /* ═══════════════════════════════
+       FAQ SECTION
+    ═══════════════════════════════ */
+    .faq-section{position:relative;z-index:1;padding:100px 0}
+    .faq-header{text-align:center;margin-bottom:56px}
+    .faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+    .faq-item{border-bottom:1px solid var(--border)}
+    .faq-item:first-child{border-top:1px solid var(--border)}
+    .faq-q{
+      width:100%;background:none;border:none;color:var(--white);
+      font-family:'Poppins',sans-serif;font-size:1rem;font-weight:600;
+      text-align:left;padding:24px 0;cursor:pointer;
+      display:flex;justify-content:space-between;align-items:center;gap:16px;
+      transition:color 0.2s;
+    }
+    .faq-q:hover{color:var(--p1)}
+    .faq-icon{
+      font-size:1.2rem;color:var(--p1);flex-shrink:0;
+      transition:transform 0.3s;line-height:1;
+    }
+    .faq-item.open .faq-icon{transform:rotate(45deg)}
+    .faq-a{
+      max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.25s ease;
+    }
+    .faq-item.open .faq-a{max-height:200px;padding-bottom:24px}
+    .faq-a p{color:var(--dim);line-height:1.7;font-size:0.925rem}
+
+    /* ═══════════════════════════════
        QUOTE / PHILOSOPHY
     ═══════════════════════════════ */
     .quote-sec{background:var(--bg2)}
@@ -894,40 +921,40 @@
     <div class="hero-overlay"></div>
     <div class="hero-eyebrow r">
       <span class="eyebrow-dot"></span>
-      Technology is your weapon — not your threat.
+      Revenue Engineering
     </div>
 
     <h1 class="hero-title r d1">
-      The genius is in you.<br/>
-      <span class="line2">The system sets it free.</span>
+      Your revenue is already<br/>
+      <span class="line2">in your pipeline.</span>
     </h1>
 
     <p class="hero-sub r d2">
-      Every great operator has a vision no algorithm can replicate.<br/>
-      LoopHub builds the machine around it — so you stop reacting and start dominating.
+      You're not losing deals because of your product.<br/>
+      You're losing them because no one followed up.
     </p>
 
     <div class="hero-ctas r d3">
-      <a href="#" data-book class="btn btn-primary btn-lg">Book a Meeting →</a>
-      <a href="#how" class="btn btn-ghost btn-lg">See How It Works</a>
+      <a href="#" data-book data-track="hero_cta" class="btn btn-primary btn-lg">Book a Discovery Meeting →</a>
+      <a href="#problem" class="btn btn-ghost btn-lg">See How It Works ↓</a>
     </div>
 
     <div class="hero-stats r d4">
       <div class="hstat">
         <div class="hstat-num green">80%</div>
-        <div class="hstat-label">of sales happen<br/>on contact 5–12</div>
+        <div class="hstat-label">of deals close on<br/>contact 5–12</div>
       </div>
       <div class="hstat">
         <div class="hstat-num">48%</div>
-        <div class="hstat-label">of salespeople<br/>never follow up</div>
+        <div class="hstat-label">of reps never<br/>follow up twice</div>
       </div>
       <div class="hstat">
         <div class="hstat-num">5–12×</div>
-        <div class="hstat-label">touchpoints per lead,<br/>automated daily</div>
+        <div class="hstat-label">more touchpoints<br/>than your team delivers</div>
       </div>
       <div class="hstat">
         <div class="hstat-num green">1</div>
-        <div class="hstat-label">invoice, one<br/>accountable partner</div>
+        <div class="hstat-label">invoice. One partner.<br/>Zero gaps.</div>
       </div>
     </div>
 
@@ -941,13 +968,13 @@
   <div class="manifesto-band">
     <div class="container">
       <div class="manifesto-inner r">
-        <p class="manifesto-line">You were not built to fear technology.</p>
-        <p class="manifesto-line accent">You were built to dominate it.</p>
-        <p class="manifesto-sub">Every great operator has a genius inside — something unique that no AI can replicate.<br/>LoopHub is the system that lets that genius run at full power.</p>
+        <p class="manifesto-line">80% of sales happen on contact 5–12.</p>
+        <p class="manifesto-line accent">Most teams stop at contact 1.</p>
+        <p class="manifesto-sub">That gap — between where your team gives up and where the deal actually closes — is where your revenue disappears. Every single day. The leads aren't cold. The follow-up is dead.</p>
         <div class="manifesto-pills">
-          <span class="manifesto-pill">⟶ Lead with vision</span>
-          <span class="manifesto-pill">⟶ Execute with systems</span>
-          <span class="manifesto-pill">⟶ Dominate with data</span>
+          <span class="manifesto-pill">⟶ Leads you paid for are dying in your CRM</span>
+          <span class="manifesto-pill">⟶ The fix isn't more leads</span>
+          <span class="manifesto-pill">⟶ It's what happens after they come in</span>
         </div>
       </div>
     </div>
@@ -988,48 +1015,48 @@
   <section class="problem" id="problem">
     <div class="container">
       <div class="r">
-        <span class="section-badge">The Real Problem</span>
-        <h2 class="section-title">The problem isn't<br/>your vision.</h2>
-        <p class="section-sub">You have the instinct, the drive, the edge. What you're missing is the system that runs while you lead — relentlessly, without chaos, without excuses.</p>
+        <span class="section-badge">The Problem</span>
+        <h2 class="section-title">The problem isn't<br/>getting leads.</h2>
+        <p class="section-sub">It's what happens — or doesn't happen — after they enter your world.</p>
       </div>
 
       <div class="problem-grid">
         <div class="pain-list">
           <div class="pain-item r d1">
-            <span class="pain-icon">🔁</span>
+            <span class="pain-icon">🗑</span>
             <div>
-              <h4>Your genius is stuck in follow-up hell</h4>
-              <p>You didn't build a business to chase leads manually. That's what systems are for — and you don't have one yet.</p>
+              <h4>Leads get called once. Then forgotten.</h4>
+              <p>You paid to generate that lead. It gets one call, no answer, and dies in a CRM nobody checks again.</p>
             </div>
           </div>
           <div class="pain-item r d2">
-            <span class="pain-icon">🎯</span>
+            <span class="pain-icon">🔥</span>
             <div>
-              <h4>Technology feels like a threat</h4>
-              <p>AI, automation, CRMs — operators fear what they don't control. The ones who win are the ones who own it.</p>
+              <h4>Your best closers are chasing dead leads.</h4>
+              <p>60% of your team's time goes to prospects who'll never buy. The real opportunities go cold while they're busy.</p>
             </div>
           </div>
           <div class="pain-item r d3">
-            <span class="pain-icon">📊</span>
+            <span class="pain-icon">💀</span>
             <div>
-              <h4>You're leading blind</h4>
-              <p>Without real-time data, you're making decisions by feel. The operators who dominate make decisions by system.</p>
+              <h4>The prospect was ready. Your team had moved on.</h4>
+              <p>Deals close on contact 7, 8, 9. Most teams stop at 2. That's not a sales problem — it's a system problem.</p>
             </div>
           </div>
           <div class="pain-item r d4">
-            <span class="pain-icon">⚡</span>
+            <span class="pain-icon">📉</span>
             <div>
-              <h4>Scaling breaks everything</h4>
-              <p>More leads without a system = more chaos. The vision is there. The infrastructure isn't. Yet.</p>
+              <h4>Scaling a broken follow-up just scales the bleeding.</h4>
+              <p>More leads into a broken process means more chaos, more wasted budget, and a more frustrated team.</p>
             </div>
           </div>
         </div>
 
         <div class="problem-visual r">
           <div class="pv-number">80%</div>
-          <p class="pv-label">of sales happen between<br/>the 5th and 12th contact.</p>
-          <p class="pv-sub">The operator who keeps showing up wins.<br/>Your genius closes the deal — the system makes sure you always show up.</p>
-          <div class="pv-source">Source · Grant Cardone · grantcardone.com</div>
+          <p class="pv-label">of sales happen between<br/>contact 5 and 12.</p>
+          <p class="pv-sub">Most sales teams never get there. Your revenue is sitting in that gap — waiting for someone to show up consistently.</p>
+          <div class="pv-source">Source · Grant Cardone Sales Research</div>
         </div>
       </div>
     </div>
@@ -1041,22 +1068,22 @@
   <section id="how">
     <div class="container">
       <div class="how-header r">
-        <span class="section-badge">The System</span>
-        <h2 class="section-title">You bring the vision.<br/><em class="grad-text" style="font-style:normal">The machine executes everything else.</em></h2>
-        <p class="section-sub" style="margin:0 auto">Three layers. Zero gaps. The genius leads — the system never stops working.</p>
+        <span class="section-badge">How It Works</span>
+        <h2 class="section-title">The sale happens when<br/><em class="grad-text" style="font-style:normal">someone follows up long enough.</em></h2>
+        <p class="section-sub" style="margin:0 auto">We built the system that does it — for every lead, every time, without your team burning out.</p>
       </div>
 
       <div class="how-flow">
         <div class="flow-card r d1">
           <div class="flow-step">STEP 01</div>
           <div class="flow-emoji" style="background:rgba(91,33,255,0.1);border:1px solid rgba(91,33,255,0.2)">📥</div>
-          <h3>Lead Databases</h3>
-          <p>Everything enters the system clean, organized, and ready to be worked.</p>
+          <h3>Everything In. Nothing Lost.</h3>
+          <p>Every lead source you have enters the system clean, tagged, and ready to be worked. No lead left in a spreadsheet.</p>
           <div class="flow-tags">
-            <span class="tag">Lead lists</span>
-            <span class="tag">Forms (FB / Web)</span>
+            <span class="tag">Lead lists &amp; forms</span>
             <span class="tag">CRM exports</span>
-            <span class="tag">Client databases</span>
+            <span class="tag">Ad campaigns</span>
+            <span class="tag">Existing client base</span>
           </div>
         </div>
 
@@ -1065,11 +1092,11 @@
         <div class="flow-card mid r d2">
           <div class="flow-step">STEP 02</div>
           <div class="flow-emoji" style="background:rgba(91,33,255,0.15);border:1px solid rgba(91,33,255,0.3)">🤖</div>
-          <h3>Optimized Contact</h3>
-          <p>AI + pre-vetted talent. 5–12 follow-ups per lead. No one slips through.</p>
+          <h3>5–12 Touches. Every Lead. Every Time.</h3>
+          <p>AI + pre-vetted human talent runs your entire follow-up sequence. Consistent. Persistent. Personalized at scale.</p>
           <div class="flow-tags">
-            <span class="tag">Calls + Voicemail</span>
-            <span class="tag">SMS / Email</span>
+            <span class="tag">Calls + Voicemail drops</span>
+            <span class="tag">SMS + Email</span>
             <span class="tag">5–12 follow-ups</span>
             <span class="tag">24/7 coverage</span>
           </div>
@@ -1080,19 +1107,19 @@
         <div class="flow-card r d3">
           <div class="flow-step">STEP 03</div>
           <div class="flow-emoji" style="background:rgba(0,216,101,0.1);border:1px solid rgba(0,216,101,0.2)">✅</div>
-          <h3>Qualification & Control</h3>
-          <p>Only real opportunities reach your team. Full visibility, full control.</p>
+          <h3>Your Closers Get Real Opportunities.</h3>
+          <p>Only pre-qualified leads reach your team. Meetings auto-scheduled. Full activity log. You see everything.</p>
           <div class="flow-tags">
-            <span class="tag">Meetings scheduled</span>
-            <span class="tag">Auto-assignment</span>
+            <span class="tag">Meetings auto-scheduled</span>
+            <span class="tag">Rep assignment</span>
             <span class="tag">Live reporting</span>
-            <span class="tag">Continuous optimization</span>
+            <span class="tag">Weekly optimization</span>
           </div>
         </div>
       </div>
 
       <p class="how-tagline r">
-        "Technology doesn't replace the genius. It amplifies it — <strong>when the right system is in place.</strong>"
+        "Sales don't happen by chance. They happen through <strong>persistent follow-up until closing.</strong>"
       </p>
     </div>
   </section>
@@ -1102,15 +1129,15 @@
     <div class="stats-inner">
       <div class="sstat r">
         <div class="sstat-num col-g">$4,997</div>
-        <p class="sstat-label">Starting investment —<br/>less than one hire</p>
+        <p class="sstat-label">Starting investment —<br/>less than one bad hire</p>
       </div>
       <div class="sstat r d1">
-        <div class="sstat-num col-p">100%</div>
-        <p class="sstat-label">Done-for-you.<br/>You focus on delivery.</p>
+        <div class="sstat-num col-p">7 days</div>
+        <p class="sstat-label">From diagnosis<br/>to system live</p>
       </div>
       <div class="sstat r d2">
-        <div class="sstat-num" style="-webkit-text-fill-color:#fff;color:#fff">1</div>
-        <p class="sstat-label">Invoice. One partner.<br/>One point of contact.</p>
+        <div class="sstat-num" style="-webkit-text-fill-color:#fff;color:#fff">0</div>
+        <p class="sstat-label">Leads left without<br/>follow-up. Ever.</p>
       </div>
     </div>
   </div>
@@ -1119,41 +1146,41 @@
   <section class="features-bg">
     <div class="container">
       <div class="r">
-        <span class="section-badge">What You Get</span>
-        <h2 class="section-title">Stop managing tools.<br/>Start <span class="grad-text">dominating markets.</span></h2>
-        <p class="section-sub">The operators who win aren't the ones who work harder — they're the ones with the right machine. Here's what's inside yours.</p>
+        <span class="section-badge">What's Inside</span>
+        <h2 class="section-title">One system.<br/><span class="grad-text">No gaps. No excuses.</span></h2>
+        <p class="section-sub">Every component of a high-performance revenue department — built, staffed, and operated for you.</p>
       </div>
 
       <div class="features-grid">
         <div class="feat r d1">
           <div class="feat-icon" style="background:rgba(91,33,255,0.1);border:1px solid rgba(91,33,255,0.2)">📡</div>
           <h4>Lead Generation (Omni-Channel)</h4>
-          <p>Multi-channel outbound and inbound generation that fills your pipeline with pre-qualified prospects daily.</p>
+          <p>Forms, paid ads, cold outreach, referral systems. Every channel working simultaneously — so your pipeline never dries up.</p>
         </div>
         <div class="feat r d2">
           <div class="feat-icon" style="background:rgba(0,216,101,0.1);border:1px solid rgba(0,216,101,0.2)">🗂</div>
           <h4>Process Development (SOPs)</h4>
-          <p>Complete mapping of your commercial and operational flow. Standardized systems built to scale without breaking.</p>
+          <p>Every commercial touchpoint mapped and standardized. Your business runs the same at 10 clients as at 1,000.</p>
         </div>
         <div class="feat r d3">
           <div class="feat-icon" style="background:rgba(255,135,82,0.1);border:1px solid rgba(255,135,82,0.2)">⚙️</div>
           <h4>Technical Implementation</h4>
-          <p>Full tech stack: CRM, AI calling, automation pipelines, and reporting dashboards — built and managed for you.</p>
+          <p>CRM, AI calling, automation sequences, reporting dashboards. Set up, integrated, and managed — zero technical burden on your end.</p>
         </div>
         <div class="feat r d1">
           <div class="feat-icon" style="background:rgba(129,0,162,0.12);border:1px solid rgba(129,0,162,0.2)">👥</div>
           <h4>Pre-Vetted Remote Talent</h4>
-          <p>Sales reps, marketers, customer service — recruited, trained, and supervised. We handle the entire team layer.</p>
+          <p>Sales reps, SDRs, customer service — recruited, trained, onboarded, and supervised. You get the output. We handle the people.</p>
         </div>
         <div class="feat r d2">
           <div class="feat-icon" style="background:rgba(91,33,255,0.1);border:1px solid rgba(91,33,255,0.2)">📈</div>
           <h4>Ads + Demand Generation</h4>
-          <p>Paid campaigns optimized for cost per qualified lead — not vanity metrics. Every dollar tracked to revenue.</p>
+          <p>Paid media optimized for cost per qualified lead — not impressions. Every dollar traced back to pipeline, not to vanity metrics.</p>
         </div>
         <div class="feat r d3">
           <div class="feat-icon" style="background:rgba(0,216,101,0.1);border:1px solid rgba(0,216,101,0.2)">🛡</div>
           <h4>Continuous Optimization</h4>
-          <p>Weekly reviews, iterations, and improvements. The system learns from data and gets sharper over time.</p>
+          <p>Weekly data review, iteration, and improvement. The system doesn't plateau — it compounds. You see the data every week.</p>
         </div>
       </div>
 
@@ -1211,12 +1238,12 @@
         <!-- ── Left: Two Sliders ── -->
         <div class="pcalc-left">
           <h3 class="pcalc-heading">Calculate your price</h3>
-          <p class="pcalc-desc">Ajusta tus contactos y follow-ups para ver tu costo mensual exacto.</p>
+          <p class="pcalc-desc">Adjust your monthly contacts and follow-up volume to see your exact monthly cost.</p>
 
           <!-- Slider 1 — Contacts -->
           <div class="slider-group">
             <div class="slider-group-header">
-              <span class="slider-group-label">Contactos por mes</span>
+              <span class="slider-group-label">Monthly contacts</span>
               <span class="slider-group-value" id="pcalc-contacts">1,000</span>
             </div>
             <div class="pcalc-slider-wrap">
@@ -1231,7 +1258,7 @@
           <!-- Slider 2 — Follow-ups -->
           <div class="slider-group">
             <div class="slider-group-header">
-              <span class="slider-group-label">Follow-ups por lead</span>
+              <span class="slider-group-label">Follow-ups per lead</span>
               <span class="slider-group-value green" id="pcalc-followups">5</span>
             </div>
             <div class="pcalc-slider-wrap">
@@ -1253,7 +1280,7 @@
 
           <div class="pcalc-footer">
             <span>¿Más de 100k contactos?</span>
-            <a href="#" data-book>Hablemos →</a>
+            <a href="#" data-book>Talk to us →</a>
           </div>
         </div>
 
@@ -1286,7 +1313,7 @@
           <a href="#" data-book class="btn btn-primary" style="display:block;text-align:center;margin-top:28px;width:100%">
             Book a Meeting →
           </a>
-          <p class="pcalc-footnote">Sin setup · Todo incluido · Diagnóstico requerido primero</p>
+          <p class="pcalc-footnote">No setup fees · All-inclusive · Diagnosis required first</p>
         </div>
       </div>
     </div>
@@ -1373,31 +1400,98 @@
   <section class="quote-sec">
     <div class="container">
       <div class="how-header r">
-        <span class="section-badge">Our Philosophy</span>
-        <h2 class="section-title">Built on one truth.</h2>
+        <span class="section-badge">From a Client</span>
+        <h2 class="section-title">Real results.<br/>Not a case study.</h2>
       </div>
       <div class="quote-wrap r">
         <blockquote>
-          "Inside every operator is something<br/>
-          no algorithm can replicate —<br/>
-          a vision, a drive, an unfair edge.<br/>
-          <em>Our job is to build the machine that sets it free.</em>"
+          "We were generating leads.<br/>
+          We just weren't working them.<br/>
+          LoopHub built the system that follows up until it closes —<br/>
+          <em>every day, without us having to think about it.</em>"
         </blockquote>
-        <p class="quote-attr">— LoopHub · The genius leads. The system executes.</p>
+        <p class="quote-attr">— LoopHub Client · B2B Services · Miami, FL</p>
       </div>
     </div>
   </section>
+
+  <!-- ─── FAQ ─── -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="faq-header r">
+        <span class="section-badge">Before You Decide</span>
+        <h2 class="section-title">Straight answers.<br/>No pitch.</h2>
+      </div>
+
+      <div class="faq-list">
+
+        <div class="faq-item r">
+          <button class="faq-q" data-track="faq_expand" aria-expanded="false">
+            Do I need to replace my current CRM or tools?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>No. We activate on top of what you already have. We integrate with your existing CRM, forms, and lead sources. Zero disruption to your current stack — zero new software licenses required.</p>
+          </div>
+        </div>
+
+        <div class="faq-item r">
+          <button class="faq-q" data-track="faq_expand" aria-expanded="false">
+            How is this different from hiring more salespeople?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>Salespeople forget, get distracted, get sick, and quit. The system doesn't. It runs follow-up sequences precisely — while your team focuses exclusively on closing the deals the system qualifies and delivers.</p>
+          </div>
+        </div>
+
+        <div class="faq-item r">
+          <button class="faq-q" data-track="faq_expand" aria-expanded="false">
+            What if my current lead volume is low?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>We start with what you already have. Most clients discover more recoverable revenue in their existing pipeline than they expected. Once we've extracted that, we layer in lead generation to grow volume.</p>
+          </div>
+        </div>
+
+        <div class="faq-item r">
+          <button class="faq-q" data-track="faq_expand" aria-expanded="false">
+            How fast will I see results?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>The system is typically live within 7 days of the Diagnosis. First qualified leads surface in days 7–14. Measurable pipeline impact — deals in the calendar, not just conversations — typically appears by day 30.</p>
+          </div>
+        </div>
+
+        <div class="faq-item r">
+          <button class="faq-q" data-track="faq_expand" aria-expanded="false">
+            What if it doesn't work for my specific business?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>We begin with the Strategic Diagnosis ($1,997) before building anything. You'll know exactly what's possible and what the system will deliver — before committing to a full engagement. No guesswork. No surprises.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep"/>
 
   <!-- ─── CTA FINAL ─── -->
   <section class="cta-wrap" id="contact">
     <div class="cta-orb"></div>
     <div class="container">
       <div class="r">
-        <h2>The genius is ready.<br/><span style="background:linear-gradient(90deg,var(--p1),var(--o1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Is the system?</span></h2>
-        <p>One call. We map what's missing and show you exactly how to dominate with the right machine behind you.</p>
-        <a href="#" data-book class="btn btn-primary btn-lg" style="font-size:1.05rem;padding:18px 56px">
-          Book a Meeting →
+        <h2>Your leads already exist.<br/><span style="background:linear-gradient(90deg,var(--p1),var(--o1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Who follows up tomorrow?</span></h2>
+        <p>Book a 30-minute discovery meeting. We'll map your revenue gap and show you exactly what's recoverable from your current pipeline.</p>
+        <a href="#" data-book data-track="final_cta" class="btn btn-primary btn-lg" style="font-size:1.05rem;padding:18px 56px">
+          Book a Discovery Meeting →
         </a>
+        <p style="font-size:0.82rem;color:var(--dim2);margin-top:16px">30 minutes. No pitch deck. No commitment required.</p>
         <div class="cta-chips">
           <a href="tel:+17869402394" class="chip"><span class="chip-i">📞</span>+1 (786) 940 2394</a>
           <a href="mailto:contact@loophub.solutions" class="chip"><span class="chip-i">✉️</span>contact@loophub.solutions</a>
@@ -1421,6 +1515,42 @@
     const BOOKING_URL = 'https://cal.com/loophub-kickoff-meeting/discoverymeeting';
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('[data-book]').forEach(el => el.href = BOOKING_URL);
+    });
+
+    // ── Analytics instrumentation ──────────────────────────────
+    function track(event, props={}) {
+      // Swap console.log for gtag / Mixpanel / Segment when ready
+      console.log('[LH]', event, props);
+      if(typeof gtag !== 'undefined') gtag('event', event, props);
+    }
+
+    // CTA clicks
+    document.addEventListener('click', e => {
+      const el = e.target.closest('[data-track]');
+      if(el) track('cta_click', { section: el.dataset.track, label: el.innerText.trim() });
+    });
+
+    // Scroll depth
+    const depths = [25,50,75,100];
+    const fired = new Set();
+    window.addEventListener('scroll', () => {
+      const pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+      depths.forEach(d => {
+        if(pct >= d && !fired.has(d)) { fired.add(d); track('scroll_depth', { depth: d }); }
+      });
+    }, {passive:true});
+
+    track('page_view', { page: 'loophub_landing' });
+
+    // ── FAQ accordion ──────────────────────────────────────────
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+        if(!isOpen) { item.classList.add('open'); track('faq_expand', { q: btn.innerText.trim() }); }
+        btn.setAttribute('aria-expanded', !isOpen);
+      });
     });
 
     // ── Scroll reveal ──────────────────────────────────────────
