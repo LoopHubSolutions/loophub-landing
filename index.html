@@ -540,6 +540,55 @@
     .r.d4{transition-delay:0.28s}
 
     /* ═══════════════════════════════
+       MANIFESTO BAND
+    ═══════════════════════════════ */
+    .manifesto-band{
+      padding:100px 24px;
+      background:linear-gradient(160deg,rgba(91,33,255,0.06) 0%,rgba(0,0,0,0) 60%);
+      position:relative;overflow:hidden;
+    }
+    .manifesto-band::before{
+      content:'';position:absolute;top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      width:900px;height:900px;border-radius:50%;
+      background:radial-gradient(circle,rgba(91,33,255,0.07) 0%,transparent 65%);
+      pointer-events:none;
+    }
+    .manifesto-inner{
+      text-align:center;position:relative;z-index:1;
+    }
+    .manifesto-line{
+      font-size:clamp(2rem,5vw,4rem);
+      font-weight:900;letter-spacing:-2px;line-height:1.1;
+      color:rgba(255,255,255,0.35);
+      margin-bottom:8px;
+    }
+    .manifesto-line.accent{
+      background:linear-gradient(90deg,var(--p1) 0%,var(--g1) 60%,var(--o1) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      color:transparent;margin-bottom:36px;
+    }
+    .manifesto-sub{
+      font-size:1.05rem;color:var(--dim);line-height:1.8;
+      max-width:580px;margin:0 auto 36px;
+    }
+    .manifesto-pills{
+      display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
+    }
+    .manifesto-pill{
+      font-size:0.82rem;font-weight:700;letter-spacing:0.5px;
+      padding:10px 22px;border-radius:100px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.1);
+      color:rgba(255,255,255,0.55);
+      transition:all 0.25s;
+    }
+    .manifesto-pill:hover{
+      border-color:var(--p1);color:#fff;
+      background:rgba(91,33,255,0.1);
+    }
+
+    /* ═══════════════════════════════
        PRICING CALCULATOR
     ═══════════════════════════════ */
     .pricing-calc-sec{padding:110px 24px;background:var(--bg)}
@@ -793,20 +842,21 @@
     <div class="hero-overlay"></div>
     <div class="hero-eyebrow r">
       <span class="eyebrow-dot"></span>
-      Growth Engine · Built, Not Installed
+      Technology is your weapon — not your threat.
     </div>
 
     <h1 class="hero-title r d1">
-      Your revenue is<br/>
-      <span class="line2">already in your pipeline.</span>
+      The genius is in you.<br/>
+      <span class="line2">The system sets it free.</span>
     </h1>
 
     <p class="hero-sub r d2">
-      We build the system that follows up until it closes,<br/>every day — without excuses, without forgetting.
+      Every great operator has a vision no algorithm can replicate.<br/>
+      LoopHub builds the machine around it — so you stop reacting and start dominating.
     </p>
 
     <div class="hero-ctas r d3">
-      <a href="#contact" class="btn btn-primary btn-lg">Book a Strategy Call →</a>
+      <a href="#contact" class="btn btn-primary btn-lg">Activate Your System →</a>
       <a href="#how" class="btn btn-ghost btn-lg">See How It Works</a>
     </div>
 
@@ -835,6 +885,22 @@
     </div>
   </section>
 
+  <!-- ─── MANIFESTO ─── -->
+  <div class="manifesto-band">
+    <div class="container">
+      <div class="manifesto-inner r">
+        <p class="manifesto-line">You were not built to fear technology.</p>
+        <p class="manifesto-line accent">You were built to dominate it.</p>
+        <p class="manifesto-sub">Every great operator has a genius inside — something unique that no AI can replicate.<br/>LoopHub is the system that lets that genius run at full power.</p>
+        <div class="manifesto-pills">
+          <span class="manifesto-pill">⟶ Lead with vision</span>
+          <span class="manifesto-pill">⟶ Execute with systems</span>
+          <span class="manifesto-pill">⟶ Dominate with data</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <hr class="sep"/>
 
   <!-- ─── PROBLEM ─── -->
@@ -842,8 +908,8 @@
     <div class="container">
       <div class="r">
         <span class="section-badge">The Real Problem</span>
-        <h2 class="section-title">The problem isn't<br/>getting leads.</h2>
-        <p class="section-sub">It's not having a system that works every single day — without burning out, without forgetting, without chaos.</p>
+        <h2 class="section-title">The problem isn't<br/>your vision.</h2>
+        <p class="section-sub">You have the instinct, the drive, the edge. What you're missing is the system that runs while you lead — relentlessly, without chaos, without excuses.</p>
       </div>
 
       <div class="problem-grid">
@@ -851,29 +917,29 @@
           <div class="pain-item r d1">
             <span class="pain-icon">🔁</span>
             <div>
-              <h4>No consistent follow-up</h4>
-              <p>Leads go cold because nobody reaches back after the first contact. Deals die in silence.</p>
+              <h4>Your genius is stuck in follow-up hell</h4>
+              <p>You didn't build a business to chase leads manually. That's what systems are for — and you don't have one yet.</p>
             </div>
           </div>
           <div class="pain-item r d2">
             <span class="pain-icon">🎯</span>
             <div>
-              <h4>No qualification criteria</h4>
-              <p>Your team wastes hours on people who will never buy. The pipeline is full of noise.</p>
+              <h4>Technology feels like a threat</h4>
+              <p>AI, automation, CRMs — operators fear what they don't control. The ones who win are the ones who own it.</p>
             </div>
           </div>
           <div class="pain-item r d3">
             <span class="pain-icon">📊</span>
             <div>
-              <h4>No real-time visibility</h4>
-              <p>You can't see what's working, what's leaking, or what's costing you revenue every week.</p>
+              <h4>You're leading blind</h4>
+              <p>Without real-time data, you're making decisions by feel. The operators who dominate make decisions by system.</p>
             </div>
           </div>
           <div class="pain-item r d4">
             <span class="pain-icon">⚡</span>
             <div>
-              <h4>More leads = more chaos</h4>
-              <p>Without structure, scaling only accelerates the mess. The pipeline grows, revenue doesn't.</p>
+              <h4>Scaling breaks everything</h4>
+              <p>More leads without a system = more chaos. The vision is there. The infrastructure isn't. Yet.</p>
             </div>
           </div>
         </div>
@@ -881,7 +947,7 @@
         <div class="problem-visual r">
           <div class="pv-number">80%</div>
           <p class="pv-label">of sales happen between<br/>the 5th and 12th contact.</p>
-          <p class="pv-sub">Most businesses give up after the 2nd.<br/>That gap is your lost revenue — sitting right in your pipeline, waiting.</p>
+          <p class="pv-sub">The operator who keeps showing up wins.<br/>Your genius closes the deal — the system makes sure you always show up.</p>
           <div class="pv-source">Source · Grant Cardone · grantcardone.com</div>
         </div>
       </div>
@@ -894,9 +960,9 @@
   <section id="how">
     <div class="container">
       <div class="how-header r">
-        <span class="section-badge">The Solution</span>
-        <h2 class="section-title">The sale happens when the lead<br/>is good… <em class="grad-text" style="font-style:normal">and someone follows up long enough.</em></h2>
-        <p class="section-sub" style="margin:0 auto">Three layers. Zero gaps. One result: closed deals, every week.</p>
+        <span class="section-badge">The System</span>
+        <h2 class="section-title">You bring the vision.<br/><em class="grad-text" style="font-style:normal">The machine executes everything else.</em></h2>
+        <p class="section-sub" style="margin:0 auto">Three layers. Zero gaps. The genius leads — the system never stops working.</p>
       </div>
 
       <div class="how-flow">
@@ -945,7 +1011,7 @@
       </div>
 
       <p class="how-tagline r">
-        "Sales don't happen by chance — they happen through <strong>persistent follow-up until closing.</strong>"
+        "Technology doesn't replace the genius. It amplifies it — <strong>when the right system is in place.</strong>"
       </p>
     </div>
   </section>
@@ -973,8 +1039,8 @@
     <div class="container">
       <div class="r">
         <span class="section-badge">What You Get</span>
-        <h2 class="section-title">A Growth Engine is not<br/>installed. It is <span class="grad-text">built.</span></h2>
-        <p class="section-sub">Delegate your entire marketing & sales system. You lead the vision. We execute everything else.</p>
+        <h2 class="section-title">Stop managing tools.<br/>Start <span class="grad-text">dominating markets.</span></h2>
+        <p class="section-sub">The operators who win aren't the ones who work harder — they're the ones with the right machine. Here's what's inside yours.</p>
       </div>
 
       <div class="features-grid">
@@ -1052,9 +1118,9 @@
   <section class="pricing-calc-sec" id="pricing">
     <div class="container">
       <div class="r" style="text-align:center;margin-bottom:56px">
-        <span class="section-badge">Most Popular</span>
-        <h2 class="section-title">Start with the bot.<br/>Scale as you grow.</h2>
-        <p class="section-sub" style="margin:0 auto">The base covers the full AI calling + automated follow-up system. You only pay more when you're working more contacts.</p>
+        <span class="section-badge">Your AI Weapon</span>
+        <h2 class="section-title">The bot runs while<br/>your genius leads.</h2>
+        <p class="section-sub" style="margin:0 auto">Base price covers the full AI system. Scale contacts and follow-ups as your confidence — and your pipeline — grows.</p>
       </div>
 
       <div class="pcalc r">
@@ -1231,11 +1297,12 @@
       </div>
       <div class="quote-wrap r">
         <blockquote>
-          "A human always leads.<br/>
-          The system supports decisions —<br/>
-          <em>it doesn't replace them.</em>"
+          "Inside every operator is something<br/>
+          no algorithm can replicate —<br/>
+          a vision, a drive, an unfair edge.<br/>
+          <em>Our job is to build the machine that sets it free.</em>"
         </blockquote>
-        <p class="quote-attr">— LoopHub · loophub.solutions</p>
+        <p class="quote-attr">— LoopHub · The genius leads. The system executes.</p>
       </div>
     </div>
   </section>
@@ -1245,10 +1312,10 @@
     <div class="cta-orb"></div>
     <div class="container">
       <div class="r">
-        <h2>Stop leaving money<br/><span style="background:linear-gradient(90deg,var(--p1),var(--o1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">in your pipeline.</span></h2>
-        <p>Book a call. We'll show you exactly what's being lost and how to fix it — fast.</p>
+        <h2>The genius is ready.<br/><span style="background:linear-gradient(90deg,var(--p1),var(--o1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Is the system?</span></h2>
+        <p>One call. We map what's missing and show you exactly how to dominate with the right machine behind you.</p>
         <a href="tel:+17869402394" class="btn btn-primary btn-lg" style="font-size:1.05rem;padding:18px 56px">
-          Book a Strategy Call →
+          Activate My System →
         </a>
         <div class="cta-chips">
           <a href="tel:+17869402394" class="chip"><span class="chip-i">📞</span>+1 (786) 940 2394</a>
