@@ -604,6 +604,25 @@
       background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);
       color:rgba(255,255,255,0.6);
     }
+    /* Two-slider groups */
+    .slider-group{margin-bottom:28px}
+    .slider-group-header{
+      display:flex;justify-content:space-between;align-items:baseline;
+      margin-bottom:10px;
+    }
+    .slider-group-label{
+      font-size:0.7rem;color:var(--dim2);font-weight:700;
+      text-transform:uppercase;letter-spacing:1.4px;
+    }
+    .slider-group-value{
+      font-size:1.9rem;font-weight:900;letter-spacing:-0.5px;line-height:1;
+      background:linear-gradient(90deg,#fff,rgba(255,255,255,0.65));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .slider-group-value.green{
+      background:linear-gradient(90deg,var(--g1),rgba(0,216,101,0.7));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
     .pcalc-footer{
       display:flex;align-items:center;gap:10px;
       font-size:0.8rem;color:var(--dim2);
@@ -1042,23 +1061,39 @@
         <div class="pcalc-glow"></div>
         <div class="pcalc-glow2"></div>
 
-        <!-- ── Left: Slider ── -->
+        <!-- ── Left: Two Sliders ── -->
         <div class="pcalc-left">
           <h3 class="pcalc-heading">Calculate your price</h3>
-          <p class="pcalc-desc">Slide to see how pricing scales with your contact volume. Pay only for what you use.</p>
+          <p class="pcalc-desc">Ajusta tus contactos y follow-ups para ver tu costo mensual exacto.</p>
 
-          <div class="pcalc-contacts" id="pcalc-contacts">1,000 contacts / mo</div>
-
-          <div class="pcalc-slider-wrap">
-            <input type="range" class="pcalc-slider" id="pcalc-slider"
-              min="0" max="19" step="1" value="5"/>
+          <!-- Slider 1 — Contacts -->
+          <div class="slider-group">
+            <div class="slider-group-header">
+              <span class="slider-group-label">Contactos por mes</span>
+              <span class="slider-group-value" id="pcalc-contacts">1,000</span>
+            </div>
+            <div class="pcalc-slider-wrap">
+              <input type="range" class="pcalc-slider" id="pcalc-slider"
+                min="0" max="19" step="1" value="5"/>
+            </div>
+            <div class="pcalc-scale">
+              <span>100</span><span>2.5k</span><span>10k</span><span>50k</span><span>100k</span>
+            </div>
           </div>
-          <div class="pcalc-scale">
-            <span>100</span>
-            <span>2,500</span>
-            <span>10k</span>
-            <span>50k</span>
-            <span>100k</span>
+
+          <!-- Slider 2 — Follow-ups -->
+          <div class="slider-group">
+            <div class="slider-group-header">
+              <span class="slider-group-label">Follow-ups por lead</span>
+              <span class="slider-group-value green" id="pcalc-followups">5</span>
+            </div>
+            <div class="pcalc-slider-wrap">
+              <input type="range" class="pcalc-slider" id="pcalc-fu-slider"
+                min="1" max="12" step="1" value="5"/>
+            </div>
+            <div class="pcalc-scale">
+              <span>1</span><span>3</span><span>6</span><span>9</span><span>12</span>
+            </div>
           </div>
 
           <div class="pcalc-chips">
@@ -1070,15 +1105,15 @@
           </div>
 
           <div class="pcalc-footer">
-            <span>Need more than 100k contacts?</span>
-            <a href="#contact">Let's talk →</a>
+            <span>¿Más de 100k contactos?</span>
+            <a href="#contact">Hablemos →</a>
           </div>
         </div>
 
         <!-- ── Right: Breakdown ── -->
         <div class="pcalc-right">
-          <div class="pcalc-plan-label">Your monthly estimate</div>
-          <div class="pcalc-total-price" id="pcalc-total">$2,550</div>
+          <div class="pcalc-plan-label">Tu estimado mensual</div>
+          <div class="pcalc-total-price" id="pcalc-total">$2,850</div>
           <div class="pcalc-period">/month</div>
 
           <div class="pcalc-breakdown">
@@ -1087,20 +1122,24 @@
               <span class="pcalc-bval">$2,500</span>
             </div>
             <div class="pcalc-brow">
-              <span id="pcalc-usage-label">1,000 contacts × $0.05</span>
+              <span id="pcalc-usage-label">1,000 contactos × $0.05</span>
               <span class="pcalc-bval" id="pcalc-usage">+$50</span>
+            </div>
+            <div class="pcalc-brow">
+              <span id="pcalc-fu-label">5 follow-ups (×$75 c/u)</span>
+              <span class="pcalc-bval" id="pcalc-fu-cost">+$300</span>
             </div>
             <div class="pcalc-bdivider"></div>
             <div class="pcalc-brow pcalc-btotal">
               <span>Total / month</span>
-              <span class="pcalc-bval-g" id="pcalc-total-row">$2,550</span>
+              <span class="pcalc-bval-g" id="pcalc-total-row">$2,850</span>
             </div>
           </div>
 
           <a href="#contact" class="btn btn-primary" style="display:block;text-align:center;margin-top:28px;width:100%">
             Book a Strategy Call →
           </a>
-          <p class="pcalc-footnote">No setup fees · All features included · Diagnosis required first</p>
+          <p class="pcalc-footnote">Sin setup · Todo incluido · Diagnóstico requerido primero</p>
         </div>
       </div>
     </div>
@@ -1450,51 +1489,84 @@
   <!-- ─── PRICING CALCULATOR ─────────────────────────────────── -->
   <script>
   (function initPricingCalc() {
-    // Contact breakpoints (non-linear — small ranges matter more)
+    // ── Contact breakpoints (non-linear) ──────────────────────
     const CONTACTS = [
       100, 200, 300, 500, 750,
       1000, 1500, 2000, 3000, 5000,
       7500, 10000, 15000, 20000, 25000,
       30000, 40000, 50000, 75000, 100000
     ];
-    const BASE  = 2500;  // $2,500 base / mo
-    const RATE  = 5;     // $5 per 100 contacts
 
-    const slider        = document.getElementById('pcalc-slider');
-    if (!slider) return;
-    const contactsEl    = document.getElementById('pcalc-contacts');
-    const totalEl       = document.getElementById('pcalc-total');
-    const usageLabelEl  = document.getElementById('pcalc-usage-label');
-    const usageEl       = document.getElementById('pcalc-usage');
-    const totalRowEl    = document.getElementById('pcalc-total-row');
+    const BASE        = 2500;  // $2,500 base / mo
+    const CONTACT_R   = 5;     // $5  per 100 contacts
+    const FOLLOWUP_R  = 75;    // $75 per follow-up (above the 1st, which is included)
+
+    // Elements — contacts slider
+    const contactSlider  = document.getElementById('pcalc-slider');
+    const contactsEl     = document.getElementById('pcalc-contacts');
+    const usageLabelEl   = document.getElementById('pcalc-usage-label');
+    const usageEl        = document.getElementById('pcalc-usage');
+
+    // Elements — follow-up slider
+    const fuSlider       = document.getElementById('pcalc-fu-slider');
+    const fuEl           = document.getElementById('pcalc-followups');
+    const fuLabelEl      = document.getElementById('pcalc-fu-label');
+    const fuCostEl       = document.getElementById('pcalc-fu-cost');
+
+    // Elements — totals
+    const totalEl        = document.getElementById('pcalc-total');
+    const totalRowEl     = document.getElementById('pcalc-total-row');
+
+    if (!contactSlider || !fuSlider) return;
 
     function fmt(n) { return n.toLocaleString('en-US'); }
 
-    function update() {
-      const idx      = parseInt(slider.value, 10);
-      const contacts = CONTACTS[idx];
-      const usage    = Math.ceil(contacts / 100) * RATE;
-      const total    = BASE + usage;
-      const pct      = (idx / (CONTACTS.length - 1)) * 100;
+    function setSliderFill(el, pct, color) {
+      el.style.background =
+        `linear-gradient(to right,${color} 0%,${color} ${pct}%,rgba(255,255,255,0.1) ${pct}%,rgba(255,255,255,0.1) 100%)`;
+    }
 
-      // Display values
-      contactsEl.textContent   = fmt(contacts) + ' contacts / mo';
-      usageLabelEl.textContent = fmt(contacts) + ' contacts × $0.05';
-      usageEl.textContent      = '+$' + fmt(usage);
+    function update() {
+      // ── Contacts ─────────────────────────────────────────────
+      const cIdx      = parseInt(contactSlider.value, 10);
+      const contacts  = CONTACTS[cIdx];
+      const cCost     = Math.ceil(contacts / 100) * CONTACT_R;
+      const cPct      = (cIdx / (CONTACTS.length - 1)) * 100;
+
+      // ── Follow-ups ────────────────────────────────────────────
+      const followups = parseInt(fuSlider.value, 10);
+      const fuCost    = Math.max(0, followups - 1) * FOLLOWUP_R;
+      const fuPct     = ((followups - 1) / 11) * 100;   // 1–12 → 0–100%
+
+      // ── Total ─────────────────────────────────────────────────
+      const total = BASE + cCost + fuCost;
+
+      // ── Update DOM ────────────────────────────────────────────
+      contactsEl.textContent   = fmt(contacts);
+      usageLabelEl.textContent = fmt(contacts) + ' contactos × $0.05';
+      usageEl.textContent      = '+$' + fmt(cCost);
+
+      fuEl.textContent         = followups;
+      fuLabelEl.textContent    = followups === 1
+        ? '1 follow-up (incluido)'
+        : `${followups} follow-ups (×$${FOLLOWUP_R} c/u)`;
+      fuCostEl.textContent     = fuCost === 0 ? '$0' : '+$' + fmt(fuCost);
+
       totalEl.textContent      = '$' + fmt(total);
       totalRowEl.textContent   = '$' + fmt(total);
 
-      // Slider fill (purple gradient tracks thumb)
-      slider.style.background =
-        `linear-gradient(to right,#5B21FF 0%,#5B21FF ${pct}%,rgba(255,255,255,0.1) ${pct}%,rgba(255,255,255,0.1) 100%)`;
+      // Slider fills
+      setSliderFill(contactSlider, cPct,  '#5B21FF');
+      setSliderFill(fuSlider,      fuPct, '#00D865');
 
-      // Subtle pulse on price change
-      totalEl.style.opacity = '0.5';
+      // Pulse animation on total
+      totalEl.style.opacity = '0.4';
       requestAnimationFrame(() => { totalEl.style.opacity = '1'; });
     }
 
-    slider.addEventListener('input', update);
-    update(); // initialise on load
+    contactSlider.addEventListener('input', update);
+    fuSlider.addEventListener('input', update);
+    update(); // init
   })();
   </script>
 
