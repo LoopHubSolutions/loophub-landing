@@ -454,6 +454,10 @@
     }
     .chk{color:var(--g1);font-size:0.95rem;flex-shrink:0;margin-top:1px}
     .pc-cta{display:block;text-align:center;margin-top:auto}
+    .pc-scope-note{
+      font-size:0.78rem;color:var(--dim2);line-height:1.5;
+      border-left:2px solid rgba(0,216,101,0.35);padding-left:12px;margin:12px 0 16px;
+    }
 
     /* ═══════════════════════════════
        QUOTE / PHILOSOPHY
@@ -815,6 +819,54 @@
       .pcalc-right{width:100%;min-width:unset}
       .pricing-calc-sec{padding:80px 24px}
       .pcalc-contacts{font-size:1.8rem}
+      .mockup-section{padding:60px 24px}
+      .mockup-inner{flex-direction:column;gap:40px}
+      .mockup-text{max-width:100%}
+      .mockup-img-wrap{max-width:100%}
+    }
+
+    /* ═══════════════════════════════
+       MOCKUP SHOWCASE
+    ═══════════════════════════════ */
+    .mockup-section{
+      position:relative;z-index:1;padding:80px 0 100px;overflow:hidden;
+    }
+    .mockup-inner{
+      display:flex;align-items:center;gap:64px;
+    }
+    .mockup-text{
+      flex:1;max-width:480px;
+    }
+    .mockup-text .section-badge{margin-bottom:20px}
+    .mockup-title{
+      font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;line-height:1.2;
+      margin-bottom:20px;
+    }
+    .mockup-title span{
+      background:linear-gradient(135deg,var(--p1),var(--o1));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .mockup-desc{color:var(--dim);font-size:1rem;line-height:1.7;margin-bottom:32px}
+    .mockup-feats{display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
+    .mockup-feat{
+      display:flex;align-items:center;gap:12px;
+      font-size:0.9rem;color:rgba(255,255,255,0.75);
+    }
+    .mockup-feat-dot{
+      width:8px;height:8px;border-radius:50%;background:var(--g1);flex-shrink:0;
+      box-shadow:0 0 8px var(--g1);
+    }
+    .mockup-img-wrap{
+      flex:1;position:relative;max-width:640px;
+    }
+    .mockup-img-wrap::before{
+      content:'';position:absolute;inset:-40px;
+      background:radial-gradient(ellipse 70% 60% at 55% 50%,rgba(91,33,255,0.18) 0%,transparent 70%);
+      pointer-events:none;z-index:0;
+    }
+    .mockup-img-wrap img{
+      width:100%;border-radius:16px;position:relative;z-index:1;
+      filter:drop-shadow(0 24px 48px rgba(91,33,255,0.3));
     }
   </style>
 </head>
@@ -832,7 +884,7 @@
       <a href="#problem" class="nav-link">The Problem</a>
       <a href="#how" class="nav-link">How It Works</a>
       <a href="#pricing" class="nav-link">Pricing</a>
-      <a href="#contact" class="btn btn-primary">Book a Call</a>
+      <a href="#" data-book class="btn btn-primary">Book a Meeting</a>
     </div>
   </nav>
 
@@ -856,7 +908,7 @@
     </p>
 
     <div class="hero-ctas r d3">
-      <a href="#contact" class="btn btn-primary btn-lg">Activate Your System →</a>
+      <a href="#" data-book class="btn btn-primary btn-lg">Book a Meeting →</a>
       <a href="#how" class="btn btn-ghost btn-lg">See How It Works</a>
     </div>
 
@@ -900,6 +952,35 @@
       </div>
     </div>
   </div>
+
+  <!-- ─── MOCKUP SHOWCASE ─── -->
+  <section class="mockup-section">
+    <div class="container">
+      <div class="mockup-inner">
+
+        <div class="mockup-text r">
+          <span class="section-badge">The System in Action</span>
+          <h2 class="mockup-title">Your revenue intelligence,<br/><span>running 24/7.</span></h2>
+          <p class="mockup-desc">
+            Every contact tracked. Every follow-up timed. Every deal visible
+            in real time — while your genius stays focused on what only you can do.
+          </p>
+          <div class="mockup-feats">
+            <div class="mockup-feat"><div class="mockup-feat-dot"></div>AI Sales Report — live, not lagging</div>
+            <div class="mockup-feat"><div class="mockup-feat-dot"></div>Voice Agent activated in one tap</div>
+            <div class="mockup-feat"><div class="mockup-feat-dot"></div>Conversion calls, accounts & projects — all tracked</div>
+            <div class="mockup-feat"><div class="mockup-feat-dot"></div>Full pipeline visibility from your phone</div>
+          </div>
+          <a href="#" data-book class="btn btn-primary">See It Working for You →</a>
+        </div>
+
+        <div class="mockup-img-wrap r d2">
+          <img src="./assets/hero-mockup.png" alt="LoopHub AI Sales Dashboard — mobile app showing real-time sales data, voice agent, and conversion metrics" loading="lazy"/>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
   <hr class="sep"/>
 
@@ -1087,7 +1168,7 @@
               Full System
             </div>
             <h3 class="ub-title">Ready for your full <span class="grad-text">Growth Engine?</span></h3>
-            <p class="ub-desc">Your entire revenue department — built, staffed, and running from day one. We handle everything so you lead the vision.</p>
+            <p class="ub-desc">Your entire revenue department — mapped, built, staffed, and optimized. You lead the vision. We build and run the machine.</p>
             <div class="ub-feats">
               <span class="ub-feat">✦ AI Calling + Follow-up</span>
               <span class="ub-feat">✦ Pre-vetted Remote Talent</span>
@@ -1099,11 +1180,11 @@
           </div>
           <div class="ub-right">
             <div class="ub-price-card">
-              <div class="ub-price-label">Starting at</div>
-              <div class="ub-price">$15k<span class="ub-price-period">/mo</span></div>
-              <div class="ub-price-note">Based on scope · Fully custom</div>
-              <a href="#contact" class="btn btn-green" style="width:100%;justify-content:center;margin-top:22px;color:#000">Build My Engine →</a>
-              <a href="#contact" class="ub-link">or talk to us first</a>
+              <div class="ub-price-label">Growth Engine</div>
+              <div class="ub-price">$8K<span class="ub-price-period"> – $35K</span></div>
+              <div class="ub-price-note">/ month · Based on scope &amp; complexity</div>
+              <a href="#" data-book class="btn btn-green" style="width:100%;justify-content:center;margin-top:22px;color:#000">Build My Engine →</a>
+              <a href="#" data-book class="ub-link">Or book a strategy call first.</a>
             </div>
           </div>
         </div>
@@ -1172,7 +1253,7 @@
 
           <div class="pcalc-footer">
             <span>¿Más de 100k contactos?</span>
-            <a href="#contact">Hablemos →</a>
+            <a href="#" data-book>Hablemos →</a>
           </div>
         </div>
 
@@ -1202,8 +1283,8 @@
             </div>
           </div>
 
-          <a href="#contact" class="btn btn-primary" style="display:block;text-align:center;margin-top:28px;width:100%">
-            Book a Strategy Call →
+          <a href="#" data-book class="btn btn-primary" style="display:block;text-align:center;margin-top:28px;width:100%">
+            Book a Meeting →
           </a>
           <p class="pcalc-footnote">Sin setup · Todo incluido · Diagnóstico requerido primero</p>
         </div>
@@ -1226,62 +1307,62 @@
 
         <!-- Diagnosis -->
         <div class="pcard pcard-basic r d1">
-          <span class="pc-badge badge-w">Start Here</span>
-          <div class="pc-old">$2,500</div>
+          <span class="pc-badge badge-w">Required First Step</span>
           <div class="pc-price" style="color:var(--p1)">$1,997</div>
-          <div class="pc-period">One-time payment · Required first</div>
+          <div class="pc-period">One-time · Before we build anything</div>
           <div class="pc-name">Strategic Diagnosis</div>
-          <p class="pc-desc">Before we build, we map. A complete audit of your funnel, CRM, scripts, ops, and team. Required before activating the Growth Engine.</p>
+          <p class="pc-desc">We reverse engineer your revenue flow before building anything. A complete audit of your funnel, CRM, scripts, ops, and team structure.</p>
           <div class="pc-divider"></div>
           <ul class="pc-list">
-            <li><span class="chk">✓</span>Funnel audit & gap analysis</li>
-            <li><span class="chk">✓</span>CRM review & recommendations</li>
-            <li><span class="chk">✓</span>Scripts & messaging evaluation</li>
+            <li><span class="chk">✓</span>Funnel &amp; gap analysis</li>
+            <li><span class="chk">✓</span>CRM audit &amp; recommendations</li>
+            <li><span class="chk">✓</span>Scripts &amp; messaging evaluation</li>
             <li><span class="chk">✓</span>Operations mapping</li>
             <li><span class="chk">✓</span>Team structure plan</li>
           </ul>
-          <a href="#contact" class="btn btn-ghost pc-cta" style="width:100%">Get Diagnosed →</a>
+          <a href="#" data-book class="btn btn-ghost pc-cta" style="width:100%">Get Diagnosed →</a>
         </div>
 
         <!-- Conversion Engine -->
         <div class="pcard pcard-mid r d2">
           <span class="pc-badge badge-p">Most Popular</span>
-          <div class="pc-old">$8,000</div>
           <div class="pc-price" style="background:linear-gradient(135deg,var(--p1),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">$4,997</div>
-          <div class="pc-period">/month · Starting at</div>
+          <div class="pc-period">/month</div>
           <div class="pc-name">Conversion Engine</div>
-          <p class="pc-desc">Your existing leads, finally working. Full call system with automated follow-up activated and optimized for your business.</p>
+          <p class="pc-desc">Activate structured follow-up on your existing leads. 5–12 touchpoints per lead — fully automated, fully managed, zero chaos on your end.</p>
           <div class="pc-divider"></div>
           <ul class="pc-list">
-            <li><span class="chk">✓</span>Call system setup & management</li>
-            <li><span class="chk">✓</span>Automated follow-up sequences</li>
-            <li><span class="chk">✓</span>AI-powered lead contact</li>
-            <li><span class="chk">✓</span>Activated on your existing leads</li>
-            <li><span class="chk">✓</span>Results & activity reporting</li>
+            <li><span class="chk">✓</span>AI calling + automated sequences</li>
+            <li><span class="chk">✓</span>5–12 follow-ups per lead</li>
+            <li><span class="chk">✓</span>Qualification layer</li>
+            <li><span class="chk">✓</span>Live reporting dashboard</li>
             <li><span class="chk">✓</span>Dedicated account manager</li>
           </ul>
-          <a href="#contact" class="btn btn-primary pc-cta" style="width:100%">Start Converting →</a>
+          <a href="#" data-book class="btn btn-primary pc-cta" style="width:100%">Start Converting →</a>
         </div>
 
         <!-- Growth Engine -->
         <div class="pcard pcard-ent r d3">
           <span class="pc-badge badge-g">Full System</span>
-          <div class="pc-old" style="color:var(--g1);opacity:0.5">$25,000</div>
-          <div class="pc-price" style="color:var(--g1)">$15–35k</div>
-          <div class="pc-period">/month · Based on scope</div>
+          <div class="pc-price" style="color:var(--g1)">$8K – $35K</div>
+          <div class="pc-period">/month · Based on scope, complexity &amp; scale</div>
           <div class="pc-name">Growth Engine</div>
-          <p class="pc-desc">Your entire revenue department, outsourced. We build it, run it, scale it — and train you so you understand every piece.</p>
+          <p class="pc-desc">Your full revenue department, outsourced. Small team activation starts at the lower end. Full omni-channel revenue infrastructure at the upper end.</p>
+          <div class="pc-scope-note">
+            Scope is defined by: operational complexity · channels activated · team size · revenue targets.
+          </div>
           <div class="pc-divider"></div>
           <ul class="pc-list">
-            <li><span class="chk" style="color:var(--g1)">✓</span>Full sales infrastructure</li>
+            <li><span class="chk" style="color:var(--g1)">✓</span>Lead generation (omni-channel)</li>
             <li><span class="chk" style="color:var(--g1)">✓</span>Ads + demand generation</li>
             <li><span class="chk" style="color:var(--g1)">✓</span>AI calling + follow-up</li>
-            <li><span class="chk" style="color:var(--g1)">✓</span>Automation & reporting</li>
-            <li><span class="chk" style="color:var(--g1)">✓</span>Talent recruitment & payroll</li>
-            <li><span class="chk" style="color:var(--g1)">✓</span>Continuous supervision</li>
+            <li><span class="chk" style="color:var(--g1)">✓</span>Automation &amp; dashboards</li>
+            <li><span class="chk" style="color:var(--g1)">✓</span>Pre-vetted remote talent</li>
+            <li><span class="chk" style="color:var(--g1)">✓</span>Continuous supervision &amp; optimization</li>
             <li><span class="chk" style="color:var(--g1)">✓</span>Executive upgrade training</li>
           </ul>
-          <a href="#contact" class="btn btn-green pc-cta" style="width:100%;color:#000">Build My Engine →</a>
+          <a href="#" data-book class="btn btn-green pc-cta" style="width:100%;color:#000">Build My Engine →</a>
+          <p style="text-align:center;font-size:0.78rem;color:var(--dim2);margin-top:12px">Or book a strategy call first.</p>
         </div>
 
       </div>
@@ -1314,8 +1395,8 @@
       <div class="r">
         <h2>The genius is ready.<br/><span style="background:linear-gradient(90deg,var(--p1),var(--o1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Is the system?</span></h2>
         <p>One call. We map what's missing and show you exactly how to dominate with the right machine behind you.</p>
-        <a href="tel:+17869402394" class="btn btn-primary btn-lg" style="font-size:1.05rem;padding:18px 56px">
-          Activate My System →
+        <a href="#" data-book class="btn btn-primary btn-lg" style="font-size:1.05rem;padding:18px 56px">
+          Book a Meeting →
         </a>
         <div class="cta-chips">
           <a href="tel:+17869402394" class="chip"><span class="chip-i">📞</span>+1 (786) 940 2394</a>
@@ -1334,6 +1415,14 @@
   </footer>
 
   <script>
+    // ══════════════════════════════════════════════════════
+    // BOOKING LINK — cambia esta URL con tu link de Calendly
+    // ══════════════════════════════════════════════════════
+    const BOOKING_URL = 'https://calendly.com/loophubsolutions';
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('[data-book]').forEach(el => el.href = BOOKING_URL);
+    });
+
     // ── Scroll reveal ──────────────────────────────────────────
     const obs = new IntersectionObserver(entries=>{
       entries.forEach((e,i)=>{
