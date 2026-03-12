@@ -4,1273 +4,891 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LoopHub — AI Call Infrastructure for Revenue Teams</title>
-  <meta name="description" content="Use humans for the calls that close. Use infrastructure for everything else. AI-powered call system that processes 2,000+ leads/month at $0.46 per lead." />
+  <meta name="description" content="Use humans for the calls that close. Use infrastructure for everything else. AI-powered system that processes 2,000 leads/month at $0.93 per lead." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    /* ===== RESET & BASE ===== */
+    /* ===== RESET ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:          #06060F;
-      --bg2:         #0C0C1A;
-      --purple:      #5B21FF;
-      --purple-mid:  #7C4DFF;
-      --purple-soft: rgba(91,33,255,0.12);
-      --green:       #00D865;
-      --green-soft:  rgba(0,216,101,0.1);
-      --orange:      #FF8752;
-      --white:       #F2F2FF;
-      --muted:       #6E6E99;
-      --border:      rgba(255,255,255,0.07);
-      --card:        rgba(255,255,255,0.035);
-      --card-h:      rgba(255,255,255,0.065);
-      --radius:      16px;
+      --bg:         #06060F;
+      --bg2:        #0C0C1A;
+      --purple:     #5B21FF;
+      --pm:         #7C4DFF;
+      --green:      #00D865;
+      --white:      #F2F2FF;
+      --muted:      #6E6E99;
+      --border:     rgba(255,255,255,0.07);
+      --card:       rgba(255,255,255,0.035);
+      --card-h:     rgba(255,255,255,0.065);
+      --r:          16px;
     }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: var(--bg);
       color: var(--white);
       overflow-x: hidden;
-      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
-
     a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
 
-    /* ===== UTILITY ===== */
+    /* ===== UTILS ===== */
     .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-    .text-center { text-align: center; }
-
-    .grad-text {
-      background: linear-gradient(130deg, #7C4DFF 0%, #A44DFF 40%, #00D865 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .tc { text-align: center; }
+    .grad {
+      background: linear-gradient(130deg, #7C4DFF 0%, #A44DFF 45%, #00D865 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
-    .section-label {
+    .label {
       display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
-      color: var(--purple-mid);
-      margin-bottom: 18px;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2.5px;
+      color: var(--pm); margin-bottom: 18px;
     }
-
-    .section-h2 {
-      font-size: clamp(30px, 4vw, 52px);
-      font-weight: 800;
-      line-height: 1.13;
-      letter-spacing: -1.5px;
-      margin-bottom: 18px;
+    .h2 {
+      font-size: clamp(30px,4vw,52px); font-weight: 800;
+      line-height: 1.13; letter-spacing: -1.5px; margin-bottom: 18px;
     }
-
-    .section-sub {
-      font-size: 17px;
-      color: var(--muted);
-      line-height: 1.72;
-      max-width: 600px;
-    }
+    .sub { font-size: 17px; color: var(--muted); line-height: 1.72; max-width: 600px; }
+    .section { padding: 100px 0; }
 
     /* ===== BUTTONS ===== */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 13px 26px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px; border-radius: 12px; font-size: 15px;
+      font-weight: 600; cursor: pointer; transition: all .2s; border: none;
+      font-family: inherit;
     }
+    .btn-p { background: var(--purple); color: #fff; }
+    .btn-p:hover { background: var(--pm); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(91,33,255,.35); }
+    .btn-g { background: transparent; color: var(--white); border: 1px solid var(--border); }
+    .btn-g:hover { background: var(--card-h); border-color: rgba(255,255,255,.14); }
+    .btn-green { background: var(--green); color: #06060F; }
+    .btn-green:hover { background: #00f074; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,216,101,.3); }
 
-    .btn-primary {
-      background: var(--purple);
-      color: #fff;
-    }
-    .btn-primary:hover {
-      background: var(--purple-mid);
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(91,33,255,0.35);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--white);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover {
-      background: var(--card-h);
-      border-color: rgba(255,255,255,0.14);
-    }
-
-    /* ===== SCROLL REVEAL ===== */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
-    }
-    .reveal.visible { opacity: 1; transform: none; }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
+    /* ===== REVEAL ===== */
+    .rv { opacity:0; transform:translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+    .rv.on { opacity:1; transform:none; }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s}
 
     /* ===== NAV ===== */
     #nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: background 0.3s, border-color 0.3s;
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      padding:20px 40px; display:flex; align-items:center; justify-content:space-between;
+      transition: background .3s, border-color .3s;
       border-bottom: 1px solid transparent;
     }
-    #nav.scrolled {
-      background: rgba(6,6,15,0.88);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+    #nav.sc {
+      background: rgba(6,6,15,.9); backdrop-filter: blur(24px);
       border-bottom-color: var(--border);
     }
-    .nav-logo {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-    .nav-logo span { color: var(--purple-mid); }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--muted);
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--white); }
-
-    @media (max-width: 768px) {
-      #nav { padding: 16px 20px; }
-      .nav-links { display: none; }
-    }
+    .logo { font-size:20px; font-weight:800; letter-spacing:-.5px; }
+    .logo span { color: var(--pm); }
+    .nav-links { display:flex; align-items:center; gap:36px; list-style:none; }
+    .nav-links a { font-size:14px; font-weight:500; color:var(--muted); transition:color .2s; }
+    .nav-links a:hover { color:var(--white); }
+    @media(max-width:768px){ #nav{padding:16px 20px;} .nav-links{display:none;} }
 
     /* ===== HERO ===== */
     #hero {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 130px 24px 100px;
-      position: relative;
-      overflow: hidden;
+      min-height:100svh; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; text-align:center;
+      padding:130px 24px 100px; position:relative; overflow:hidden;
     }
-    .hero-glow-1 {
-      position: absolute;
-      width: 900px; height: 900px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(91,33,255,0.18) 0%, transparent 65%);
-      top: 40%; left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
+    .hg1 {
+      position:absolute; width:900px; height:900px; border-radius:50%;
+      background:radial-gradient(circle,rgba(91,33,255,.18) 0%,transparent 65%);
+      top:40%; left:50%; transform:translate(-50%,-50%); pointer-events:none;
     }
-    .hero-glow-2 {
-      position: absolute;
-      width: 400px; height: 400px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,216,101,0.08) 0%, transparent 65%);
-      bottom: 10%; right: 10%;
-      pointer-events: none;
+    .hg2 {
+      position:absolute; width:400px; height:400px; border-radius:50%;
+      background:radial-gradient(circle,rgba(0,216,101,.08) 0%,transparent 65%);
+      bottom:10%; right:10%; pointer-events:none;
     }
     #hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content:''; position:absolute; inset:0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-      -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-      pointer-events: none;
+        linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+      background-size:64px 64px;
+      mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+      -webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+      pointer-events:none;
     }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 8px 18px;
-      background: rgba(91,33,255,0.1);
-      border: 1px solid rgba(91,33,255,0.28);
-      border-radius: 100px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #A078FF;
-      margin-bottom: 36px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      position: relative;
-      z-index: 1;
+    .badge {
+      display:inline-flex; align-items:center; gap:9px; padding:8px 18px;
+      background:rgba(91,33,255,.1); border:1px solid rgba(91,33,255,.28);
+      border-radius:100px; font-size:12px; font-weight:700; color:#A078FF;
+      margin-bottom:36px; letter-spacing:1px; text-transform:uppercase;
+      position:relative; z-index:1;
     }
-    .badge-dot {
-      width: 7px; height: 7px;
-      background: var(--purple-mid);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--purple-mid);
-      animation: blink 2.2s infinite;
+    .bdot {
+      width:7px; height:7px; background:var(--pm); border-radius:50%;
+      box-shadow:0 0 10px var(--pm); animation:blink 2.2s infinite;
     }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
     .hero-h1 {
-      font-size: clamp(44px, 6.5vw, 84px);
-      font-weight: 900;
-      line-height: 1.08;
-      letter-spacing: -2.5px;
-      max-width: 960px;
-      margin-bottom: 26px;
-      position: relative;
-      z-index: 1;
+      font-size:clamp(44px,6.5vw,84px); font-weight:900;
+      line-height:1.08; letter-spacing:-2.5px;
+      max-width:960px; margin-bottom:26px; position:relative; z-index:1;
     }
     .hero-sub {
-      font-size: clamp(16px, 1.8vw, 19px);
-      color: var(--muted);
-      max-width: 560px;
-      line-height: 1.72;
-      margin-bottom: 44px;
-      position: relative;
-      z-index: 1;
+      font-size:clamp(16px,1.8vw,19px); color:var(--muted);
+      max-width:560px; line-height:1.72; margin-bottom:44px;
+      position:relative; z-index:1;
     }
     .hero-ctas {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 80px;
-      position: relative;
-      z-index: 1;
+      display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+      margin-bottom:72px; position:relative; z-index:1;
     }
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      max-width: 720px;
-      width: 100%;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      overflow: hidden;
-      gap: 1px;
-      position: relative;
-      z-index: 1;
+    .stats-bar {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      max-width:720px; width:100%;
+      background:var(--border); border:1px solid var(--border);
+      border-radius:18px; overflow:hidden; gap:1px;
+      position:relative; z-index:1;
     }
-    .stat-item {
-      background: var(--bg2);
-      padding: 24px 16px;
-      text-align: center;
-    }
-    .stat-num {
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      margin-bottom: 5px;
-    }
-    .stat-label {
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-    }
-    @media (max-width: 600px) {
-      .hero-stats { grid-template-columns: repeat(2, 1fr); }
-    }
+    .si { background:var(--bg2); padding:24px 16px; text-align:center; }
+    .sn { font-size:28px; font-weight:900; letter-spacing:-1px; margin-bottom:5px; }
+    .sl { font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.6px; }
+    @media(max-width:600px){ .stats-bar{grid-template-columns:repeat(2,1fr);} }
 
-    /* ===== MANIFESTO BAND ===== */
-    .manifesto-band {
-      background: linear-gradient(135deg, rgba(91,33,255,0.08), rgba(0,216,101,0.04));
-      border-top: 1px solid rgba(91,33,255,0.15);
-      border-bottom: 1px solid rgba(91,33,255,0.15);
-      padding: 44px 24px;
-      text-align: center;
+    /* ===== MANIFESTO ===== */
+    .manifesto {
+      background:linear-gradient(135deg,rgba(91,33,255,.08),rgba(0,216,101,.04));
+      border-top:1px solid rgba(91,33,255,.15);
+      border-bottom:1px solid rgba(91,33,255,.15);
+      padding:44px 24px; text-align:center;
     }
-    .manifesto-band p {
-      font-size: clamp(18px, 2.8vw, 26px);
-      font-weight: 700;
-      max-width: 760px;
-      margin: 0 auto;
-      line-height: 1.5;
-      letter-spacing: -0.5px;
+    .manifesto p {
+      font-size:clamp(18px,2.8vw,26px); font-weight:700;
+      max-width:760px; margin:0 auto; line-height:1.5; letter-spacing:-.5px;
     }
-    .manifesto-band em { font-style: normal; color: var(--green); }
-
-    /* ===== SECTION PADDING ===== */
-    .section { padding: 100px 0; }
+    .manifesto em { font-style:normal; color:var(--green); }
 
     /* ===== PROBLEM ===== */
-    .problem-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-top: 52px;
+    .pgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:52px; }
+    .pcard {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:var(--r); padding:32px; transition:background .2s,border-color .2s;
     }
-    .problem-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .problem-card:hover {
-      background: var(--card-h);
-      border-color: rgba(255,255,255,0.11);
-    }
-    .problem-icon {
-      width: 46px; height: 46px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      margin-bottom: 18px;
-    }
-    .problem-card h3 {
-      font-size: 17px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      letter-spacing: -0.3px;
-    }
-    .problem-card p {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.68;
-    }
-    @media (max-width: 640px) { .problem-grid { grid-template-columns: 1fr; } }
+    .pcard:hover { background:var(--card-h); border-color:rgba(255,255,255,.11); }
+    .picon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:18px; }
+    .pcard h3 { font-size:17px; font-weight:700; margin-bottom:10px; letter-spacing:-.3px; }
+    .pcard p { font-size:14px; color:var(--muted); line-height:1.68; }
+    @media(max-width:640px){ .pgrid{grid-template-columns:1fr;} }
 
     /* ===== STORY ===== */
-    .story-split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 52px;
+    .sgrid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:52px; }
+    .scard { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:36px; }
+    .scard.new { background:rgba(91,33,255,.06); border-color:rgba(91,33,255,.18); }
+    .stag {
+      display:inline-block; padding:5px 14px; border-radius:100px;
+      font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; margin-bottom:22px;
     }
-    .story-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px;
-    }
-    .story-card.new-way {
-      background: rgba(91,33,255,0.06);
-      border-color: rgba(91,33,255,0.18);
-    }
-    .story-tag {
-      display: inline-block;
-      padding: 5px 14px;
-      border-radius: 100px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      margin-bottom: 22px;
-    }
-    .story-tag.old { background: rgba(255,255,255,0.06); color: var(--muted); }
-    .story-tag.new { background: rgba(91,33,255,0.15); color: #A578FF; }
-    .story-card h3 {
-      font-size: 21px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      letter-spacing: -0.5px;
-    }
-    .story-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-    }
-    .story-list li {
-      font-size: 14.5px;
-      color: var(--muted);
-      padding-left: 26px;
-      position: relative;
-      line-height: 1.55;
-    }
-    .story-list li::before {
-      content: attr(data-mark);
-      position: absolute;
-      left: 0;
-      font-size: 14px;
-    }
-    .story-list.new-list li::before { color: var(--green); }
-    @media (max-width: 640px) { .story-split { grid-template-columns: 1fr; } }
+    .stag.old { background:rgba(255,255,255,.06); color:var(--muted); }
+    .stag.new { background:rgba(91,33,255,.15); color:#A578FF; }
+    .scard h3 { font-size:21px; font-weight:700; margin-bottom:20px; letter-spacing:-.5px; }
+    .slist { list-style:none; display:flex; flex-direction:column; gap:13px; }
+    .slist li { font-size:14.5px; color:var(--muted); padding-left:26px; position:relative; line-height:1.55; }
+    .slist li::before { content:attr(data-m); position:absolute; left:0; font-size:14px; }
+    .slist.nl li::before { color:var(--green); }
+    @media(max-width:640px){ .sgrid{grid-template-columns:1fr;} }
 
     /* ===== PITCH ===== */
-    .pitch-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 52px;
+    .pitchgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:52px; }
+    .pc {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:var(--r); padding:28px 26px; transition:background .2s,transform .2s;
     }
-    .pitch-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px 26px;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .pitch-card:hover {
-      background: var(--card-h);
-      transform: translateY(-3px);
-    }
-    .pitch-icon { font-size: 26px; margin-bottom: 16px; }
-    .pitch-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 9px; }
-    .pitch-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
-    @media (max-width: 768px) { .pitch-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 480px) { .pitch-grid { grid-template-columns: 1fr; } }
+    .pc:hover { background:var(--card-h); transform:translateY(-3px); }
+    .pci { font-size:26px; margin-bottom:16px; }
+    .pc h3 { font-size:15px; font-weight:700; margin-bottom:9px; }
+    .pc p { font-size:14px; color:var(--muted); line-height:1.65; }
+    @media(max-width:768px){ .pitchgrid{grid-template-columns:1fr 1fr;} }
+    @media(max-width:480px){ .pitchgrid{grid-template-columns:1fr;} }
 
     /* ===== EVIDENCE ===== */
-    #evidence { background: var(--bg2); }
+    #evidence { background:var(--bg2); }
+    .twrap { overflow-x:auto; margin:48px 0 52px; border-radius:var(--r); border:1px solid var(--border); }
+    table { width:100%; border-collapse:collapse; min-width:480px; }
+    thead tr { background:rgba(255,255,255,.025); }
+    th {
+      padding:17px 28px; text-align:left; font-size:12px; font-weight:700;
+      text-transform:uppercase; letter-spacing:1.2px; color:var(--muted);
+      border-bottom:1px solid var(--border);
+    }
+    th:not(:last-child), td:not(:last-child) { border-right:1px solid var(--border); }
+    td { padding:16px 28px; font-size:15px; border-bottom:1px solid var(--border); }
+    tbody tr:last-child td { border-bottom:none; }
+    tbody tr:hover td { background:rgba(255,255,255,.015); }
+    .tm { font-weight:600; color:rgba(255,255,255,.55); font-size:14px; }
+    .ts { color:rgba(255,255,255,.38); font-size:14px; }
+    .ta { color:var(--green); font-weight:700; }
 
-    .comparison-wrap {
-      overflow-x: auto;
-      margin: 48px 0 52px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
+    .evnote {
+      font-size:13px; color:var(--muted); margin-top:-40px; margin-bottom:52px;
+      padding: 14px 20px;
+      background:rgba(255,255,255,.025); border:1px solid var(--border);
+      border-radius:12px; line-height:1.6;
     }
-    .comparison-table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 520px;
-    }
-    .comparison-table thead tr { background: rgba(255,255,255,0.025); }
-    .comparison-table th {
-      padding: 17px 28px;
-      text-align: left;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
-    }
-    .comparison-table th:not(:last-child),
-    .comparison-table td:not(:last-child) { border-right: 1px solid var(--border); }
-    .comparison-table td {
-      padding: 16px 28px;
-      font-size: 15px;
-      border-bottom: 1px solid var(--border);
-    }
-    .comparison-table tbody tr:last-child td { border-bottom: none; }
-    .comparison-table tbody tr:hover td { background: rgba(255,255,255,0.015); }
-    .td-metric { font-weight: 600; color: rgba(255,255,255,0.55); font-size: 14px; }
-    .td-sdr { color: rgba(255,255,255,0.38); font-size: 14px; }
-    .td-ai { color: var(--green); font-weight: 700; }
+    .evnote strong { color:rgba(255,255,255,.6); }
 
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    .stat-block {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px 28px;
-      text-align: center;
-    }
-    .big-num {
-      font-size: 52px;
-      font-weight: 900;
-      letter-spacing: -2px;
-      line-height: 1;
-      margin-bottom: 10px;
-    }
-    .big-num.green { color: var(--green); }
-    .big-num.purple { color: var(--purple-mid); }
-    .stat-block p { font-size: 14px; color: var(--muted); line-height: 1.55; }
-    @media (max-width: 640px) { .stats-row { grid-template-columns: 1fr; } }
+    .statrow { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .sb { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:36px 28px; text-align:center; }
+    .bn { font-size:52px; font-weight:900; letter-spacing:-2px; line-height:1; margin-bottom:10px; }
+    .bn.g { color:var(--green); } .bn.p { color:var(--pm); }
+    .sb p { font-size:14px; color:var(--muted); line-height:1.55; }
+    @media(max-width:640px){ .statrow{grid-template-columns:1fr;} }
 
     /* ===== CALCULATOR ===== */
-    .calc-outer {
-      max-width: 900px;
-      margin: 52px auto 0;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 52px 56px;
+    #calculator { background:var(--bg); }
+    .calc-wrap {
+      max-width:820px; margin:52px auto 0;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:24px; overflow:hidden;
     }
-    .calc-label {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--muted);
-      margin-bottom: 14px;
+
+    /* Step containers */
+    .calc-step {
+      padding:48px 52px;
+      border-bottom:1px solid var(--border);
     }
-    .calc-big-val {
-      font-size: 52px;
-      font-weight: 900;
-      letter-spacing: -2.5px;
-      line-height: 1;
-      margin-bottom: 18px;
+    .calc-step:last-child { border-bottom:none; }
+
+    .step-num {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:28px; height:28px; border-radius:50%;
+      background:rgba(91,33,255,.15); border:1px solid rgba(91,33,255,.3);
+      font-size:13px; font-weight:700; color:var(--pm);
+      margin-bottom:20px;
     }
+    .step-num.done { background:rgba(0,216,101,.15); border-color:rgba(0,216,101,.3); color:var(--green); }
+
+    .calc-step-title {
+      font-size:22px; font-weight:800; letter-spacing:-.5px; margin-bottom:8px;
+    }
+    .calc-step-sub { font-size:14px; color:var(--muted); margin-bottom:28px; line-height:1.6; }
+
+    /* Deal size input */
+    .deal-input-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .deal-prefix {
+      font-size:28px; font-weight:800; color:var(--muted);
+    }
+    .deal-input {
+      font-size:36px; font-weight:800; letter-spacing:-1.5px;
+      background:transparent; border:none; border-bottom:2px solid rgba(255,255,255,.15);
+      color:var(--white); outline:none; width:200px;
+      padding:8px 0; font-family:inherit;
+      transition:border-color .2s;
+    }
+    .deal-input:focus { border-bottom-color:var(--pm); }
+    .deal-input::placeholder { color:rgba(255,255,255,.15); }
+
+    /* Step 2 - hidden initially */
+    #step2 {
+      max-height:0; padding-top:0; padding-bottom:0;
+      overflow:hidden; opacity:0;
+      transition: max-height .55s ease, opacity .45s ease, padding .4s ease;
+      border-bottom:none;
+    }
+    #step2.open {
+      max-height:400px; opacity:1;
+      padding:48px 52px;
+      border-bottom:1px solid var(--border);
+    }
+
+    /* Slider */
+    .slider-val { font-size:48px; font-weight:900; letter-spacing:-2px; margin-bottom:16px; }
     input[type=range] {
-      width: 100%;
-      -webkit-appearance: none;
-      height: 4px;
-      background: var(--border);
-      border-radius: 4px;
-      outline: none;
-      cursor: pointer;
+      width:100%; -webkit-appearance:none; height:4px;
+      background:rgba(255,255,255,.1); border-radius:4px; outline:none; cursor:pointer;
     }
     input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: var(--purple-mid);
-      box-shadow: 0 0 14px rgba(124,77,255,0.6);
-      cursor: pointer;
-      transition: transform 0.15s;
+      -webkit-appearance:none; width:24px; height:24px; border-radius:50%;
+      background:var(--pm); box-shadow:0 0 14px rgba(124,77,255,.6);
+      cursor:pointer; transition:transform .15s;
     }
-    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.18); }
-    .range-labels {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 9px;
-      font-size: 12px;
-      color: var(--muted);
+    input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.2); }
+    .range-ends { display:flex; justify-content:space-between; margin-top:9px; font-size:12px; color:var(--muted); }
+
+    /* Results */
+    #results {
+      max-height:0; overflow:hidden; opacity:0;
+      transition: max-height .6s ease, opacity .5s ease;
     }
-    .calc-results {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 36px 0 24px;
+    #results.open { max-height:600px; opacity:1; }
+    .results-inner { padding:40px 52px 48px; }
+
+    .results-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+    .rc {
+      background:rgba(255,255,255,.03); border:1px solid var(--border);
+      border-radius:14px; padding:22px 20px;
     }
-    .calc-card {
-      background: rgba(255,255,255,0.025);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 22px 20px;
+    .rc.hl { background:rgba(0,216,101,.06); border-color:rgba(0,216,101,.2); }
+    .rc-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted); margin-bottom:10px; }
+    .rc-val { font-size:26px; font-weight:800; letter-spacing:-1px; line-height:1.1; }
+    .rc-val.g { color:var(--green); }
+    .rc-sub { font-size:12px; color:var(--muted); margin-top:5px; line-height:1.4; }
+
+    .breakeven-msg {
+      background:rgba(91,33,255,.06); border:1px solid rgba(91,33,255,.15);
+      border-radius:14px; padding:20px 24px; margin-bottom:28px;
+      font-size:15px; line-height:1.65;
     }
-    .calc-card.highlight {
-      background: rgba(0,216,101,0.06);
-      border-color: rgba(0,216,101,0.18);
-    }
-    .calc-card-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-    .calc-card-val {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      line-height: 1.1;
-    }
-    .calc-card-val.green { color: var(--green); }
-    .calc-card-sub {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 5px;
-      line-height: 1.45;
-    }
-    .calc-mini-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 32px;
-    }
-    .calc-mini {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .calc-mini-label { font-size: 14px; color: var(--muted); }
-    .calc-mini-val { font-size: 17px; font-weight: 700; }
-    .calc-mini-val.green { color: var(--green); }
-    .calc-mini-val.dim { color: rgba(255,255,255,0.3); }
-    .calc-footer { text-align: center; }
-    .calc-footnote { font-size: 13px; color: var(--muted); margin-top: 12px; }
-    @media (max-width: 700px) {
-      .calc-outer { padding: 32px 24px; }
-      .calc-results { grid-template-columns: 1fr; }
-      .calc-mini-row { grid-template-columns: 1fr; }
+    .breakeven-msg strong { color:var(--white); }
+    .breakeven-msg .accent { color:var(--green); font-weight:700; }
+
+    .results-cta { text-align:center; }
+    .results-note { font-size:13px; color:var(--muted); margin-top:12px; }
+
+    @media(max-width:700px){
+      .calc-step, #step2.open, .results-inner { padding:32px 24px; }
+      .results-grid { grid-template-columns:1fr; }
+      .deal-input { font-size:28px; width:160px; }
     }
 
     /* ===== OFFER ===== */
-    .offer-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: 52px;
-    }
-    .offer-col {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px;
-    }
-    .offer-col.get { border-color: rgba(0,216,101,0.15); }
-    .offer-col.protect { border-color: rgba(91,33,255,0.15); }
-    .offer-col-title {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 24px;
-    }
-    .offer-col.get .offer-col-title { color: var(--green); }
-    .offer-col.protect .offer-col-title { color: var(--purple-mid); }
-    .offer-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .offer-list li {
-      display: flex;
-      gap: 13px;
-      font-size: 15px;
-      color: rgba(255,255,255,0.8);
-      line-height: 1.5;
-    }
-    .offer-list li::before {
-      content: attr(data-i);
-      font-size: 15px;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    @media (max-width: 640px) { .offer-grid { grid-template-columns: 1fr; } }
+    #offer { background:var(--bg2); }
+    .ogrid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:52px; }
+    .oc { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:36px; }
+    .oc.get { border-color:rgba(0,216,101,.15); }
+    .oc.protect { border-color:rgba(91,33,255,.15); }
+    .oct { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:24px; }
+    .oc.get .oct { color:var(--green); }
+    .oc.protect .oct { color:var(--pm); }
+    .olist { list-style:none; display:flex; flex-direction:column; gap:14px; }
+    .olist li { display:flex; gap:13px; font-size:15px; color:rgba(255,255,255,.8); line-height:1.5; }
+    .olist li::before { content:attr(data-i); flex-shrink:0; margin-top:1px; }
+    @media(max-width:640px){ .ogrid{grid-template-columns:1fr;} }
 
     /* ===== TESTIMONIAL ===== */
-    .testimonial-card {
-      max-width: 700px;
-      margin: 52px auto 0;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 52px 48px;
-      text-align: center;
+    .tcard {
+      max-width:700px; margin:52px auto 0;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:24px; padding:52px 48px; text-align:center;
     }
-    .quote-marks {
-      font-size: 64px;
-      line-height: 0.6;
-      color: var(--purple-mid);
-      opacity: 0.4;
-      margin-bottom: 20px;
+    .tmarks { font-size:64px; line-height:.6; color:var(--pm); opacity:.35; margin-bottom:20px; }
+    .ttext { font-size:clamp(18px,2.2vw,22px); font-weight:600; line-height:1.55; margin-bottom:36px; letter-spacing:-.3px; }
+    .ttext em { font-style:normal; color:var(--green); }
+    .tauthor { display:flex; align-items:center; gap:14px; justify-content:center; }
+    .tavatar {
+      width:44px; height:44px; border-radius:50%;
+      background:linear-gradient(135deg,var(--purple),var(--green));
+      display:flex; align-items:center; justify-content:center;
+      font-size:16px; font-weight:800;
     }
-    .testimonial-text {
-      font-size: clamp(18px, 2.2vw, 22px);
-      font-weight: 600;
-      line-height: 1.55;
-      margin-bottom: 36px;
-      letter-spacing: -0.3px;
-    }
-    .testimonial-text em { font-style: normal; color: var(--green); }
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      justify-content: center;
-    }
-    .author-avatar {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple), var(--green));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 800;
-    }
-    .author-name { font-size: 15px; font-weight: 700; text-align: left; }
-    .author-role { font-size: 13px; color: var(--muted); text-align: left; }
-    @media (max-width: 640px) { .testimonial-card { padding: 36px 24px; } }
+    .taname { font-size:15px; font-weight:700; text-align:left; }
+    .tarole { font-size:13px; color:var(--muted); text-align:left; }
+    @media(max-width:640px){ .tcard{padding:36px 24px;} }
 
     /* ===== CLOSE ===== */
     #close {
-      text-align: center;
-      padding: 120px 24px;
-      position: relative;
-      overflow: hidden;
+      text-align:center; padding:120px 24px; position:relative; overflow:hidden;
     }
     #close::before {
-      content: '';
-      position: absolute;
-      width: 700px; height: 700px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(91,33,255,0.12) 0%, transparent 65%);
-      bottom: -200px; left: 50%;
-      transform: translateX(-50%);
-      pointer-events: none;
+      content:''; position:absolute; width:700px; height:700px; border-radius:50%;
+      background:radial-gradient(circle,rgba(91,33,255,.12) 0%,transparent 65%);
+      bottom:-200px; left:50%; transform:translateX(-50%); pointer-events:none;
     }
-    .close-h2 {
-      font-size: clamp(36px, 5.5vw, 68px);
-      font-weight: 900;
-      line-height: 1.08;
-      letter-spacing: -2.5px;
-      max-width: 820px;
-      margin: 0 auto 22px;
+    .close-h { font-size:clamp(36px,5.5vw,68px); font-weight:900; line-height:1.08; letter-spacing:-2.5px; max-width:820px; margin:0 auto 22px; }
+    .close-sub { font-size:17px; color:var(--muted); max-width:500px; margin:0 auto 44px; line-height:1.7; }
+    .close-ctas { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:44px; }
+    .ps {
+      max-width:540px; margin:0 auto;
+      background:rgba(255,255,255,.025); border:1px solid var(--border);
+      border-radius:14px; padding:24px 28px; font-size:14px;
+      color:var(--muted); line-height:1.7; text-align:left;
     }
-    .close-sub {
-      font-size: 17px;
-      color: var(--muted);
-      max-width: 500px;
-      margin: 0 auto 44px;
-      line-height: 1.7;
-    }
-    .close-ctas {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 44px;
-    }
-    .ps-block {
-      max-width: 540px;
-      margin: 0 auto;
-      background: rgba(255,255,255,0.025);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px 28px;
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.7;
-      text-align: left;
-    }
-    .ps-block strong { color: rgba(255,255,255,0.65); }
+    .ps strong { color:rgba(255,255,255,.65); }
 
     /* ===== FOOTER ===== */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 40px 24px;
-    }
-    .footer-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .footer-logo { font-size: 18px; font-weight: 800; }
-    .footer-logo span { color: var(--purple-mid); }
-    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
-    .footer-links a { font-size: 14px; color: var(--muted); transition: color 0.2s; }
-    .footer-links a:hover { color: var(--white); }
-    .footer-copy { font-size: 13px; color: var(--muted); }
+    footer { border-top:1px solid var(--border); padding:40px 24px; }
+    .fi { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+    .flogo { font-size:18px; font-weight:800; }
+    .flogo span { color:var(--pm); }
+    .flinks { display:flex; gap:24px; flex-wrap:wrap; }
+    .flinks a { font-size:14px; color:var(--muted); transition:color .2s; }
+    .flinks a:hover { color:var(--white); }
+    .fcopy { font-size:13px; color:var(--muted); }
   </style>
 </head>
 <body>
 
-<!-- ====== NAV ====== -->
+<!-- NAV -->
 <nav id="nav">
-  <a class="nav-logo" href="#hero">Loop<span>Hub</span></a>
+  <a class="logo" href="#hero">Loop<span>Hub</span></a>
   <ul class="nav-links">
     <li><a href="#problem">Problem</a></li>
     <li><a href="#system">System</a></li>
     <li><a href="#evidence">Results</a></li>
-    <li><a href="#calculator">Pricing</a></li>
+    <li><a href="#calculator">Calculator</a></li>
   </ul>
-  <a class="btn btn-primary" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener">
+  <a class="btn btn-p" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener">
     Book a Call &rarr;
   </a>
 </nav>
 
-<!-- ====== HERO ====== -->
+<!-- HERO -->
 <section id="hero">
-  <div class="hero-glow-1"></div>
-  <div class="hero-glow-2"></div>
-
-  <div class="hero-badge reveal">
-    <span class="badge-dot"></span>
-    AI Call Infrastructure
-  </div>
-
-  <h1 class="hero-h1 reveal reveal-delay-1">
-    Use humans for the calls<br>
-    that <span class="grad-text">close.</span><br>
-    Use infrastructure for<br>everything else.
+  <div class="hg1"></div><div class="hg2"></div>
+  <div class="badge rv"><span class="bdot"></span> AI Call Infrastructure</div>
+  <h1 class="hero-h1 rv d1">
+    Use humans for the calls<br>that <span class="grad">close.</span><br>Use infrastructure for<br>everything else.
   </h1>
-
-  <p class="hero-sub reveal reveal-delay-2">
-    Your team should spend their time on conversations that move revenue &mdash;
-    not on repetitive follow-ups, routine call handling, and basic questions
-    a machine can already handle.
+  <p class="hero-sub rv d2">
+    Your team should not be spending valuable time on repetitive calls, routine follow-ups,
+    and basic questions while competitors are already using automation to handle that layer
+    faster and cheaper.
   </p>
-
-  <div class="hero-ctas reveal reveal-delay-3">
-    <a class="btn btn-primary"
-       href="https://cal.com/loophub-kickoff-meeting/discoverymeeting"
-       target="_blank" rel="noopener"
-       style="font-size:16px;padding:15px 30px">
-      See the System in Action &rarr;
-    </a>
-    <a class="btn btn-ghost" href="#calculator"
-       style="font-size:16px;padding:15px 30px">
-      Calculate Your Cost
-    </a>
+  <div class="hero-ctas rv d3">
+    <a class="btn btn-p" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" style="font-size:16px;padding:15px 30px">See the System in Action &rarr;</a>
+    <a class="btn btn-g" href="#calculator" style="font-size:16px;padding:15px 30px">Run Your Numbers</a>
   </div>
-
-  <div class="hero-stats reveal reveal-delay-4">
-    <div class="stat-item">
-      <div class="stat-num" style="color:var(--green)">2,000+</div>
-      <div class="stat-label">Leads / Month</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num" style="color:var(--green)">$0.46</div>
-      <div class="stat-label">Per Lead</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">7 Days</div>
-      <div class="stat-label">To Deploy</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">0</div>
-      <div class="stat-label">Missed Follow-Ups</div>
-    </div>
+  <div class="stats-bar rv d4">
+    <div class="si"><div class="sn" style="color:var(--green)">2,000</div><div class="sl">Leads / Month</div></div>
+    <div class="si"><div class="sn" style="color:var(--green)">$0.93</div><div class="sl">Per Lead</div></div>
+    <div class="si"><div class="sn">7 Days</div><div class="sl">To Deploy</div></div>
+    <div class="si"><div class="sn">0</div><div class="sl">Missed Follow-Ups</div></div>
   </div>
 </section>
 
-<!-- ====== MANIFESTO BAND ====== -->
-<div class="manifesto-band">
-  <p class="reveal">
-    80% of sales happen on contact 5&ndash;12.
-    <em>Most teams stop at contact 1.</em>
-  </p>
+<!-- MANIFESTO -->
+<div class="manifesto">
+  <p class="rv">80% of sales happen on contact 5&ndash;12. <em>Most teams stop at contact&nbsp;1.</em></p>
 </div>
 
-<!-- ====== LEAD / PROBLEM ====== -->
+<!-- LEAD / PROBLEM -->
 <section id="problem" class="section">
   <div class="container">
-    <div class="reveal">
-      <div class="section-label">The Problem</div>
-      <h2 class="section-h2">Every growing team hits the same wall.</h2>
-      <p class="section-sub">More leads. More calls. More follow-ups. More pressure on the team. And then the real problem begins.</p>
+    <div class="rv">
+      <div class="label">The Problem</div>
+      <h2 class="h2">Every growing business hits the same wall.</h2>
+      <p class="sub">More leads. More calls. More follow-ups. More pressure on the team. And then the real problem begins.</p>
     </div>
-
-    <div class="problem-grid">
-      <div class="problem-card reveal reveal-delay-1">
-        <div class="problem-icon" style="background:rgba(255,135,82,0.1)">&#9201;</div>
-        <h3>Your best people waste time on low-value work</h3>
-        <p>Basic questions. Routine call handling. Repeated follow-ups. Work that doesn&rsquo;t need their skills &mdash; but consumes their day regardless.</p>
+    <div class="pgrid">
+      <div class="pcard rv d1">
+        <div class="picon" style="background:rgba(255,135,82,.1)">&#9201;</div>
+        <h3>Your best people work on the wrong things</h3>
+        <p>Basic questions. Routine call handling. Repeated follow-ups. Your best people start spending their time on work that does not need their best skills.</p>
       </div>
-      <div class="problem-card reveal reveal-delay-2">
-        <div class="problem-icon" style="background:rgba(91,33,255,0.1)">&#128202;</div>
-        <h3>High-value conversations get rushed or missed</h3>
-        <p>When your team is buried in repetition, the conversations that need trust, judgment, and real attention get delayed, rushed, or lost entirely.</p>
+      <div class="pcard rv d2">
+        <div class="picon" style="background:rgba(91,33,255,.1)">&#128202;</div>
+        <h3>The conversations that matter get delayed</h3>
+        <p>Meanwhile, the conversations that actually need trust, judgment, and personalized attention get delayed, rushed, or missed entirely.</p>
       </div>
-      <div class="problem-card reveal reveal-delay-3">
-        <div class="problem-icon" style="background:rgba(255,50,50,0.08)">&#128176;</div>
-        <h3>Hiring more doesn&rsquo;t solve the problem</h3>
-        <p>Adding headcount to handle repetitive work scales costs without scaling results. It&rsquo;s a model that doesn&rsquo;t work at volume anymore.</p>
+      <div class="pcard rv d3">
+        <div class="picon" style="background:rgba(255,50,50,.08)">&#128176;</div>
+        <h3>Hiring more does not solve the problem</h3>
+        <p>The old solution was simple: hire more people, add more reps, work harder. But that model does not scale well anymore. Not at this volume.</p>
       </div>
-      <div class="problem-card reveal reveal-delay-4">
-        <div class="problem-icon" style="background:rgba(0,216,101,0.07)">&#128260;</div>
-        <h3>Follow-up volume is impossible to do manually</h3>
-        <p>It takes 5&ndash;12 contacts to close a sale. At any real volume, that&rsquo;s tens of thousands of calls per month. No team can do that consistently.</p>
+      <div class="pcard rv d4">
+        <div class="picon" style="background:rgba(0,216,101,.07)">&#128260;</div>
+        <h3>Follow-up volume is impossible to sustain manually</h3>
+        <p>Every minute your team spends on low-value repetition is a minute they are not spending on the calls that actually move revenue.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ====== STORY ====== -->
+<!-- STORY -->
 <section id="story" class="section" style="background:var(--bg2)">
   <div class="container">
-    <div class="reveal">
-      <div class="section-label">The Shift</div>
-      <h2 class="section-h2">The companies moving faster<br>are doing one thing differently.</h2>
-      <p class="section-sub">They separate the work into two parts &mdash; and let machines handle the part that doesn&rsquo;t need a human.</p>
+    <div class="rv">
+      <div class="label">The Shift</div>
+      <h2 class="h2">The companies moving faster today are doing one thing differently.</h2>
+      <p class="sub">They are separating the work into two parts &mdash; and letting machines handle the part that does not need a human.</p>
     </div>
-
-    <div class="story-split">
-      <div class="story-card reveal reveal-delay-1">
-        <span class="story-tag old">Old Model</span>
-        <h3>Hire more reps. Work harder.</h3>
-        <ul class="story-list">
-          <li data-mark="&#10007;">Every lead requires manual call time</li>
-          <li data-mark="&#10007;">Follow-ups fall through the cracks</li>
-          <li data-mark="&#10007;">Cost scales linearly with volume</li>
-          <li data-mark="&#10007;">SDRs spending 70% of time on routine work</li>
-          <li data-mark="&#10007;">Hard ceiling at ~300 leads per rep per month</li>
+    <div class="sgrid">
+      <div class="scard rv d1">
+        <span class="stag old">Old Model</span>
+        <h3>Hire more people. Add more reps. Work harder.</h3>
+        <ul class="slist">
+          <li data-m="&#10007;">Every lead requires human call time</li>
+          <li data-m="&#10007;">Follow-ups fall through the cracks</li>
+          <li data-m="&#10007;">Cost scales linearly with every new contact</li>
+          <li data-m="&#10007;">Reps spending most of their time on repetitive work</li>
+          <li data-m="&#10007;">Hard ceiling of ~300 leads per rep per month</li>
         </ul>
       </div>
-
-      <div class="story-card new-way reveal reveal-delay-2">
-        <span class="story-tag new">New Model</span>
-        <h3>Infrastructure handles repetition. Humans close.</h3>
-        <ul class="story-list new-list">
-          <li data-mark="&#10003;">Machine handles all routine call flow</li>
-          <li data-mark="&#10003;">Every follow-up executes automatically</li>
-          <li data-mark="&#10003;">Cost stays nearly flat as volume grows</li>
-          <li data-mark="&#10003;">SDRs focused on high-value conversations only</li>
-          <li data-mark="&#10003;">2,000+ leads processed per line per month</li>
+      <div class="scard new rv d2">
+        <span class="stag new">The Shift</span>
+        <h3>The repetitive layer goes to infrastructure. Humans handle what matters.</h3>
+        <ul class="slist nl">
+          <li data-m="&#10003;">Machine handles all repetitive conversations</li>
+          <li data-m="&#10003;">Every follow-up executes without exception</li>
+          <li data-m="&#10003;">Cost stays flat as contact volume grows</li>
+          <li data-m="&#10003;">Your people focused on the calls that move revenue</li>
+          <li data-m="&#10003;">2,000+ leads processed per line per month</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ====== PITCH / SYSTEM ====== -->
+<!-- PITCH -->
 <section id="system" class="section">
   <div class="container">
-    <div class="reveal">
-      <div class="section-label">The System</div>
-      <h2 class="section-h2">Not built to replace your team.<br>Built to <span class="grad-text">protect</span> it.</h2>
-      <p class="section-sub">The AI Call System absorbs the repetitive layer so your people can focus on the conversations that actually drive revenue.</p>
+    <div class="rv">
+      <div class="label">The System</div>
+      <h2 class="h2">Not built to replace your team.<br>Built to <span class="grad">protect</span> it.</h2>
+      <p class="sub">It is not built to replace your team. It is built to protect your team from repetitive work that a machine can already handle.</p>
     </div>
-
-    <div class="pitch-grid">
-      <div class="pitch-card reveal reveal-delay-1">
-        <div class="pitch-icon">&#128222;</div>
-        <h3>Handles Routine Call Flow</h3>
-        <p>Answers questions, manages predictable conversations, and keeps every lead moving through the pipeline without human intervention.</p>
+    <div class="pitchgrid">
+      <div class="pc rv d1">
+        <div class="pci">&#128222;</div>
+        <h3>Answer Routine Questions</h3>
+        <p>The system handles predictable call flow and keeps every conversation moving without pulling your team in.</p>
       </div>
-      <div class="pitch-card reveal reveal-delay-2">
-        <div class="pitch-icon">&#128260;</div>
-        <h3>Executes Every Follow-Up</h3>
-        <p>5 to 12 contacts per lead, automatically. No gaps. No delays. No leads going cold because a rep was tied up on something else.</p>
+      <div class="pc rv d2">
+        <div class="pci">&#128260;</div>
+        <h3>Keep Follow-Ups Moving</h3>
+        <p>5 contacts per lead, automatically. No gaps. No delays. No leads going cold while your reps are tied up on something else.</p>
       </div>
-      <div class="pitch-card reveal reveal-delay-3">
-        <div class="pitch-icon">&#127919;</div>
-        <h3>Qualifies and Routes</h3>
-        <p>Identifies interest and readiness, then routes the right conversations to the right person &mdash; only when real human attention is needed.</p>
+      <div class="pc rv d3">
+        <div class="pci">&#127919;</div>
+        <h3>Qualify Interest</h3>
+        <p>Identifies where each lead stands and separates the ones that need a real conversation from the ones that are not ready yet.</p>
       </div>
-      <div class="pitch-card reveal reveal-delay-1">
-        <div class="pitch-icon">&#9889;</div>
-        <h3>Operates at Real Scale</h3>
-        <p>Processes 2,000+ leads per line per month. Capacity no manual team can match, at a fraction of the cost of additional headcount.</p>
+      <div class="pc rv d1">
+        <div class="pci">&#128100;</div>
+        <h3>Route the Right Conversations</h3>
+        <p>The machine handles repetition. Your people get routed the one-to-one conversations that actually matter.</p>
       </div>
-      <div class="pitch-card reveal reveal-delay-2">
-        <div class="pitch-icon">&#128279;</div>
-        <h3>Integrates With Your Stack</h3>
-        <p>Works alongside your existing CRM, calendar, and communication tools. No rip-and-replace required. Deployed in 7 days.</p>
+      <div class="pc rv d2">
+        <div class="pci">&#9889;</div>
+        <h3>Scale Without Headcount</h3>
+        <p>Infrastructure that scales beyond individual rep capacity. Not fewer humans. Better use of humans.</p>
       </div>
-      <div class="pitch-card reveal reveal-delay-3">
-        <div class="pitch-icon">&#128202;</div>
-        <h3>Full Visibility</h3>
-        <p>See every call, outcome, and conversion point in real time. Complete transparency into what the system is doing and producing.</p>
+      <div class="pc rv d3">
+        <div class="pci">&#128202;</div>
+        <h3>Full Reporting Visibility</h3>
+        <p>Every call, outcome, and conversion point tracked in real time. You see exactly what the system is doing and producing.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ====== EVIDENCE ====== -->
+<!-- EVIDENCE -->
 <section id="evidence" class="section">
   <div class="container">
-    <div class="reveal">
-      <div class="section-label">Real Numbers</div>
-      <h2 class="section-h2">This is not about hype.<br>It&rsquo;s about capacity and cost.</h2>
-      <p class="section-sub">One senior SDR versus the AI Call System &mdash; at their respective monthly costs.</p>
+    <div class="rv">
+      <div class="label">Real Numbers</div>
+      <h2 class="h2">This is not about hype.<br>It is about capacity and cost.</h2>
+      <p class="sub">For about $1,855/month, this system processes around 2,000 leads with consistent follow-ups &mdash; while a typical U.S.-based SDR costing $9k&ndash;$11k per month manages about 250&ndash;350 leads.</p>
     </div>
-
-    <div class="comparison-wrap reveal">
-      <table class="comparison-table">
+    <div class="twrap rv">
+      <table>
         <thead>
           <tr>
             <th>Metric</th>
             <th>Senior SDR</th>
-            <th>AI Call System</th>
+            <th>Automated System</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="td-metric">Monthly Cost</td>
-            <td class="td-sdr">$2,500</td>
-            <td class="td-ai">$925 &ndash; $1,852</td>
-          </tr>
-          <tr>
-            <td class="td-metric">Leads Processed / Month</td>
-            <td class="td-sdr">~300</td>
-            <td class="td-ai">2,000 &ndash; 4,000+</td>
-          </tr>
-          <tr>
-            <td class="td-metric">Follow-Ups per Lead</td>
-            <td class="td-sdr">Inconsistent</td>
-            <td class="td-ai">5 guaranteed</td>
-          </tr>
-          <tr>
-            <td class="td-metric">Total Calls / Month</td>
-            <td class="td-sdr">~1,500</td>
-            <td class="td-ai">10,000 &ndash; 20,000</td>
-          </tr>
-          <tr>
-            <td class="td-metric">Cost per Lead</td>
-            <td class="td-sdr">$8 &ndash; $11</td>
-            <td class="td-ai">$0.46 &ndash; $0.93</td>
-          </tr>
-          <tr>
-            <td class="td-metric">Scales With Volume</td>
-            <td class="td-sdr">No &mdash; hire more</td>
-            <td class="td-ai">Yes &mdash; same system</td>
-          </tr>
+          <tr><td class="tm">Monthly Cost</td><td class="ts">$2,500</td><td class="ta">$1,855</td></tr>
+          <tr><td class="tm">Leads Processed / Month</td><td class="ts">~300</td><td class="ta">2,000</td></tr>
+          <tr><td class="tm">Follow-Ups per Lead</td><td class="ts">5</td><td class="ta">5 guaranteed</td></tr>
+          <tr><td class="tm">Total Calls Executed</td><td class="ts">~1,500</td><td class="ta">10,000</td></tr>
+          <tr><td class="tm">Cost per Lead</td><td class="ts">$8 &ndash; $11</td><td class="ta">$0.93</td></tr>
+          <tr><td class="tm">Scales With Volume</td><td class="ts">No &mdash; hire more</td><td class="ta">Yes &mdash; same system</td></tr>
         </tbody>
       </table>
     </div>
-
-    <div class="stats-row">
-      <div class="stat-block reveal reveal-delay-1">
-        <div class="big-num green">7&times;</div>
-        <p>More leads processed at the same cost as one SDR</p>
-      </div>
-      <div class="stat-block reveal reveal-delay-2">
-        <div class="big-num green">18&times;</div>
-        <p>Lower cost per lead compared to a senior SDR</p>
-      </div>
-      <div class="stat-block reveal reveal-delay-3">
-        <div class="big-num purple">7 days</div>
-        <p>Average deployment time from kickoff to first call</p>
-      </div>
+    <div class="evnote rv">
+      <strong>What that means:</strong> For roughly the cost of one SDR, the system can process around 2,000 leads per month.
+      $1,855 &divide; 2,000 = <strong style="color:var(--green)">$0.93 per lead.</strong>
+      That is ~7&times; more capacity and ~9&times; lower cost per lead.
+    </div>
+    <div class="statrow">
+      <div class="sb rv d1"><div class="bn g">7&times;</div><p>More leads processed at the same monthly cost as one SDR</p></div>
+      <div class="sb rv d2"><div class="bn g">9&times;</div><p>Lower cost per lead compared to a senior SDR</p></div>
+      <div class="sb rv d3"><div class="bn p">7 days</div><p>Average time from kickoff to your first automated call</p></div>
     </div>
   </div>
 </section>
 
-<!-- ====== CALCULATOR ====== -->
+<!-- CALCULATOR -->
 <section id="calculator" class="section" style="background:var(--bg2)">
-  <div class="container text-center">
-    <div class="reveal">
-      <div class="section-label">Pricing Calculator</div>
-      <h2 class="section-h2">See your exact cost.</h2>
-      <p class="section-sub" style="margin:0 auto">
-        Move the slider to see real-time pricing based on your monthly lead volume
-        and how it compares to the cost of human SDRs.
-      </p>
+  <div class="container tc">
+    <div class="rv">
+      <div class="label">Run Your Numbers</div>
+      <h2 class="h2">See how much call volume your team is handling manually &mdash; and what it would cost to automate it.</h2>
+      <p class="sub" style="margin:0 auto">Two questions. Your break-even in seconds.</p>
     </div>
 
-    <div class="calc-outer reveal">
-      <div style="margin-bottom:40px">
-        <div class="calc-label">Contacts per month</div>
-        <div class="calc-big-val" id="contacts-display">2,000</div>
-        <input type="range" id="contacts-slider" min="400" max="8000" step="400" value="2000"
-               aria-label="Contacts per month" />
-        <div class="range-labels"><span>400</span><span>8,000</span></div>
-      </div>
+    <div class="calc-wrap rv">
 
-      <div class="calc-results">
-        <div class="calc-card">
-          <div class="calc-card-label">AI System / Month</div>
-          <div class="calc-card-val" id="ai-cost">$925</div>
-          <div class="calc-card-sub" id="ai-lines">5 lines &middot; 10,000 calls</div>
+      <!-- STEP 1 -->
+      <div class="calc-step" id="step1">
+        <div class="step-num" id="snum1">1</div>
+        <div class="calc-step-title">What is your average deal size?</div>
+        <div class="calc-step-sub">The revenue you typically close per new client or sale.</div>
+        <div class="deal-input-row">
+          <span class="deal-prefix">$</span>
+          <input class="deal-input" type="number" id="deal-input" placeholder="5,000" min="100" step="100" />
         </div>
-        <div class="calc-card">
-          <div class="calc-card-label">SDR Equivalent / Month</div>
-          <div class="calc-card-val" id="sdr-cost">$17,500</div>
-          <div class="calc-card-sub" id="sdr-reps">7 reps at this volume</div>
-        </div>
-        <div class="calc-card highlight">
-          <div class="calc-card-label">Monthly Savings</div>
-          <div class="calc-card-val green" id="savings">$16,575</div>
-          <div class="calc-card-sub" id="annual-savings">$198,900 saved per year</div>
+        <div style="margin-top:28px">
+          <button class="btn btn-p" id="continue-btn" style="font-size:15px;padding:13px 28px;opacity:.4;cursor:not-allowed" disabled>
+            Continue &rarr;
+          </button>
         </div>
       </div>
 
-      <div class="calc-mini-row">
-        <div class="calc-mini">
-          <span class="calc-mini-label">Cost per lead &mdash; AI</span>
-          <span class="calc-mini-val green" id="ai-per-lead">$0.46</span>
-        </div>
-        <div class="calc-mini">
-          <span class="calc-mini-label">Cost per lead &mdash; SDR</span>
-          <span class="calc-mini-val dim" id="sdr-per-lead">$8.75</span>
+      <!-- STEP 2 -->
+      <div id="step2">
+        <div class="step-num" id="snum2">2</div>
+        <div class="calc-step-title">How many leads do you want to call per month?</div>
+        <div class="calc-step-sub">Each line handles up to 400 contacts with 5 follow-up calls each.</div>
+        <div class="slider-val" id="leads-display">2,000</div>
+        <input type="range" id="leads-slider" min="400" max="8000" step="400" value="2000" aria-label="Leads per month" />
+        <div class="range-ends"><span>400</span><span>8,000</span></div>
+      </div>
+
+      <!-- RESULTS -->
+      <div id="results">
+        <div class="results-inner">
+          <div class="results-grid">
+            <div class="rc">
+              <div class="rc-label">Month 1 Investment</div>
+              <div class="rc-val" id="r-first">$1,676</div>
+              <div class="rc-sub">Includes setup &amp; first month</div>
+            </div>
+            <div class="rc">
+              <div class="rc-label">Ongoing / Month</div>
+              <div class="rc-val" id="r-ongoing">$1,852</div>
+              <div class="rc-sub" id="r-lines">5 lines &middot; 10,000 calls</div>
+            </div>
+            <div class="rc hl">
+              <div class="rc-label">Break-Even Sales</div>
+              <div class="rc-val g" id="r-be">1 deal</div>
+              <div class="rc-sub" id="r-rate">0.05% of your leads</div>
+            </div>
+          </div>
+          <div class="breakeven-msg" id="r-msg">
+            Close just <span class="accent" id="msg-be">1 deal</span> out of <span class="accent" id="msg-leads">2,000 leads</span>
+            and the system pays for itself every month.
+            That is a <span class="accent" id="msg-rate">0.05% close rate</span> to break even.
+          </div>
+          <div class="results-cta">
+            <a class="btn btn-green" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" style="font-size:16px;padding:15px 36px">
+              See the System in Action &rarr;
+            </a>
+            <div class="results-note">No commitment &mdash; 30-minute discovery call.</div>
+          </div>
         </div>
       </div>
 
-      <div class="calc-footer">
-        <a class="btn btn-primary"
-           href="https://cal.com/loophub-kickoff-meeting/discoverymeeting"
-           target="_blank" rel="noopener"
-           style="font-size:16px;padding:15px 36px">
-          Get Your Custom Quote &rarr;
-        </a>
-        <div class="calc-footnote">No commitment required &mdash; 30-minute discovery call.</div>
-      </div>
     </div>
   </div>
 </section>
 
-<!-- ====== OFFER ====== -->
+<!-- OFFER -->
 <section id="offer" class="section">
   <div class="container">
-    <div class="reveal">
-      <div class="section-label">The Offer</div>
-      <h2 class="section-h2">What you get. What you protect.</h2>
+    <div class="rv">
+      <div class="label">The Offer</div>
+      <h2 class="h2">What you get. What you protect.</h2>
     </div>
-
-    <div class="offer-grid">
-      <div class="offer-col get reveal reveal-delay-1">
-        <div class="offer-col-title">&#10003;&ensp;What you get</div>
-        <ul class="offer-list">
-          <li data-i="&rarr;">AI call layer for all repetitive call handling</li>
-          <li data-i="&rarr;">Qualification and smart routing logic</li>
-          <li data-i="&rarr;">Automated follow-up sequences &mdash; 5 contacts per lead, guaranteed</li>
-          <li data-i="&rarr;">Escalation to your human team when real attention is needed</li>
+    <div class="ogrid">
+      <div class="oc get rv d1">
+        <div class="oct">&#10003;&ensp;What you get</div>
+        <ul class="olist">
+          <li data-i="&rarr;">An AI call layer for repetitive call handling</li>
+          <li data-i="&rarr;">Qualification and routing logic</li>
+          <li data-i="&rarr;">Automated follow-up support &mdash; 5 contacts per lead, every time</li>
+          <li data-i="&rarr;">Escalation to human team members when real attention is needed</li>
           <li data-i="&rarr;">Infrastructure that scales beyond individual rep capacity</li>
-          <li data-i="&rarr;">Full reporting dashboard and call-by-call logs</li>
+          <li data-i="&rarr;">Full reporting dashboard and call logs</li>
           <li data-i="&rarr;">Integration with your existing CRM and tools</li>
         </ul>
       </div>
-
-      <div class="offer-col protect reveal reveal-delay-2">
-        <div class="offer-col-title">&#9675;&ensp;What you protect</div>
-        <ul class="offer-list">
-          <li data-i="&rarr;">Your team&rsquo;s time and focus</li>
+      <div class="oc protect rv d2">
+        <div class="oct">&#9675;&ensp;What you protect</div>
+        <ul class="olist">
+          <li data-i="&rarr;">Your team&rsquo;s time</li>
+          <li data-i="&rarr;">Your team&rsquo;s focus</li>
           <li data-i="&rarr;">Your team&rsquo;s ability to handle high-value conversations properly</li>
           <li data-i="&rarr;">Your cost structure as volume grows</li>
           <li data-i="&rarr;">Your pipeline &mdash; no lead left without follow-up</li>
-          <li data-i="&rarr;">Your competitive position as AI adoption accelerates</li>
-          <li data-i="&rarr;">Your revenue &mdash; the system runs every day, without you thinking about it</li>
+          <li data-i="&rarr;">Your competitive position as the industry shifts to automation</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ====== TESTIMONIAL ====== -->
+<!-- TESTIMONIAL -->
 <section class="section" style="background:var(--bg2)">
-  <div class="container text-center">
-    <div class="reveal">
-      <div class="section-label">Real Results. Not a Case Study.</div>
-    </div>
-    <div class="testimonial-card reveal">
-      <div class="quote-marks">&ldquo;</div>
-      <p class="testimonial-text">
+  <div class="container tc">
+    <div class="rv"><div class="label">Real Results. Not a Case Study.</div></div>
+    <div class="tcard rv">
+      <div class="tmarks">&ldquo;</div>
+      <p class="ttext">
         We were generating leads. We just weren&rsquo;t working them.
         LoopHub built the system that follows up until it closes &mdash;
         <em>every day, without us having to think about it.</em>
       </p>
-      <div class="testimonial-author">
-        <div class="author-avatar">M</div>
+      <div class="tauthor">
+        <div class="tavatar">M</div>
         <div>
-          <div class="author-name">Growth-Stage Sales Team</div>
-          <div class="author-role">Revenue Automation Customer</div>
+          <div class="taname">Growth-Stage Sales Team</div>
+          <div class="tarole">Revenue Automation Customer</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ====== CLOSE ====== -->
+<!-- CLOSE -->
 <section id="close">
   <div class="container">
-    <h2 class="close-h2 reveal">
-      Your leads already exist.<br>
-      <span class="grad-text">Who follows up tomorrow?</span>
+    <h2 class="close-h rv">
+      Your best people should not be wasting time<br>on work a machine can <span class="grad">already handle.</span>
     </h2>
-    <p class="close-sub reveal">
-      The companies gaining ground already understand this.
-      They&rsquo;re using automation for the repetitive layer and keeping humans
-      focused on the conversations that actually deserve them.
+    <p class="close-sub rv">
+      The companies gaining ground already understand that. They are using automation for the
+      repetitive layer and keeping humans focused on the conversations that actually deserve them.
+      The shift is already happening.
     </p>
-
-    <div class="close-ctas reveal">
-      <a class="btn btn-primary"
-         href="https://cal.com/loophub-kickoff-meeting/discoverymeeting"
-         target="_blank" rel="noopener"
-         style="font-size:16px;padding:16px 36px">
+    <div class="close-ctas rv">
+      <a class="btn btn-p" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" style="font-size:16px;padding:16px 36px">
         See the System in Action &rarr;
       </a>
-      <a class="btn btn-ghost"
-         href="tel:+17869402394"
-         style="font-size:16px;padding:16px 36px">
+      <a class="btn btn-g" href="tel:+17869402394" style="font-size:16px;padding:16px 36px">
         &#128222;&ensp;+1 (786) 940 2394
       </a>
     </div>
-
-    <div class="ps-block reveal">
-      <strong>P.S.</strong>&ensp;This system is not built to remove the human side of sales. It&rsquo;s built to protect it.
-      The more repetitive work the system absorbs, the more time your team has for the conversations that actually
-      drive revenue. If you&rsquo;re ready to see how it works, book a 30-minute call &mdash; no commitment required.
+    <div class="ps rv">
+      <strong>P.S.</strong>&ensp;This system is not built to remove the human side of sales.
+      It is built to protect it. The more repetitive work the system absorbs, the more time
+      your team has for the conversations that actually drive revenue.
     </div>
   </div>
 </section>
 
-<!-- ====== FOOTER ====== -->
+<!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <a class="footer-logo" href="#hero">Loop<span>Hub</span></a>
-    <div class="footer-links">
+  <div class="fi">
+    <a class="flogo" href="#hero">Loop<span>Hub</span></a>
+    <div class="flinks">
       <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a>
       <a href="tel:+17869402394">+1 (786) 940 2394</a>
       <a href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener">Book a Call</a>
     </div>
-    <span class="footer-copy">&copy; 2025 LoopHub Solutions</span>
+    <span class="fcopy">&copy; 2025 LoopHub Solutions</span>
   </div>
 </footer>
 
-<!-- ====== SCRIPTS ====== -->
 <script>
-  /* NAV SCROLL */
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 50);
-  }, { passive: true });
+/* ── NAV ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('sc', scrollY > 50), {passive:true});
 
-  /* SCROLL REVEAL */
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+/* ── SCROLL REVEAL ── */
+const io = new IntersectionObserver(
+  entries => entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('on'); io.unobserve(e.target);} }),
+  {threshold:.1, rootMargin:'0px 0px -40px 0px'}
+);
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
-  /* CALCULATOR */
-  const slider    = document.getElementById('contacts-slider');
-  const elN       = document.getElementById('contacts-display');
-  const elAiCost  = document.getElementById('ai-cost');
-  const elAiLines = document.getElementById('ai-lines');
-  const elSdr     = document.getElementById('sdr-cost');
-  const elReps    = document.getElementById('sdr-reps');
-  const elSave    = document.getElementById('savings');
-  const elAnnual  = document.getElementById('annual-savings');
-  const elAiPer   = document.getElementById('ai-per-lead');
-  const elSdrPer  = document.getElementById('sdr-per-lead');
+/* ── PRICING DATA ── */
+// Ongoing prices from second PDF (client pricing, 100% markup)
+const ONGOING = {
+  1:617.36, 2:740.60, 3:1110.90, 4:1481.20, 5:1851.50,
+  6:2221.80, 7:2592.10, 8:2962.40, 9:3332.70, 10:3703.00,
+  11:4073.30, 12:4443.60, 13:4813.90, 14:5184.20, 15:5554.50,
+  16:5924.80, 17:6295.10, 18:6665.40, 19:7035.70, 20:7406.00
+};
 
-  const usd = (n, d = 0) =>
-    new Intl.NumberFormat('en-US', {
-      style: 'currency', currency: 'USD', maximumFractionDigits: d
-    }).format(n);
+// Tech setup costs by line count (from verified spreadsheet data)
+function techSetup(lines) {
+  if (lines <= 3)  return 123.53;
+  if (lines <= 6)  return 142.65;
+  if (lines <= 13) return 180.89;
+  if (lines <= 25) return 245.59;
+  if (lines <= 50) return 367.89;
+  return 703.34;
+}
 
-  function update() {
-    const contacts   = +slider.value;
-    const lines      = Math.ceil(contacts / 400);
-    const aiMonthly  = lines * 185.15;
-    const sdrs       = Math.ceil(contacts / 300);
-    const sdrMonthly = sdrs * 2500;
-    const savings    = sdrMonthly - aiMonthly;
+// First month price: (lines × $194.90 + tech_setup) × 1.5
+function firstMonthPrice(lines) {
+  return ((lines * 194.90) + techSetup(lines)) * 1.5;
+}
 
-    elN.textContent       = contacts.toLocaleString('en-US');
-    elAiCost.textContent  = usd(aiMonthly);
-    elAiLines.textContent = `${lines} line${lines !== 1 ? 's' : ''} \u00B7 ${(lines * 2000).toLocaleString()} calls`;
-    elSdr.textContent     = usd(sdrMonthly);
-    elReps.textContent    = `${sdrs} rep${sdrs !== 1 ? 's' : ''} needed at this volume`;
-    elSave.textContent    = usd(savings);
-    elAnnual.textContent  = usd(savings * 12) + ' saved per year';
-    elAiPer.textContent   = '$' + (aiMonthly / contacts).toFixed(2);
-    elSdrPer.textContent  = '$' + (sdrMonthly / contacts).toFixed(2);
-  }
+// Ongoing price lookup
+function ongoingPrice(lines) {
+  if (ONGOING[lines]) return ONGOING[lines];
+  // Beyond table: base $7,406 for 20 lines + $370.30 per additional line
+  return 7406.00 + (lines - 20) * 370.30;
+}
 
-  slider.addEventListener('input', update);
-  update();
+const usd = (n, d=0) => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:d}).format(n);
+
+/* ── STEP 1: Deal Size ── */
+const dealInput   = document.getElementById('deal-input');
+const continueBtn = document.getElementById('continue-btn');
+const step2       = document.getElementById('step2');
+const resultsEl   = document.getElementById('results');
+const snum1       = document.getElementById('snum1');
+
+dealInput.addEventListener('input', () => {
+  const v = parseFloat(dealInput.value);
+  const ok = v > 0;
+  continueBtn.disabled = !ok;
+  continueBtn.style.opacity = ok ? '1' : '.4';
+  continueBtn.style.cursor = ok ? 'pointer' : 'not-allowed';
+});
+
+continueBtn.addEventListener('click', () => {
+  // Open step 2
+  step2.classList.add('open');
+  // Mark step 1 done
+  snum1.textContent = '✓';
+  snum1.classList.add('done');
+  // Scroll to step 2 smoothly
+  setTimeout(() => step2.scrollIntoView({behavior:'smooth', block:'nearest'}), 100);
+  // Trigger initial calculation
+  updateCalc();
+  resultsEl.classList.add('open');
+});
+
+/* ── STEP 2: Slider ── */
+const slider     = document.getElementById('leads-slider');
+const leadsDisp  = document.getElementById('leads-display');
+
+slider.addEventListener('input', () => {
+  leadsDisp.textContent = (+slider.value).toLocaleString('en-US');
+  if (!resultsEl.classList.contains('open')) resultsEl.classList.add('open');
+  updateCalc();
+});
+
+function updateCalc() {
+  const contacts  = +slider.value;
+  const dealSize  = parseFloat(dealInput.value) || 5000;
+  const lines     = Math.ceil(contacts / 400);
+  const first     = firstMonthPrice(lines);
+  const ongoing   = ongoingPrice(lines);
+  const beDeals   = Math.ceil(ongoing / dealSize);
+  const beRate    = ((beDeals / contacts) * 100);
+  const beRateStr = beRate < 1 ? beRate.toFixed(2) + '%' : beRate.toFixed(1) + '%';
+
+  document.getElementById('r-first').textContent   = usd(first);
+  document.getElementById('r-ongoing').textContent = usd(ongoing);
+  document.getElementById('r-lines').textContent   = `${lines} line${lines>1?'s':''} \u00B7 ${(lines*2000).toLocaleString()} calls/mo`;
+  document.getElementById('r-be').textContent      = beDeals + (beDeals===1?' deal':' deals');
+  document.getElementById('r-rate').textContent    = beRateStr + ' of your leads';
+
+  // Message
+  document.getElementById('msg-be').textContent    = beDeals + (beDeals===1?' deal':' deals');
+  document.getElementById('msg-leads').textContent = contacts.toLocaleString('en-US') + ' leads';
+  document.getElementById('msg-rate').textContent  = beRateStr + ' close rate';
+  leadsDisp.textContent = contacts.toLocaleString('en-US');
+}
 </script>
 </body>
 </html>
