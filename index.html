@@ -170,38 +170,37 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
     .sl { font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.6px; }
     @media(max-width:600px){ .stats-bar{grid-template-columns:repeat(2,1fr);} }
 
-    /* ===== IMAGE BREAK (full-width bg transition) ===== */
+    /* ===== IMAGE BREAK (full-width visual rest) ===== */
     .img-break {
       position: relative;
-      height: 520px;
       overflow: hidden;
     }
-    .img-break-bg {
-      position: absolute;
-      inset: 0;
-      background: url('images/hero-mockup.png') center center / cover no-repeat;
-      transform: scale(1.04);
-      filter: brightness(.82) saturate(1.15);
+    /* The full image — shown at natural aspect ratio, no cropping */
+    .img-break-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: brightness(.9) saturate(1.1);
     }
-    /* Fade from preceding section color (--bg) into image */
+    /* Thin fade from preceding section (--bg2) */
     .img-break::before {
       content: '';
       position: absolute; top: 0; left: 0; right: 0;
-      height: 42%;
+      height: 18%;
       background: linear-gradient(to bottom, var(--bg2) 0%, transparent 100%);
       z-index: 2; pointer-events: none;
     }
-    /* Fade from image into following section color (--bg) */
+    /* Thin fade into next section (--bg) */
     .img-break::after {
       content: '';
       position: absolute; bottom: 0; left: 0; right: 0;
-      height: 42%;
+      height: 18%;
       background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
       z-index: 2; pointer-events: none;
     }
-    /* Optional label overlay */
+    /* Label pill */
     .img-break-label {
-      position: absolute; bottom: 52px; left: 50%; transform: translateX(-50%);
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
       z-index: 3; display: flex; align-items: center; gap: 10px;
       background: rgba(6,6,15,.55); backdrop-filter: blur(16px);
       border: 1px solid rgba(255,255,255,.09);
@@ -361,6 +360,37 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
     .close-ctas { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:44px; position:relative; z-index:1; }
     .ps { max-width:540px; margin:0 auto; background:rgba(255,255,255,.025); border:1px solid var(--border); border-radius:14px; padding:24px 28px; font-size:14px; color:var(--muted); line-height:1.7; text-align:left; position:relative; z-index:1; }
     .ps strong { color:rgba(255,255,255,.65); }
+
+    /* ===== GLOW BORDER EFFECT ===== */
+    /*
+      Technique: conic-gradient background masked to show only the border ring.
+      mask-composite: exclude → shows pixels where ONLY ONE of the two mask
+      layers applies → that is the border area (border-box minus content-box).
+    */
+    .glow-effect {
+      position: absolute;
+      border-radius: inherit;
+      inset: 0;
+      padding: 1.5px;          /* border ring thickness */
+      pointer-events: none;
+      z-index: 0;
+      opacity: var(--glow-opacity, 0);
+      transition: opacity 0.55s ease;
+      background: conic-gradient(
+        from calc(var(--g-angle, 0) * 1deg - 55deg),
+        transparent 0deg,
+        rgba(91,33,255,0.85)  40deg,
+        rgba(124,77,255,1)    55deg,
+        rgba(164,77,255,0.9)  68deg,
+        rgba(0,216,101,0.85)  82deg,
+        transparent          118deg
+      );
+      /* Cut out the interior — only the 1.5px ring stays visible */
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+              mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+              mask-composite: exclude;
+    }
 
     /* ===== FOOTER ===== */
     footer { border-top:1px solid var(--border); padding:40px 24px; }
@@ -810,6 +840,32 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 </footer>
 
 <script>
+/* ── GLOW BORDER (mouse-tracked conic gradient sweep) ── */
+(function () {
+  const TARGETS = '.pcard, .scard, .sdr-card, .sb, .oc, .tcard, .calc-wrap';
+  document.querySelectorAll(TARGETS).forEach(el => {
+    // ensure stacking context
+    if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+    // inject glow child
+    const g = document.createElement('div');
+    g.className = 'glow-effect';
+    g.setAttribute('aria-hidden', 'true');
+    el.prepend(g);
+    // track mouse: compute angle from card centre → update CSS vars
+    el.addEventListener('mousemove', e => {
+      const r   = el.getBoundingClientRect();
+      const cx  = r.left + r.width  / 2;
+      const cy  = r.top  + r.height / 2;
+      const deg = Math.atan2(e.clientY - cy, e.clientX - cx) * (180 / Math.PI) + 90;
+      el.style.setProperty('--g-angle',      deg.toFixed(1));
+      el.style.setProperty('--glow-opacity', '1');
+    }, { passive: true });
+    el.addEventListener('mouseleave', () =>
+      el.style.setProperty('--glow-opacity', '0')
+    );
+  });
+})();
+
 /* ── NAV ── */
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => nav.classList.toggle('sc', scrollY > 50), {passive:true});
