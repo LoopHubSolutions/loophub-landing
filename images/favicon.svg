@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#06060F"/>
+  <defs>
+    <linearGradient id="ig" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4B18CC"/>
+      <stop offset="55%" stop-color="#7C4DFF"/>
+      <stop offset="100%" stop-color="#A855F7"/>
+    </linearGradient>
+  </defs>
+  <!-- Infinity / lemniscate — right lobe -->
+  <path d="M16 16 C18.5 10 28.5 10 28.5 16 C28.5 22 18.5 22 16 16Z"
+        fill="none" stroke="url(#ig)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Infinity / lemniscate — left lobe -->
+  <path d="M16 16 C13.5 22 3.5 22 3.5 16 C3.5 10 13.5 10 16 16Z"
+        fill="none" stroke="url(#ig)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
