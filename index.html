@@ -645,8 +645,8 @@
         <div class="calc-step-title">How many leads do you want to call per month?</div>
         <div class="calc-step-sub">Each line handles up to 400 contacts with 5 follow-up calls each.</div>
         <div class="slider-val" id="leads-display">2,000</div>
-        <input type="range" id="leads-slider" min="400" max="8000" step="400" value="2000" aria-label="Leads per month" />
-        <div class="range-ends"><span>400</span><span>8,000</span></div>
+        <input type="range" id="leads-slider" min="400" max="80000" step="400" value="2000" aria-label="Leads per month" />
+        <div class="range-ends"><span>400</span><span>80,000</span></div>
       </div>
 
       <!-- RESULTS -->
@@ -797,13 +797,9 @@ const io = new IntersectionObserver(
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
 /* ── PRICING DATA ── */
-// Ongoing prices from second PDF (client pricing, 100% markup)
-const ONGOING = {
-  1:617.36, 2:740.60, 3:1110.90, 4:1481.20, 5:1851.50,
-  6:2221.80, 7:2592.10, 8:2962.40, 9:3332.70, 10:3703.00,
-  11:4073.30, 12:4443.60, 13:4813.90, 14:5184.20, 15:5554.50,
-  16:5924.80, 17:6295.10, 18:6665.40, 19:7035.70, 20:7406.00
-};
+// Ongoing price formula (verified against full PDF lookup table):
+//   Line 1  → $617.36 (base tier)
+//   Line 2+ → $370.30 × lines  (verified up to 200 lines / 80,000 contacts)
 
 // Tech setup costs by line count (from verified spreadsheet data)
 function techSetup(lines) {
@@ -822,9 +818,7 @@ function firstMonthPrice(lines) {
 
 // Ongoing price lookup
 function ongoingPrice(lines) {
-  if (ONGOING[lines]) return ONGOING[lines];
-  // Beyond table: base $7,406 for 20 lines + $370.30 per additional line
-  return 7406.00 + (lines - 20) * 370.30;
+  return lines === 1 ? 617.36 : 370.30 * lines;
 }
 
 const usd = (n, d=0) => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:d}).format(n);
