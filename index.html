@@ -570,6 +570,31 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
     .flinks a { font-size:14px; color:var(--muted); transition:color .2s; }
     .flinks a:hover { color:var(--white); }
     .fcopy { font-size:13px; color:var(--muted); }
+
+    /* ===== LANGUAGE TOGGLE ===== */
+    .nav-right { display:flex; align-items:center; gap:14px; }
+    .lang-toggle {
+      display:flex; align-items:center;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:100px; padding:4px; gap:3px;
+    }
+    .lt-btn {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:6px 16px; border-radius:100px;
+      cursor:pointer; border:none; background:transparent;
+      color:var(--muted); font-family:inherit;
+      transition:all 0.2s; line-height:1.3; white-space:nowrap;
+    }
+    .lt-main { font-size:13px; font-weight:700; letter-spacing:.4px; }
+    .lt-sub  { font-size:9px;  font-weight:500; letter-spacing:.5px; opacity:.65; margin-top:2px; }
+    .lt-btn.active          { background:var(--purple); color:#fff; box-shadow:0 2px 14px rgba(91,33,255,.55); }
+    .lt-btn.active .lt-sub  { opacity:.85; }
+    .lt-btn:hover:not(.active) { color:var(--white); }
+    @media(max-width:768px){
+      .nav-right { gap:8px; }
+      .nav-right > .btn { display:none; }
+    }
   </style>
 </head>
 <body>
@@ -584,14 +609,24 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
     />
   </a>
   <ul class="nav-links">
-    <li><a href="#problem">Problem</a></li>
-    <li><a href="#sdr-compare">vs. SDR</a></li>
-    <li><a href="#system">System</a></li>
-    <li><a href="#calculator">Calculator</a></li>
+    <li><a href="#problem"     data-i18n="nav_problem">Problem</a></li>
+    <li><a href="#sdr-compare" data-i18n="nav_compare">vs. SDR</a></li>
+    <li><a href="#system"      data-i18n="nav_system">System</a></li>
+    <li><a href="#calculator"  data-i18n="nav_calc">Calculator</a></li>
   </ul>
-  <a class="btn btn-p" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener">
-    Book a Call &rarr;
-  </a>
+  <div class="nav-right">
+    <div class="lang-toggle" role="group" aria-label="Language / Región">
+      <button class="lt-btn active" id="btn-en" onclick="setLang('en')" aria-pressed="true">
+        <span class="lt-main">🌐 EN</span>
+        <span class="lt-sub">US · UK · AU</span>
+      </button>
+      <button class="lt-btn" id="btn-es" onclick="setLang('es')" aria-pressed="false">
+        <span class="lt-main">🌎 ES</span>
+        <span class="lt-sub">MX · CO · AR</span>
+      </button>
+    </div>
+    <a class="btn btn-p" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" data-i18n="nav_cta">Book a Call &rarr;</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -599,19 +634,19 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   <!-- Polygon blobs — same clip-path geometry as hero-1.tsx -->
   <div class="hero-blob hero-blob-top" aria-hidden="true"><div></div></div>
   <div class="hero-blob hero-blob-btm" aria-hidden="true"><div></div></div>
-  <div class="badge rv"><span class="bdot"></span> AI Call Infrastructure — For Revenue Teams</div>
-  <h1 class="hero-h1 rv d1">
+  <div class="badge rv" data-i18n-html="hero_badge"><span class="bdot"></span> AI Call Infrastructure &mdash; For Revenue Teams</div>
+  <h1 class="hero-h1 rv d1" data-i18n-html="hero_h1">
     Your competitors already use AI<br>to handle repetitive calls.<br>
     <span class="grad">Why is your team still<br>stuck doing them manually?</span>
   </h1>
-  <p class="hero-sub rv d2">
+  <p class="hero-sub rv d2" data-i18n-html="hero_sub">
     For sales and revenue teams that need to reach more leads without adding headcount.
     Handle routine calls, follow-ups, and qualification automatically &mdash;
     so your reps focus only on the conversations that close.
   </p>
   <div class="hero-ctas rv d3">
-    <a class="btn btn-p" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" style="font-size:16px;padding:15px 30px">Book Your Free Discovery Call &rarr;</a>
-    <a class="btn btn-g" href="#calculator" style="font-size:16px;padding:15px 30px">Calculate Your ROI</a>
+    <a class="btn btn-p" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" style="font-size:16px;padding:15px 30px" data-i18n="hero_cta1">Book Your Free Discovery Call &rarr;</a>
+    <a class="btn btn-g" href="#calculator" style="font-size:16px;padding:15px 30px" data-i18n="hero_cta2">Calculate Your ROI</a>
   </div>
 
   <!-- Demo video -->
@@ -628,36 +663,36 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   </div>
 
   <div class="stats-bar rv">
-    <div class="si"><div class="sn" style="color:var(--green)">2,000+</div><div class="sl">Leads / Line</div></div>
-    <div class="si"><div class="sn" style="color:var(--green)">&lt;$1</div><div class="sl">Per Lead</div></div>
-    <div class="si"><div class="sn">7 days</div><div class="sl">To Deploy</div></div>
-    <div class="si"><div class="sn">0</div><div class="sl">Missed Follow-Ups</div></div>
+    <div class="si"><div class="sn" style="color:var(--green)">2,000+</div><div class="sl" data-i18n="stat_leads">Leads / Line</div></div>
+    <div class="si"><div class="sn" style="color:var(--green)">&lt;$1</div><div class="sl" data-i18n="stat_cost">Per Lead</div></div>
+    <div class="si"><div class="sn" data-i18n="stat_deploy_n">7 days</div><div class="sl" data-i18n="stat_deploy">To Deploy</div></div>
+    <div class="si"><div class="sn">0</div><div class="sl" data-i18n="stat_followup">Missed Follow-Ups</div></div>
   </div>
 </section>
 
 <!-- MANIFESTO -->
 <div class="manifesto">
-  <p class="rv">80% of sales happen on contact 5&ndash;12. <em>Most teams stop at contact&nbsp;1.</em></p>
+  <p class="rv" data-i18n-html="manifesto">80% of sales happen on contact 5&ndash;12. <em>Most teams stop at contact&nbsp;1.</em></p>
 </div>
 
 <!-- PROBLEM -->
 <section id="problem" class="section">
   <div class="container">
     <div class="rv">
-      <div class="label">The Problem</div>
-      <h2 class="h2">Every growing business hits the same wall.</h2>
-      <p class="sub">More leads. More calls. More follow-ups. More pressure on the team. And then the real problem begins.</p>
+      <div class="label" data-i18n="prob_label">The Problem</div>
+      <h2 class="h2" data-i18n="prob_h2">Every growing business hits the same wall.</h2>
+      <p class="sub" data-i18n="prob_sub">More leads. More calls. More follow-ups. More pressure on the team. And then the real problem begins.</p>
     </div>
     <div class="pgrid">
       <div class="pcard rv d1">
         <div class="picon" style="background:rgba(255,135,82,.1)">&#9201;</div>
-        <h3>Your best people work on the wrong things</h3>
-        <p>Basic questions. Routine call handling. Repeated follow-ups. Your best people end up spending their time on work that does not need their best skills — while high-value conversations wait.</p>
+        <h3 data-i18n="prob_c1_h3">Your best people work on the wrong things</h3>
+        <p data-i18n="prob_c1_p">Basic questions. Routine call handling. Repeated follow-ups. Your best people end up spending their time on work that does not need their best skills — while high-value conversations wait.</p>
       </div>
       <div class="pcard rv d2">
         <div class="picon" style="background:rgba(91,33,255,.1)">&#128260;</div>
-        <h3>Follow-up volume is impossible to sustain manually</h3>
-        <p>80% of sales happen on contact 5–12. Most teams stop at 1 or 2 — not because they don&rsquo;t know better, but because there aren&rsquo;t enough hours. Leads go cold. Revenue walks out the door.</p>
+        <h3 data-i18n="prob_c2_h3">Follow-up volume is impossible to sustain manually</h3>
+        <p data-i18n="prob_c2_p">80% of sales happen on contact 5–12. Most teams stop at 1 or 2 — not because they don&rsquo;t know better, but because there aren&rsquo;t enough hours. Leads go cold. Revenue walks out the door.</p>
       </div>
     </div>
   </div>
@@ -667,51 +702,51 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <section id="sdr-compare" class="section" style="background:var(--bg2)">
   <div class="container tc">
     <div class="rv">
-      <div class="label">The Real Cost Comparison</div>
-      <h2 class="h2">What it really costs to do this<br>with a human SDR.</h2>
-      <p class="sub" style="margin:0 auto">Before you hire another rep, look at the actual numbers — ramp time, fully-loaded cost, and capacity ceiling.</p>
+      <div class="label" data-i18n="sdr_label">The Real Cost Comparison</div>
+      <h2 class="h2" data-i18n-html="sdr_h2">What it really costs to do this<br>with a human SDR.</h2>
+      <p class="sub" style="margin:0 auto" data-i18n="sdr_sub">Before you hire another rep, look at the actual numbers — ramp time, fully-loaded cost, and capacity ceiling.</p>
     </div>
     <div class="sdr-grid">
 
       <div class="sdr-card rv d1">
         <div class="sdr-half">
           <div class="sdr-icon">&#9203;</div>
-          <div class="sdr-tag old">SDR — Time to Productivity</div>
-          <div class="sdr-val old">3&ndash;6<br>months</div>
-          <div class="sdr-desc">Average ramp time before a new SDR reaches full productivity — while you pay full salary throughout.</div>
+          <div class="sdr-tag old" data-i18n="sdr_c1_old_tag">SDR — Time to Productivity</div>
+          <div class="sdr-val old" data-i18n-html="sdr_c1_old_val">3&ndash;6<br>months</div>
+          <div class="sdr-desc" data-i18n="sdr_c1_old_desc">Average ramp time before a new SDR reaches full productivity — while you pay full salary throughout.</div>
         </div>
         <div class="sdr-half ai-half">
-          <div class="sdr-tag new">&#9889;&ensp;AI System</div>
-          <div class="sdr-val new">7 days</div>
-          <div class="sdr-desc">From kickoff to first automated call. No ramp. No training period. No waiting months to see ROI.</div>
+          <div class="sdr-tag new" data-i18n="sdr_c1_new_tag">&#9889;&ensp;AI System</div>
+          <div class="sdr-val new" data-i18n="sdr_c1_new_val">7 days</div>
+          <div class="sdr-desc" data-i18n="sdr_c1_new_desc">From kickoff to first automated call. No ramp. No training period. No waiting months to see ROI.</div>
         </div>
       </div>
 
       <div class="sdr-card rv d2">
         <div class="sdr-half">
           <div class="sdr-icon">&#128184;</div>
-          <div class="sdr-tag old">SDR — Fully-Loaded Monthly Cost</div>
-          <div class="sdr-val old">$9k&ndash;$11k<br>/month</div>
-          <div class="sdr-desc">Salary, commissions, benefits, tools, onboarding, and management overhead. The real number — not just base pay.</div>
+          <div class="sdr-tag old" data-i18n="sdr_c2_old_tag">SDR — Fully-Loaded Monthly Cost</div>
+          <div class="sdr-val old" data-i18n-html="sdr_c2_old_val">$9k&ndash;$11k<br>/month</div>
+          <div class="sdr-desc" data-i18n="sdr_c2_old_desc">Salary, commissions, benefits, tools, onboarding, and management overhead. The real number — not just base pay.</div>
         </div>
         <div class="sdr-half ai-half">
-          <div class="sdr-tag new">&#9889;&ensp;AI System</div>
-          <div class="sdr-val new">A fraction<br>of that</div>
-          <div class="sdr-desc">Run your numbers in the calculator below. The system doesn't burn out, call in sick, or quit.</div>
+          <div class="sdr-tag new" data-i18n="sdr_c2_new_tag">&#9889;&ensp;AI System</div>
+          <div class="sdr-val new" data-i18n-html="sdr_c2_new_val">A fraction<br>of that</div>
+          <div class="sdr-desc" data-i18n="sdr_c2_new_desc">Run your numbers in the calculator below. The system doesn't burn out, call in sick, or quit.</div>
         </div>
       </div>
 
       <div class="sdr-card rv d3">
         <div class="sdr-half">
           <div class="sdr-icon">&#128222;</div>
-          <div class="sdr-tag old">SDR — Monthly Lead Capacity</div>
-          <div class="sdr-val old">250&ndash;350<br>leads</div>
-          <div class="sdr-desc">The realistic ceiling for a single SDR. More volume means more headcount and more management overhead.</div>
+          <div class="sdr-tag old" data-i18n="sdr_c3_old_tag">SDR — Monthly Lead Capacity</div>
+          <div class="sdr-val old" data-i18n-html="sdr_c3_old_val">250&ndash;350<br>leads</div>
+          <div class="sdr-desc" data-i18n="sdr_c3_old_desc">The realistic ceiling for a single SDR. More volume means more headcount and more management overhead.</div>
         </div>
         <div class="sdr-half ai-half">
-          <div class="sdr-tag new">&#9889;&ensp;AI System</div>
-          <div class="sdr-val new">2,000+<br>per line</div>
-          <div class="sdr-desc">Each line handles 2,000+ leads with 5 follow-up calls each. Scale volume without scaling headcount.</div>
+          <div class="sdr-tag new" data-i18n="sdr_c3_new_tag">&#9889;&ensp;AI System</div>
+          <div class="sdr-val new" data-i18n-html="sdr_c3_new_val">2,000+<br>per line</div>
+          <div class="sdr-desc" data-i18n="sdr_c3_new_desc">Each line handles 2,000+ leads with 5 follow-up calls each. Scale volume without scaling headcount.</div>
         </div>
       </div>
 
@@ -723,31 +758,31 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <section id="story" class="section">
   <div class="container">
     <div class="rv">
-      <div class="label">The Shift</div>
-      <h2 class="h2">The companies moving faster today are doing one thing differently.</h2>
-      <p class="sub">They are separating the work into two parts &mdash; and letting machines handle the part that does not need a human.</p>
+      <div class="label" data-i18n="story_label">The Shift</div>
+      <h2 class="h2" data-i18n="story_h2">The companies moving faster today are doing one thing differently.</h2>
+      <p class="sub" data-i18n="story_sub">They are separating the work into two parts &mdash; and letting machines handle the part that does not need a human.</p>
     </div>
     <div class="sgrid">
       <div class="scard rv d1">
-        <span class="stag old">Old Model</span>
-        <h3>Hire more people. Add more reps. Work harder.</h3>
+        <span class="stag old" data-i18n="story_old_tag">Old Model</span>
+        <h3 data-i18n="story_old_h3">Hire more people. Add more reps. Work harder.</h3>
         <ul class="slist">
-          <li data-m="&#10007;">Every lead requires human call time</li>
-          <li data-m="&#10007;">Follow-ups fall through the cracks</li>
-          <li data-m="&#10007;">Cost scales linearly with every new contact</li>
-          <li data-m="&#10007;">Reps spending most of their time on repetitive work</li>
-          <li data-m="&#10007;">Hard ceiling of ~300 leads per rep per month</li>
+          <li data-m="&#10007;" data-i18n="story_old_li1">Every lead requires human call time</li>
+          <li data-m="&#10007;" data-i18n="story_old_li2">Follow-ups fall through the cracks</li>
+          <li data-m="&#10007;" data-i18n="story_old_li3">Cost scales linearly with every new contact</li>
+          <li data-m="&#10007;" data-i18n="story_old_li4">Reps spending most of their time on repetitive work</li>
+          <li data-m="&#10007;" data-i18n="story_old_li5">Hard ceiling of ~300 leads per rep per month</li>
         </ul>
       </div>
       <div class="scard new rv d2">
-        <span class="stag new">The Shift</span>
-        <h3>The repetitive layer goes to infrastructure. Humans handle what matters.</h3>
+        <span class="stag new" data-i18n="story_new_tag">The Shift</span>
+        <h3 data-i18n="story_new_h3">The repetitive layer goes to infrastructure. Humans handle what matters.</h3>
         <ul class="slist nl">
-          <li data-m="&#10003;">Machine handles all repetitive conversations</li>
-          <li data-m="&#10003;">Every follow-up executes without exception</li>
-          <li data-m="&#10003;">Cost stays flat as contact volume grows</li>
-          <li data-m="&#10003;">Your people focused on the calls that move revenue</li>
-          <li data-m="&#10003;">2,000+ leads processed per line per month</li>
+          <li data-m="&#10003;" data-i18n="story_new_li1">Machine handles all repetitive conversations</li>
+          <li data-m="&#10003;" data-i18n="story_new_li2">Every follow-up executes without exception</li>
+          <li data-m="&#10003;" data-i18n="story_new_li3">Cost stays flat as contact volume grows</li>
+          <li data-m="&#10003;" data-i18n="story_new_li4">Your people focused on the calls that move revenue</li>
+          <li data-m="&#10003;" data-i18n="story_new_li5">2,000+ leads processed per line per month</li>
         </ul>
       </div>
     </div>
@@ -759,7 +794,7 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   <img class="img-break-img" src="images/hero-mockup.png" alt="Voice Agent Interface — Live" />
   <div class="img-break-label rv">
     <span class="img-break-dot"></span>
-    Voice Agent — Live
+    <span data-i18n="imgbreak">Voice Agent &mdash; Live</span>
   </div>
 </div>
 
@@ -767,9 +802,9 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <section id="system" class="section" style="background:var(--bg2)">
   <div class="container">
     <div class="rv">
-      <div class="label">The System</div>
-      <h2 class="h2">Not built to replace your team.<br>Built to <span class="grad">protect</span> it.</h2>
-      <p class="sub">It is not built to replace your team. It is built to protect your team from repetitive work that a machine can already handle.</p>
+      <div class="label" data-i18n="sys_label">The System</div>
+      <h2 class="h2" data-i18n-html="sys_h2">Not built to replace your team.<br>Built to <span class="grad">protect</span> it.</h2>
+      <p class="sub" data-i18n="sys_sub">It is not built to replace your team. It is built to protect your team from repetitive work that a machine can already handle.</p>
     </div>
     <div class="pitchgrid">
 
@@ -777,8 +812,8 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
         <div class="pc-shader" aria-hidden="true"></div>
         <div class="pc-content">
           <div class="pci">&#128222;</div>
-          <h3>Answer Routine Questions</h3>
-          <p>The system handles predictable call flow and keeps every conversation moving without pulling your team in.</p>
+          <h3 data-i18n="sys_c1_h3">Answer Routine Questions</h3>
+          <p data-i18n="sys_c1_p">The system handles predictable call flow and keeps every conversation moving without pulling your team in.</p>
         </div>
       </div>
 
@@ -786,8 +821,8 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
         <div class="pc-shader" aria-hidden="true"></div>
         <div class="pc-content">
           <div class="pci">&#128260;</div>
-          <h3>Keep Follow-Ups Moving</h3>
-          <p>5 contacts per lead, automatically. No gaps. No delays. No leads going cold while your reps are tied up on something else.</p>
+          <h3 data-i18n="sys_c2_h3">Keep Follow-Ups Moving</h3>
+          <p data-i18n="sys_c2_p">5 contacts per lead, automatically. No gaps. No delays. No leads going cold while your reps are tied up on something else.</p>
         </div>
       </div>
 
@@ -795,8 +830,8 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
         <div class="pc-shader" aria-hidden="true"></div>
         <div class="pc-content">
           <div class="pci">&#127919;</div>
-          <h3>Qualify Interest</h3>
-          <p>Identifies where each lead stands and separates the ones that need a real conversation from the ones that are not ready yet.</p>
+          <h3 data-i18n="sys_c3_h3">Qualify Interest</h3>
+          <p data-i18n="sys_c3_p">Identifies where each lead stands and separates the ones that need a real conversation from the ones that are not ready yet.</p>
         </div>
       </div>
 
@@ -804,8 +839,8 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
         <div class="pc-shader" aria-hidden="true"></div>
         <div class="pc-content">
           <div class="pci">&#128100;</div>
-          <h3>Route the Right Conversations</h3>
-          <p>The machine handles repetition. Your people get routed the one-to-one conversations that actually matter.</p>
+          <h3 data-i18n="sys_c4_h3">Route the Right Conversations</h3>
+          <p data-i18n="sys_c4_p">The machine handles repetition. Your people get routed the one-to-one conversations that actually matter.</p>
         </div>
       </div>
 
@@ -813,8 +848,8 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
         <div class="pc-shader" aria-hidden="true"></div>
         <div class="pc-content">
           <div class="pci">&#9889;</div>
-          <h3>Scale Without Headcount</h3>
-          <p>Infrastructure that scales beyond individual rep capacity. Not fewer humans. Better use of humans.</p>
+          <h3 data-i18n="sys_c5_h3">Scale Without Headcount</h3>
+          <p data-i18n="sys_c5_p">Infrastructure that scales beyond individual rep capacity. Not fewer humans. Better use of humans.</p>
         </div>
       </div>
 
@@ -822,8 +857,8 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
         <div class="pc-shader" aria-hidden="true"></div>
         <div class="pc-content">
           <div class="pci">&#128202;</div>
-          <h3>Full Reporting Visibility</h3>
-          <p>Every call, outcome, and conversion point tracked in real time. You see exactly what the system is doing and producing.</p>
+          <h3 data-i18n="sys_c6_h3">Full Reporting Visibility</h3>
+          <p data-i18n="sys_c6_p">Every call, outcome, and conversion point tracked in real time. You see exactly what the system is doing and producing.</p>
         </div>
       </div>
 
@@ -835,40 +870,40 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <section id="evidence" class="section">
   <div class="container">
     <div class="rv">
-      <div class="label">Real Numbers</div>
-      <h2 class="h2">This is not about hype.<br>It is about capacity and cost.</h2>
-      <p class="sub">A fully-loaded SDR costs $9k&ndash;$11k/month and contacts 250&ndash;350 leads. The math on this system is in a different category entirely.</p>
+      <div class="label" data-i18n="ev_label">Real Numbers</div>
+      <h2 class="h2" data-i18n-html="ev_h2">This is not about hype.<br>It is about capacity and cost.</h2>
+      <p class="sub" data-i18n="ev_sub">A fully-loaded SDR costs $9k&ndash;$11k/month and contacts 250&ndash;350 leads. The math on this system is in a different category entirely.</p>
     </div>
     <div class="twrap rv">
       <table>
         <thead>
           <tr>
-            <th>Metric</th>
-            <th>Senior SDR (fully-loaded)</th>
-            <th>AI System</th>
+            <th data-i18n="ev_th1">Metric</th>
+            <th data-i18n="ev_th2">Senior SDR (fully-loaded)</th>
+            <th data-i18n="ev_th3">AI System</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td class="tm">Monthly Cost</td><td class="ts">$9,000 &ndash; $11,000</td><td class="ta">Use calculator &darr;</td></tr>
-          <tr><td class="tm">Leads Contacted / Month</td><td class="ts">250 &ndash; 350</td><td class="ta">2,000+ per line</td></tr>
-          <tr><td class="tm">Follow-Ups per Lead</td><td class="ts">2&ndash;3 (often less)</td><td class="ta">5 guaranteed</td></tr>
-          <tr><td class="tm">Total Calls Executed</td><td class="ts">~1,000</td><td class="ta">10,000+ per line</td></tr>
-          <tr><td class="tm">Cost per Lead Contacted</td><td class="ts">$26 &ndash; $44</td><td class="ta">&lt;$1</td></tr>
-          <tr><td class="tm">Scales With Volume</td><td class="ts">No &mdash; hire more</td><td class="ta">Yes &mdash; same system</td></tr>
-          <tr><td class="tm">Time to Deploy</td><td class="ts">3&ndash;6 months (ramp)</td><td class="ta">7 days</td></tr>
+          <tr><td class="tm" data-i18n="ev_r1_m">Monthly Cost</td><td class="ts">$9,000 &ndash; $11,000</td><td class="ta" data-i18n="ev_calc_cta">Use calculator &darr;</td></tr>
+          <tr><td class="tm" data-i18n="ev_r2_m">Leads Contacted / Month</td><td class="ts">250 &ndash; 350</td><td class="ta" data-i18n="ev_r2_a">2,000+ per line</td></tr>
+          <tr><td class="tm" data-i18n="ev_r3_m">Follow-Ups per Lead</td><td class="ts" data-i18n="ev_r3_s">2&ndash;3 (often less)</td><td class="ta" data-i18n="ev_r3_a">5 guaranteed</td></tr>
+          <tr><td class="tm" data-i18n="ev_r4_m">Total Calls Executed</td><td class="ts">&sim;1,000</td><td class="ta" data-i18n="ev_r4_a">10,000+ per line</td></tr>
+          <tr><td class="tm" data-i18n="ev_r5_m">Cost per Lead Contacted</td><td class="ts">$26 &ndash; $44</td><td class="ta">&lt;$1</td></tr>
+          <tr><td class="tm" data-i18n="ev_r6_m">Scales With Volume</td><td class="ts" data-i18n="ev_r6_s">No &mdash; hire more</td><td class="ta" data-i18n="ev_r6_a">Yes &mdash; same system</td></tr>
+          <tr><td class="tm" data-i18n="ev_r7_m">Time to Deploy</td><td class="ts" data-i18n="ev_r7_s">3&ndash;6 months (ramp)</td><td class="ta" data-i18n="stat_deploy_n">7 days</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="evnote rv">
+    <div class="evnote rv" data-i18n-html="ev_note">
       <strong>What that means:</strong> A fully-loaded SDR contacts 250&ndash;350 leads at $26&ndash;$44 per lead.
       The AI system contacts those same leads for under $1 each &mdash; with 5 guaranteed follow-ups and zero ramp time.
       That is a <strong style="color:var(--green)">7&times; capacity increase</strong> at a
       <strong style="color:var(--green)">9&times; lower cost per contact.</strong>
     </div>
     <div class="statrow">
-      <div class="sb rv d1"><div class="bn g">7&times;</div><p>More leads processed compared to a single fully-loaded SDR</p></div>
-      <div class="sb rv d2"><div class="bn g">9&times;</div><p>Lower cost per lead contacted vs. a senior SDR</p></div>
-      <div class="sb rv d3"><div class="bn p">7 days</div><p>Average time from kickoff to your first automated call</p></div>
+      <div class="sb rv d1"><div class="bn g">7&times;</div><p data-i18n="ev_s1">More leads processed compared to a single fully-loaded SDR</p></div>
+      <div class="sb rv d2"><div class="bn g">9&times;</div><p data-i18n="ev_s2">Lower cost per lead contacted vs. a senior SDR</p></div>
+      <div class="sb rv d3"><div class="bn p">7 days</div><p data-i18n="ev_s3">Average time from kickoff to your first automated call</p></div>
     </div>
   </div>
 </section>
@@ -877,22 +912,22 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <section id="calculator" class="section" style="background:var(--bg2)">
   <div class="container tc">
     <div class="rv">
-      <div class="label">Run Your Numbers</div>
-      <h2 class="h2">See what it would cost to automate your call volume &mdash; and how little you need to close to break even.</h2>
-      <p class="sub" style="margin:0 auto">Two questions. Your break-even in seconds.</p>
+      <div class="label" data-i18n="calc_label">Run Your Numbers</div>
+      <h2 class="h2" data-i18n="calc_h2">See what it would cost to automate your call volume &mdash; and how little you need to close to break even.</h2>
+      <p class="sub" style="margin:0 auto" data-i18n="calc_sub">Two questions. Your break-even in seconds.</p>
     </div>
 
     <div class="calc-wrap rv">
       <div class="calc-step" id="step1">
         <div class="step-num" id="snum1">1</div>
-        <div class="calc-step-title">What is your average deal size?</div>
-        <div class="calc-step-sub">The revenue you typically close per new client or sale.</div>
+        <div class="calc-step-title" data-i18n="calc_s1_title">What is your average deal size?</div>
+        <div class="calc-step-sub" data-i18n="calc_s1_sub">The revenue you typically close per new client or sale.</div>
         <div class="deal-input-row">
           <span class="deal-prefix">$</span>
           <input class="deal-input" type="number" id="deal-input" placeholder="5,000" min="100" step="100" />
         </div>
         <div style="margin-top:28px">
-          <button class="btn btn-p" id="continue-btn" style="font-size:15px;padding:13px 28px;opacity:.4;cursor:not-allowed" disabled>
+          <button class="btn btn-p" id="continue-btn" style="font-size:15px;padding:13px 28px;opacity:.4;cursor:not-allowed" disabled data-i18n="calc_continue">
             Continue &rarr;
           </button>
         </div>
@@ -900,8 +935,8 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 
       <div id="step2">
         <div class="step-num" id="snum2">2</div>
-        <div class="calc-step-title">How many leads do you want to call per month?</div>
-        <div class="calc-step-sub">Each line handles up to 400 contacts with 5 follow-up calls each.</div>
+        <div class="calc-step-title" data-i18n="calc_s2_title">How many leads do you want to call per month?</div>
+        <div class="calc-step-sub" data-i18n="calc_s2_sub">Each line handles up to 400 contacts with 5 follow-up calls each.</div>
         <div class="slider-val" id="leads-display">2,000</div>
         <input type="range" id="leads-slider" min="400" max="80000" step="400" value="2000" aria-label="Leads per month" />
         <div class="range-ends"><span>400</span><span>80,000</span></div>
@@ -911,31 +946,27 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
         <div class="results-inner">
           <div class="results-grid">
             <div class="rc">
-              <div class="rc-label">Month 1 Investment</div>
+              <div class="rc-label" data-i18n="calc_r1_label">Month 1 Investment</div>
               <div class="rc-val" id="r-first">—</div>
-              <div class="rc-sub">Includes setup &amp; first month</div>
+              <div class="rc-sub" data-i18n="calc_r1_sub">Includes setup &amp; first month</div>
             </div>
             <div class="rc">
-              <div class="rc-label">Ongoing / Month</div>
+              <div class="rc-label" data-i18n="calc_r2_label">Ongoing / Month</div>
               <div class="rc-val" id="r-ongoing">—</div>
               <div class="rc-sub" id="r-lines">—</div>
             </div>
             <div class="rc hl">
-              <div class="rc-label">Break-Even Sales</div>
+              <div class="rc-label" data-i18n="calc_r3_label">Break-Even Sales</div>
               <div class="rc-val g" id="r-be">—</div>
               <div class="rc-sub" id="r-rate">— of your leads</div>
             </div>
           </div>
-          <div class="breakeven-msg" id="r-msg">
-            Close just <span class="accent" id="msg-be">—</span> out of <span class="accent" id="msg-leads">— leads</span>
-            and the system pays for itself every month.
-            That is a <span class="accent" id="msg-rate">—</span> to break even.
-          </div>
+          <div class="breakeven-msg" id="r-msg"><span data-i18n="calc_msg_pre">Close just </span><span class="accent" id="msg-be">—</span><span data-i18n="calc_msg_mid"> out of </span><span class="accent" id="msg-leads">— leads</span><span data-i18n="calc_msg_post"> and the system pays for itself every month. That is a </span><span class="accent" id="msg-rate">—</span><span data-i18n="calc_msg_end"> to break even.</span></div>
           <div class="results-cta">
-            <a class="btn btn-green" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" style="font-size:16px;padding:15px 36px">
+            <a class="btn btn-green" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" style="font-size:16px;padding:15px 36px" data-i18n="calc_cta">
               Book Your Free Discovery Call &rarr;
             </a>
-            <div class="results-note">No commitment &mdash; 30 minutes, free.</div>
+            <div class="results-note" data-i18n="calc_note">No commitment &mdash; 30 minutes, free.</div>
           </div>
         </div>
       </div>
@@ -947,31 +978,31 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <section id="offer" class="section">
   <div class="container">
     <div class="rv">
-      <div class="label">The Offer</div>
-      <h2 class="h2">What you get. What you protect.</h2>
+      <div class="label" data-i18n="off_label">The Offer</div>
+      <h2 class="h2" data-i18n="off_h2">What you get. What you protect.</h2>
     </div>
     <div class="ogrid">
       <div class="oc get rv d1">
-        <div class="oct">&#10003;&ensp;What you get</div>
+        <div class="oct" data-i18n="off_get_tag">&#10003;&ensp;What you get</div>
         <ul class="olist">
-          <li data-i="&rarr;">An AI call layer for repetitive call handling</li>
-          <li data-i="&rarr;">Qualification and routing logic</li>
-          <li data-i="&rarr;">Automated follow-up support &mdash; 5 contacts per lead, every time</li>
-          <li data-i="&rarr;">Escalation to human team members when real attention is needed</li>
-          <li data-i="&rarr;">Infrastructure that scales beyond individual rep capacity</li>
-          <li data-i="&rarr;">Full reporting dashboard and call logs</li>
-          <li data-i="&rarr;">Integration with your existing CRM and tools</li>
+          <li data-i="&rarr;" data-i18n="off_get_li1">An AI call layer for repetitive call handling</li>
+          <li data-i="&rarr;" data-i18n="off_get_li2">Qualification and routing logic</li>
+          <li data-i="&rarr;" data-i18n="off_get_li3">Automated follow-up support &mdash; 5 contacts per lead, every time</li>
+          <li data-i="&rarr;" data-i18n="off_get_li4">Escalation to human team members when real attention is needed</li>
+          <li data-i="&rarr;" data-i18n="off_get_li5">Infrastructure that scales beyond individual rep capacity</li>
+          <li data-i="&rarr;" data-i18n="off_get_li6">Full reporting dashboard and call logs</li>
+          <li data-i="&rarr;" data-i18n="off_get_li7">Integration with your existing CRM and tools</li>
         </ul>
       </div>
       <div class="oc protect rv d2">
-        <div class="oct">&#9675;&ensp;What you protect</div>
+        <div class="oct" data-i18n="off_pro_tag">&#9675;&ensp;What you protect</div>
         <ul class="olist">
-          <li data-i="&rarr;">Your team&rsquo;s time</li>
-          <li data-i="&rarr;">Your team&rsquo;s focus</li>
-          <li data-i="&rarr;">Your team&rsquo;s ability to handle high-value conversations properly</li>
-          <li data-i="&rarr;">Your cost structure as volume grows</li>
-          <li data-i="&rarr;">Your pipeline &mdash; no lead left without follow-up</li>
-          <li data-i="&rarr;">Your competitive position as the industry shifts to automation</li>
+          <li data-i="&rarr;" data-i18n="off_pro_li1">Your team&rsquo;s time</li>
+          <li data-i="&rarr;" data-i18n="off_pro_li2">Your team&rsquo;s focus</li>
+          <li data-i="&rarr;" data-i18n="off_pro_li3">Your team&rsquo;s ability to handle high-value conversations properly</li>
+          <li data-i="&rarr;" data-i18n="off_pro_li4">Your cost structure as volume grows</li>
+          <li data-i="&rarr;" data-i18n="off_pro_li5">Your pipeline &mdash; no lead left without follow-up</li>
+          <li data-i="&rarr;" data-i18n="off_pro_li6">Your competitive position as the industry shifts to automation</li>
         </ul>
       </div>
     </div>
@@ -981,10 +1012,10 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <!-- TESTIMONIAL -->
 <section class="section" style="background:var(--bg2)">
   <div class="container tc">
-    <div class="rv"><div class="label">Real Results. Not a Case Study.</div></div>
+    <div class="rv"><div class="label" data-i18n="test_label">Real Results. Not a Case Study.</div></div>
     <div class="tcard rv">
       <div class="tmarks">&ldquo;</div>
-      <p class="ttext">
+      <p class="ttext" data-i18n-html="test_text">
         We went from contacting <em>300 leads a month with two reps</em> to running
         2,000+ contacts with the same team. LoopHub built the follow-up layer that
         actually executes &mdash; every lead, every time, without us thinking about it.
@@ -992,8 +1023,8 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
       <div class="tauthor">
         <div class="tavatar">R</div>
         <div>
-          <div class="taname">Head of Sales, B2B Services Company</div>
-          <div class="tarole">LoopHub Customer &mdash; deployed in 7 days</div>
+          <div class="taname" data-i18n="test_name">Head of Sales, B2B Services Company</div>
+          <div class="tarole" data-i18n="test_role">LoopHub Customer &mdash; deployed in 7 days</div>
         </div>
       </div>
     </div>
@@ -1003,23 +1034,23 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <!-- CLOSE -->
 <section id="close">
   <div class="container">
-    <h2 class="close-h rv">
+    <h2 class="close-h rv" data-i18n-html="close_h">
       Your best people should not be wasting time<br>on work a machine can <span class="grad">already handle.</span>
     </h2>
-    <p class="close-sub rv">
+    <p class="close-sub rv" data-i18n="close_sub">
       The companies gaining ground already understand that. They are using automation for the
       repetitive layer and keeping humans focused on the conversations that actually deserve them.
       The shift is already happening.
     </p>
     <div class="close-ctas rv">
-      <a class="btn btn-p" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" style="font-size:16px;padding:16px 36px">
+      <a class="btn btn-p" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" style="font-size:16px;padding:16px 36px" data-i18n="close_cta1">
         Book Your Free Discovery Call &rarr;
       </a>
       <a class="btn btn-g" href="tel:+17869402394" style="font-size:16px;padding:16px 36px">
         &#128222;&ensp;+1 (786) 940 2394
       </a>
     </div>
-    <div class="ps rv">
+    <div class="ps rv" data-i18n-html="close_ps">
       <strong>P.S.</strong>&ensp;This system is not built to remove the human side of sales.
       It is built to protect it. The more repetitive work the system absorbs, the more time
       your team has for the conversations that actually drive revenue.
@@ -1036,7 +1067,7 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
     <div class="flinks">
       <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a>
       <a href="tel:+17869402394">+1 (786) 940 2394</a>
-      <a href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener">Book a Call</a>
+      <a href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" data-i18n="footer_book">Book a Call</a>
     </div>
     <span class="fcopy">&copy; 2026 LoopHub Solutions</span>
   </div>
@@ -1137,14 +1168,23 @@ function updateCalc() {
   const beRate    = (beDeals / contacts) * 100;
   const beRateStr = beRate < 1 ? beRate.toFixed(2) + '%' : beRate.toFixed(1) + '%';
 
+  /* use current language strings if translations are loaded */
+  const lang = window.__lhLang || 'en';
+  const t = (typeof _LH_I18N !== 'undefined') ? _LH_I18N[lang] : null;
+  const linesS  = t ? (lines   > 1 ? t.calc_lines_p : t.calc_lines_s) : (lines   > 1 ? ' lines' : ' line');
+  const dealsS  = t ? (beDeals > 1 ? t.calc_deals_p : t.calc_deals_s) : (beDeals > 1 ? ' deals' : ' deal');
+  const rateSuf = t ? t.calc_rate_suffix : ' of your leads';
+  const rateLbl = t ? t.calc_rate_label  : ' close rate';
+  const callSuf = t ? t.calc_calls       : ' calls/mo';
+
   document.getElementById('r-first').textContent   = usd(first);
   document.getElementById('r-ongoing').textContent = usd(ongoing);
-  document.getElementById('r-lines').textContent   = `${lines} line${lines>1?'s':''} \u00B7 ${(lines*2000).toLocaleString()} calls/mo`;
-  document.getElementById('r-be').textContent      = beDeals + (beDeals===1?' deal':' deals');
-  document.getElementById('r-rate').textContent    = beRateStr + ' of your leads';
-  document.getElementById('msg-be').textContent    = beDeals + (beDeals===1?' deal':' deals');
+  document.getElementById('r-lines').textContent   = lines + linesS + ' \u00B7 ' + (lines*2000).toLocaleString() + callSuf;
+  document.getElementById('r-be').textContent      = beDeals + dealsS;
+  document.getElementById('r-rate').textContent    = beRateStr + rateSuf;
+  document.getElementById('msg-be').textContent    = beDeals + dealsS;
   document.getElementById('msg-leads').textContent = contacts.toLocaleString('en-US') + ' leads';
-  document.getElementById('msg-rate').textContent  = beRateStr + ' close rate';
+  document.getElementById('msg-rate').textContent  = beRateStr + rateLbl;
   leadsDisp.textContent = contacts.toLocaleString('en-US');
 }
 </script>
@@ -1315,6 +1355,252 @@ function updateCalc() {
     });
   };
 
+})();
+</script>
+
+<!-- =========================================================
+     BILINGUAL i18n — EN (US/UK/AU) ↔ ES (LATAM)
+     setLang('en') | setLang('es')
+     Persists in localStorage key 'lh_lang'
+========================================================= -->
+<script>
+/* ── Translations ── */
+var _LH_I18N = {
+  en: {
+    nav_problem:'Problem', nav_compare:'vs. SDR', nav_system:'System', nav_calc:'Calculator', nav_cta:'Book a Call \u2192',
+    hero_badge:'<span class="bdot"></span> AI Call Infrastructure \u2014 For Revenue Teams',
+    hero_h1:'Your competitors already use AI<br>to handle repetitive calls.<br><span class="grad">Why is your team still<br>stuck doing them manually?</span>',
+    hero_sub:'For sales and revenue teams that need to reach more leads without adding headcount. Handle routine calls, follow-ups, and qualification automatically \u2014 so your reps focus only on the conversations that close.',
+    hero_cta1:'Book Your Free Discovery Call \u2192', hero_cta2:'Calculate Your ROI',
+    stat_leads:'Leads / Line', stat_cost:'Per Lead', stat_deploy_n:'7 days', stat_deploy:'To Deploy', stat_followup:'Missed Follow-Ups',
+    manifesto:'80% of sales happen on contact 5\u201312. <em>Most teams stop at contact\u00a01.</em>',
+    prob_label:'The Problem', prob_h2:'Every growing business hits the same wall.',
+    prob_sub:'More leads. More calls. More follow-ups. More pressure on the team. And then the real problem begins.',
+    prob_c1_h3:'Your best people work on the wrong things',
+    prob_c1_p:'Basic questions. Routine call handling. Repeated follow-ups. Your best people end up spending their time on work that does not need their best skills \u2014 while high-value conversations wait.',
+    prob_c2_h3:'Follow-up volume is impossible to sustain manually',
+    prob_c2_p:'80% of sales happen on contact 5\u201312. Most teams stop at 1 or 2 \u2014 not because they don\u2019t know better, but because there aren\u2019t enough hours. Leads go cold. Revenue walks out the door.',
+    sdr_label:'The Real Cost Comparison',
+    sdr_h2:'What it really costs to do this<br>with a human SDR.',
+    sdr_sub:'Before you hire another rep, look at the actual numbers \u2014 ramp time, fully-loaded cost, and capacity ceiling.',
+    sdr_c1_old_tag:'SDR \u2014 Time to Productivity', sdr_c1_old_val:'3\u20136<br>months',
+    sdr_c1_old_desc:'Average ramp time before a new SDR reaches full productivity \u2014 while you pay full salary throughout.',
+    sdr_c1_new_tag:'\u26a1\u2005AI System', sdr_c1_new_val:'7 days',
+    sdr_c1_new_desc:'From kickoff to first automated call. No ramp. No training period. No waiting months to see ROI.',
+    sdr_c2_old_tag:'SDR \u2014 Fully-Loaded Monthly Cost', sdr_c2_old_val:'$9k\u2013$11k<br>/month',
+    sdr_c2_old_desc:'Salary, commissions, benefits, tools, onboarding, and management overhead. The real number \u2014 not just base pay.',
+    sdr_c2_new_tag:'\u26a1\u2005AI System', sdr_c2_new_val:'A fraction<br>of that',
+    sdr_c2_new_desc:'Run your numbers in the calculator below. The system doesn\u2019t burn out, call in sick, or quit.',
+    sdr_c3_old_tag:'SDR \u2014 Monthly Lead Capacity', sdr_c3_old_val:'250\u2013350<br>leads',
+    sdr_c3_old_desc:'The realistic ceiling for a single SDR. More volume means more headcount and more management overhead.',
+    sdr_c3_new_tag:'\u26a1\u2005AI System', sdr_c3_new_val:'2,000+<br>per line',
+    sdr_c3_new_desc:'Each line handles 2,000+ leads with 5 follow-up calls each. Scale volume without scaling headcount.',
+    story_label:'The Shift', story_h2:'The companies moving faster today are doing one thing differently.',
+    story_sub:'They are separating the work into two parts \u2014 and letting machines handle the part that does not need a human.',
+    story_old_tag:'Old Model', story_old_h3:'Hire more people. Add more reps. Work harder.',
+    story_old_li1:'Every lead requires human call time', story_old_li2:'Follow-ups fall through the cracks',
+    story_old_li3:'Cost scales linearly with every new contact', story_old_li4:'Reps spending most of their time on repetitive work',
+    story_old_li5:'Hard ceiling of ~300 leads per rep per month',
+    story_new_tag:'The Shift', story_new_h3:'The repetitive layer goes to infrastructure. Humans handle what matters.',
+    story_new_li1:'Machine handles all repetitive conversations', story_new_li2:'Every follow-up executes without exception',
+    story_new_li3:'Cost stays flat as contact volume grows', story_new_li4:'Your people focused on the calls that move revenue',
+    story_new_li5:'2,000+ leads processed per line per month',
+    imgbreak:'Voice Agent \u2014 Live',
+    sys_label:'The System', sys_h2:'Not built to replace your team.<br>Built to <span class="grad">protect</span> it.',
+    sys_sub:'It is not built to replace your team. It is built to protect your team from repetitive work that a machine can already handle.',
+    sys_c1_h3:'Answer Routine Questions', sys_c1_p:'The system handles predictable call flow and keeps every conversation moving without pulling your team in.',
+    sys_c2_h3:'Keep Follow-Ups Moving', sys_c2_p:'5 contacts per lead, automatically. No gaps. No delays. No leads going cold while your reps are tied up on something else.',
+    sys_c3_h3:'Qualify Interest', sys_c3_p:'Identifies where each lead stands and separates the ones that need a real conversation from the ones that are not ready yet.',
+    sys_c4_h3:'Route the Right Conversations', sys_c4_p:'The machine handles repetition. Your people get routed the one-to-one conversations that actually matter.',
+    sys_c5_h3:'Scale Without Headcount', sys_c5_p:'Infrastructure that scales beyond individual rep capacity. Not fewer humans. Better use of humans.',
+    sys_c6_h3:'Full Reporting Visibility', sys_c6_p:'Every call, outcome, and conversion point tracked in real time. You see exactly what the system is doing and producing.',
+    ev_label:'Real Numbers', ev_h2:'This is not about hype.<br>It is about capacity and cost.',
+    ev_sub:'A fully-loaded SDR costs $9k\u2013$11k/month and contacts 250\u2013350 leads. The math on this system is in a different category entirely.',
+    ev_th1:'Metric', ev_th2:'Senior SDR (fully-loaded)', ev_th3:'AI System',
+    ev_r1_m:'Monthly Cost', ev_calc_cta:'Use calculator \u2193',
+    ev_r2_m:'Leads Contacted / Month', ev_r2_a:'2,000+ per line',
+    ev_r3_m:'Follow-Ups per Lead', ev_r3_s:'2\u20133 (often less)', ev_r3_a:'5 guaranteed',
+    ev_r4_m:'Total Calls Executed', ev_r4_a:'10,000+ per line',
+    ev_r5_m:'Cost per Lead Contacted',
+    ev_r6_m:'Scales With Volume', ev_r6_s:'No \u2014 hire more', ev_r6_a:'Yes \u2014 same system',
+    ev_r7_m:'Time to Deploy', ev_r7_s:'3\u20136 months (ramp)',
+    ev_note:'<strong>What that means:</strong> A fully-loaded SDR contacts 250\u2013350 leads at $26\u2013$44 per lead. The AI system contacts those same leads for under $1 each \u2014 with 5 guaranteed follow-ups and zero ramp time. That is a <strong style="color:var(--green)">7\u00d7 capacity increase</strong> at a <strong style="color:var(--green)">9\u00d7 lower cost per contact.</strong>',
+    ev_s1:'More leads processed compared to a single fully-loaded SDR',
+    ev_s2:'Lower cost per lead contacted vs. a senior SDR',
+    ev_s3:'Average time from kickoff to your first automated call',
+    calc_label:'Run Your Numbers',
+    calc_h2:'See what it would cost to automate your call volume \u2014 and how little you need to close to break even.',
+    calc_sub:'Two questions. Your break-even in seconds.',
+    calc_s1_title:'What is your average deal size?', calc_s1_sub:'The revenue you typically close per new client or sale.',
+    calc_continue:'Continue \u2192',
+    calc_s2_title:'How many leads do you want to call per month?', calc_s2_sub:'Each line handles up to 400 contacts with 5 follow-up calls each.',
+    calc_r1_label:'Month 1 Investment', calc_r1_sub:'Includes setup & first month',
+    calc_r2_label:'Ongoing / Month', calc_r3_label:'Break-Even Sales',
+    calc_rate_suffix:' of your leads', calc_msg_pre:'Close just ', calc_msg_mid:' out of ',
+    calc_msg_post:' and the system pays for itself every month. That is a ', calc_msg_end:' to break even.',
+    calc_deals_s:' deal', calc_deals_p:' deals', calc_rate_label:' close rate',
+    calc_lines_s:' line', calc_lines_p:' lines', calc_calls:' calls/mo',
+    calc_cta:'Book Your Free Discovery Call \u2192', calc_note:'No commitment \u2014 30 minutes, free.',
+    off_label:'The Offer', off_h2:'What you get. What you protect.',
+    off_get_tag:'\u2713\u2005What you get',
+    off_get_li1:'An AI call layer for repetitive call handling', off_get_li2:'Qualification and routing logic',
+    off_get_li3:'Automated follow-up support \u2014 5 contacts per lead, every time',
+    off_get_li4:'Escalation to human team members when real attention is needed',
+    off_get_li5:'Infrastructure that scales beyond individual rep capacity',
+    off_get_li6:'Full reporting dashboard and call logs', off_get_li7:'Integration with your existing CRM and tools',
+    off_pro_tag:'\u25cb\u2005What you protect',
+    off_pro_li1:'Your team\u2019s time', off_pro_li2:'Your team\u2019s focus',
+    off_pro_li3:'Your team\u2019s ability to handle high-value conversations properly',
+    off_pro_li4:'Your cost structure as volume grows',
+    off_pro_li5:'Your pipeline \u2014 no lead left without follow-up',
+    off_pro_li6:'Your competitive position as the industry shifts to automation',
+    test_label:'Real Results. Not a Case Study.',
+    test_text:'We went from contacting <em>300 leads a month with two reps</em> to running 2,000+ contacts with the same team. LoopHub built the follow-up layer that actually executes \u2014 every lead, every time, without us thinking about it.',
+    test_name:'Head of Sales, B2B Services Company', test_role:'LoopHub Customer \u2014 deployed in 7 days',
+    close_h:'Your best people should not be wasting time<br>on work a machine can <span class="grad">already handle.</span>',
+    close_sub:'The companies gaining ground already understand that. They are using automation for the repetitive layer and keeping humans focused on the conversations that actually deserve them. The shift is already happening.',
+    close_cta1:'Book Your Free Discovery Call \u2192',
+    close_ps:'<strong>P.S.</strong>\u2005This system is not built to remove the human side of sales. It is built to protect it. The more repetitive work the system absorbs, the more time your team has for the conversations that actually drive revenue.',
+    footer_book:'Book a Call'
+  },
+  es: {
+    nav_problem:'Problema', nav_compare:'vs. SDR', nav_system:'Sistema', nav_calc:'Calculadora', nav_cta:'Reservar llamada \u2192',
+    hero_badge:'<span class="bdot"></span> Infraestructura de llamadas IA \u2014 Para equipos de ventas',
+    hero_h1:'Tus competidores ya usan IA<br>para manejar llamadas repetitivas.<br><span class="grad">\u00bfPor qu\u00e9 tu equipo sigue<br>haci\u00e9ndolas a mano?</span>',
+    hero_sub:'Para equipos de ventas que necesitan llegar a m\u00e1s leads sin contratar m\u00e1s personal. Maneja llamadas rutinarias, seguimientos y calificaci\u00f3n autom\u00e1ticamente \u2014 para que tus representantes se enfoquen solo en las conversaciones que cierran.',
+    hero_cta1:'Reserva tu llamada de descubrimiento \u2192', hero_cta2:'Calcula tu ROI',
+    stat_leads:'Leads / L\u00ednea', stat_cost:'Por Lead', stat_deploy_n:'7 d\u00edas', stat_deploy:'Para Implementar', stat_followup:'Seguimientos Perdidos',
+    manifesto:'El 80% de las ventas ocurre en el contacto 5\u201312. <em>La mayor\u00eda de los equipos se detiene en el contacto\u00a01.</em>',
+    prob_label:'El Problema', prob_h2:'Todos los negocios en crecimiento enfrentan el mismo muro.',
+    prob_sub:'M\u00e1s leads. M\u00e1s llamadas. M\u00e1s seguimientos. M\u00e1s presi\u00f3n en el equipo. Y entonces comienza el problema real.',
+    prob_c1_h3:'Tus mejores personas trabajan en las cosas equivocadas',
+    prob_c1_p:'Preguntas b\u00e1sicas. Manejo rutinario de llamadas. Seguimientos repetidos. Tus mejores personas terminan gastando su tiempo en trabajo que no requiere sus mejores habilidades \u2014 mientras las conversaciones de alto valor esperan.',
+    prob_c2_h3:'El volumen de seguimiento es imposible de mantener manualmente',
+    prob_c2_p:'El 80% de las ventas ocurre en el contacto 5\u201312. La mayor\u00eda de los equipos se detiene en 1 o 2 \u2014 no porque no lo sepan, sino porque no hay suficientes horas. Los leads se enfr\u00edan. Los ingresos se van.',
+    sdr_label:'La Comparaci\u00f3n de Costos Real',
+    sdr_h2:'Lo que realmente cuesta hacer esto<br>con un SDR humano.',
+    sdr_sub:'Antes de contratar otro representante, mira los n\u00fameros reales \u2014 tiempo de preparaci\u00f3n, costo total y l\u00edmite de capacidad.',
+    sdr_c1_old_tag:'SDR \u2014 Tiempo hasta Productividad', sdr_c1_old_val:'3\u20136<br>meses',
+    sdr_c1_old_desc:'Tiempo promedio antes de que un SDR alcance su productividad m\u00e1xima \u2014 mientras pagas el salario completo.',
+    sdr_c1_new_tag:'\u26a1\u2005Sistema IA', sdr_c1_new_val:'7 d\u00edas',
+    sdr_c1_new_desc:'Desde el inicio hasta la primera llamada automatizada. Sin preparaci\u00f3n. Sin per\u00edodo de entrenamiento. Sin esperar meses para ver el ROI.',
+    sdr_c2_old_tag:'SDR \u2014 Costo Mensual Total', sdr_c2_old_val:'$9k\u2013$11k<br>/mes',
+    sdr_c2_old_desc:'Salario, comisiones, beneficios, herramientas, incorporaci\u00f3n y gastos de gesti\u00f3n. El n\u00famero real \u2014 no solo el sueldo base.',
+    sdr_c2_new_tag:'\u26a1\u2005Sistema IA', sdr_c2_new_val:'Una fracci\u00f3n<br>de eso',
+    sdr_c2_new_desc:'Calcula tus n\u00fameros en la calculadora de abajo. El sistema no se agota, no se enferma ni renuncia.',
+    sdr_c3_old_tag:'SDR \u2014 Capacidad Mensual de Leads', sdr_c3_old_val:'250\u2013350<br>leads',
+    sdr_c3_old_desc:'El l\u00edmite realista para un solo SDR. M\u00e1s volumen significa m\u00e1s personal y m\u00e1s gastos de gesti\u00f3n.',
+    sdr_c3_new_tag:'\u26a1\u2005Sistema IA', sdr_c3_new_val:'2,000+<br>por l\u00ednea',
+    sdr_c3_new_desc:'Cada l\u00ednea maneja 2,000+ leads con 5 llamadas de seguimiento cada uno. Escala el volumen sin escalar el personal.',
+    story_label:'El Cambio', story_h2:'Las empresas que avanzan m\u00e1s r\u00e1pido hoy hacen una cosa diferente.',
+    story_sub:'Est\u00e1n separando el trabajo en dos partes \u2014 y dejando que las m\u00e1quinas manejen la parte que no necesita un humano.',
+    story_old_tag:'Modelo Antiguo', story_old_h3:'Contratar m\u00e1s personas. Agregar m\u00e1s representantes. Trabajar m\u00e1s duro.',
+    story_old_li1:'Cada lead requiere tiempo de llamada humana', story_old_li2:'Los seguimientos se pierden',
+    story_old_li3:'El costo escala linealmente con cada nuevo contacto', story_old_li4:'Los representantes gastan la mayor parte del tiempo en trabajo repetitivo',
+    story_old_li5:'L\u00edmite de ~300 leads por representante al mes',
+    story_new_tag:'El Cambio', story_new_h3:'La capa repetitiva va a infraestructura. Los humanos manejan lo que importa.',
+    story_new_li1:'La m\u00e1quina maneja todas las conversaciones repetitivas', story_new_li2:'Cada seguimiento se ejecuta sin excepci\u00f3n',
+    story_new_li3:'El costo se mantiene estable a medida que crece el volumen', story_new_li4:'Tu equipo enfocado en las llamadas que generan ingresos',
+    story_new_li5:'2,000+ leads procesados por l\u00ednea al mes',
+    imgbreak:'Agente de Voz \u2014 En Vivo',
+    sys_label:'El Sistema', sys_h2:'No construido para reemplazar a tu equipo.<br>Construido para <span class="grad">protegerlo.</span>',
+    sys_sub:'No est\u00e1 construido para reemplazar a tu equipo. Est\u00e1 construido para proteger a tu equipo del trabajo repetitivo que una m\u00e1quina ya puede manejar.',
+    sys_c1_h3:'Responder Preguntas Rutinarias', sys_c1_p:'El sistema maneja el flujo de llamadas predecible y mantiene cada conversaci\u00f3n en movimiento sin involucrar a tu equipo.',
+    sys_c2_h3:'Mantener los Seguimientos en Movimiento', sys_c2_p:'5 contactos por lead, autom\u00e1ticamente. Sin brechas. Sin demoras. Sin leads que se enfr\u00edan mientras tus representantes est\u00e1n ocupados.',
+    sys_c3_h3:'Calificar el Inter\u00e9s', sys_c3_p:'Identifica d\u00f3nde est\u00e1 cada lead y separa los que necesitan una conversaci\u00f3n real de los que a\u00fan no est\u00e1n listos.',
+    sys_c4_h3:'Dirigir las Conversaciones Correctas', sys_c4_p:'La m\u00e1quina maneja la repetici\u00f3n. Tu equipo recibe las conversaciones uno a uno que realmente importan.',
+    sys_c5_h3:'Escalar Sin Contratar', sys_c5_p:'Infraestructura que escala m\u00e1s all\u00e1 de la capacidad individual. No menos humanos. Mejor uso de los humanos.',
+    sys_c6_h3:'Visibilidad Completa de Reportes', sys_c6_p:'Cada llamada, resultado y punto de conversi\u00f3n rastreado en tiempo real. Ves exactamente lo que el sistema est\u00e1 haciendo y produciendo.',
+    ev_label:'N\u00fameros Reales', ev_h2:'No se trata de hype.<br>Se trata de capacidad y costo.',
+    ev_sub:'Un SDR con costo total cuesta $9k\u2013$11k/mes y contacta 250\u2013350 leads. Las matem\u00e1ticas de este sistema est\u00e1n en una categor\u00eda completamente diferente.',
+    ev_th1:'M\u00e9trica', ev_th2:'SDR Senior (costo total)', ev_th3:'Sistema IA',
+    ev_r1_m:'Costo Mensual', ev_calc_cta:'Usar calculadora \u2193',
+    ev_r2_m:'Leads Contactados / Mes', ev_r2_a:'2,000+ por l\u00ednea',
+    ev_r3_m:'Seguimientos por Lead', ev_r3_s:'2\u20133 (con frecuencia menos)', ev_r3_a:'5 garantizados',
+    ev_r4_m:'Total de Llamadas Ejecutadas', ev_r4_a:'10,000+ por l\u00ednea',
+    ev_r5_m:'Costo por Lead Contactado',
+    ev_r6_m:'Escala con Volumen', ev_r6_s:'No \u2014 contratar m\u00e1s', ev_r6_a:'S\u00ed \u2014 mismo sistema',
+    ev_r7_m:'Tiempo de Implementaci\u00f3n', ev_r7_s:'3\u20136 meses (preparaci\u00f3n)',
+    ev_note:'<strong>Lo que eso significa:</strong> Un SDR con costo total contacta 250\u2013350 leads a $26\u2013$44 por lead. El sistema de IA contacta esos mismos leads por menos de $1 cada uno \u2014 con 5 seguimientos garantizados y cero tiempo de preparaci\u00f3n. Eso es un <strong style="color:var(--green)">aumento de capacidad de 7\u00d7</strong> con un <strong style="color:var(--green)">costo por contacto 9\u00d7 menor.</strong>',
+    ev_s1:'M\u00e1s leads procesados en comparaci\u00f3n con un SDR con costo total',
+    ev_s2:'Menor costo por lead contactado vs. un SDR senior',
+    ev_s3:'Tiempo promedio desde el inicio hasta tu primera llamada automatizada',
+    calc_label:'Calcula Tus N\u00fameros',
+    calc_h2:'Descubre cu\u00e1nto costar\u00eda automatizar tu volumen de llamadas \u2014 y qu\u00e9 poco necesitas cerrar para recuperar la inversi\u00f3n.',
+    calc_sub:'Dos preguntas. Tu punto de equilibrio en segundos.',
+    calc_s1_title:'\u00bfCu\u00e1l es el tama\u00f1o promedio de tu negocio?', calc_s1_sub:'Los ingresos que normalmente cierras por nuevo cliente o venta.',
+    calc_continue:'Continuar \u2192',
+    calc_s2_title:'\u00bfCu\u00e1ntos leads quieres llamar por mes?', calc_s2_sub:'Cada l\u00ednea maneja hasta 400 contactos con 5 llamadas de seguimiento cada uno.',
+    calc_r1_label:'Inversi\u00f3n Mes 1', calc_r1_sub:'Incluye configuraci\u00f3n y primer mes',
+    calc_r2_label:'Mensual / Mes', calc_r3_label:'Negocios para Punto de Equilibrio',
+    calc_rate_suffix:' de tus leads', calc_msg_pre:'Cierra solo ', calc_msg_mid:' de ',
+    calc_msg_post:' y el sistema se paga solo cada mes. Eso es un ', calc_msg_end:' para recuperar la inversi\u00f3n.',
+    calc_deals_s:' negocio', calc_deals_p:' negocios', calc_rate_label:' tasa de cierre',
+    calc_lines_s:' l\u00ednea', calc_lines_p:' l\u00edneas', calc_calls:' llamadas/mes',
+    calc_cta:'Reserva tu llamada de descubrimiento \u2192', calc_note:'Sin compromiso \u2014 30 minutos, gratis.',
+    off_label:'La Oferta', off_h2:'Lo que obtienes. Lo que proteges.',
+    off_get_tag:'\u2713\u2005Lo que obtienes',
+    off_get_li1:'Una capa de llamadas IA para el manejo de llamadas repetitivas', off_get_li2:'L\u00f3gica de calificaci\u00f3n y enrutamiento',
+    off_get_li3:'Soporte de seguimiento automatizado \u2014 5 contactos por lead, siempre',
+    off_get_li4:'Escalaci\u00f3n a miembros del equipo humano cuando se necesita atenci\u00f3n real',
+    off_get_li5:'Infraestructura que escala m\u00e1s all\u00e1 de la capacidad individual',
+    off_get_li6:'Panel de reportes completo y registros de llamadas', off_get_li7:'Integraci\u00f3n con tu CRM y herramientas existentes',
+    off_pro_tag:'\u25cb\u2005Lo que proteges',
+    off_pro_li1:'El tiempo de tu equipo', off_pro_li2:'El enfoque de tu equipo',
+    off_pro_li3:'La capacidad de tu equipo para manejar conversaciones de alto valor',
+    off_pro_li4:'Tu estructura de costos a medida que crece el volumen',
+    off_pro_li5:'Tu pipeline \u2014 ning\u00fan lead sin seguimiento',
+    off_pro_li6:'Tu posici\u00f3n competitiva a medida que la industria cambia a automatizaci\u00f3n',
+    test_label:'Resultados Reales. No un Caso de Estudio.',
+    test_text:'Pasamos de contactar <em>300 leads al mes con dos representantes</em> a manejar 2,000+ contactos con el mismo equipo. LoopHub construy\u00f3 la capa de seguimiento que realmente se ejecuta \u2014 cada lead, cada vez, sin que nosotros pensemos en ello.',
+    test_name:'Director de Ventas, Empresa de Servicios B2B', test_role:'Cliente de LoopHub \u2014 implementado en 7 d\u00edas',
+    close_h:'Tus mejores personas no deber\u00edan estar perdiendo tiempo<br>en trabajo que una m\u00e1quina<br><span class="grad">ya puede hacer.</span>',
+    close_sub:'Las empresas que avanzan ya lo entienden. Est\u00e1n usando la automatizaci\u00f3n para la capa repetitiva y manteniendo a los humanos enfocados en las conversaciones que realmente lo merecen. El cambio ya est\u00e1 ocurriendo.',
+    close_cta1:'Reserva tu llamada de descubrimiento \u2192',
+    close_ps:'<strong>P.D.</strong>\u2005Este sistema no est\u00e1 construido para eliminar el lado humano de las ventas. Est\u00e1 construido para protegerlo. Cuanto m\u00e1s trabajo repetitivo absorbe el sistema, m\u00e1s tiempo tiene tu equipo para las conversaciones que realmente generan ingresos.',
+    footer_book:'Reservar llamada'
+  }
+};
+
+/* ── setLang ── */
+window.__lhLang = 'en';
+function setLang(lang) {
+  window.__lhLang = lang;
+  var t = _LH_I18N[lang];
+  /* update <html lang> */
+  document.documentElement.lang = lang;
+  /* update toggle buttons */
+  var btnEn = document.getElementById('btn-en');
+  var btnEs = document.getElementById('btn-es');
+  if (btnEn) { btnEn.classList.toggle('active', lang === 'en'); btnEn.setAttribute('aria-pressed', lang === 'en'); }
+  if (btnEs) { btnEs.classList.toggle('active', lang === 'es'); btnEs.setAttribute('aria-pressed', lang === 'es'); }
+  /* swap textContent elements */
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  /* swap innerHTML elements */
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n-html');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  /* re-run calculator if open */
+  if (document.getElementById('results') && document.getElementById('results').classList.contains('open')) {
+    updateCalc();
+  }
+  /* persist */
+  try { localStorage.setItem('lh_lang', lang); } catch(e) {}
+}
+
+/* ── auto-load saved or browser preference ── */
+(function() {
+  var saved;
+  try { saved = localStorage.getItem('lh_lang'); } catch(e) {}
+  if (!saved) {
+    var bl = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    if (bl.indexOf('es') === 0) saved = 'es';
+  }
+  if (saved === 'es') setLang('es');
 })();
 </script>
 
