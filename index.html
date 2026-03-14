@@ -18,6 +18,22 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+
+  <!-- ===== GOOGLE ANALYTICS 4 =====
+       REPLACE G-XXXXXXXXXX with your real Measurement ID from analytics.google.com
+  ===== -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', {
+      'send_page_view': true,
+      'cookie_flags': 'SameSite=None;Secure'
+    });
+  </script>
+  <!-- ===== END GA4 ===== -->
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LoopHub — AI Call Infrastructure for Revenue Teams</title>
@@ -602,7 +618,8 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   <div class="hero-video-wrap rv d4">
     <div class="hero-video-inner">
       <iframe
-        src="https://www.youtube.com/embed/tk2YlNpbNxU?rel=0&modestbranding=1&color=white"
+        id="yt-player"
+        src="https://www.youtube.com/embed/tk2YlNpbNxU?rel=0&modestbranding=1&color=white&enablejsapi=1"
         title="LoopHub — AI Call Infrastructure Demo"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen>
@@ -1131,5 +1148,212 @@ function updateCalc() {
   leadsDisp.textContent = contacts.toLocaleString('en-US');
 }
 </script>
+
+<!-- =========================================================
+     LEAD SCORING SYSTEM
+     Tracks visitor behavior, assigns a score, sends to GA4,
+     and pushes it to the Tawk.to agent dashboard in real time.
+
+     SCORE TIERS:
+       0–9   → Cold    (just browsing)
+       10–24 → Warm    (engaged, reading)
+       25–44 → Hot     (high intent)
+       45+   → 🔥 Muy caliente (ready to buy)
+
+     SCORING TABLE:
+       Page loaded              → +1
+       Scroll 25%               → +2
+       Scroll 50%               → +3
+       Scroll 75%               → +4
+       Scroll 90%               → +5
+       Viewed #problem          → +2
+       Viewed #sdr-compare      → +3
+       Viewed #system           → +3
+       Viewed #calculator       → +5
+       Viewed #close            → +4
+       Calculator Step 1 done   → +8
+       Calculator completed     → +15
+       Video started            → +10
+       Video completed          → +5
+       Time on page 30s         → +3
+       Time on page 2 min       → +5
+       Time on page 5 min       → +8
+       CTA booking clicked      → +20
+========================================================= -->
+<script>
+(function () {
+  var score = 0;
+  var tier  = 'cold';
+  var fired = {};
+
+  /* ── Tier labels ── */
+  function calcTier(s) {
+    if (s >= 45) return '🔥 Muy caliente (45+)';
+    if (s >= 25) return '🟠 Hot (25-44)';
+    if (s >= 10) return '🟡 Warm (10-24)';
+    return '🔵 Cold (0-9)';
+  }
+
+  /* ── Add points ── */
+  function addPoints(action, pts) {
+    if (fired[action]) return;
+    fired[action] = true;
+    score += pts;
+    tier = calcTier(score);
+
+    /* Send to GA4 */
+    if (window.gtag) {
+      gtag('event', 'lead_score', {
+        'score_action':  action,
+        'points_added':  pts,
+        'total_score':   score,
+        'lead_tier':     tier
+      });
+    }
+
+    /* Push to Tawk.to if already loaded */
+    syncTawk();
+
+    /* Debug (remove in prod if desired) */
+    console.log('[LoopHub Score] ' + action + ': +' + pts + 'pts → ' + score + ' | ' + tier);
+  }
+
+  /* ── Sync score to Tawk.to agent view ── */
+  function syncTawk() {
+    if (window.Tawk_API && window.Tawk_API.setAttributes) {
+      Tawk_API.setAttributes({
+        'lead_score': String(score),
+        'lead_tier':  tier
+      }, function () {});
+    }
+  }
+
+  /* Expose for Tawk.to onLoad callback */
+  window.__lhScore = function () { return { score: score, tier: tier }; };
+
+  /* ── 1. Page load ── */
+  addPoints('page_loaded', 1);
+
+  /* ── 2. Scroll depth ── */
+  var scrollMilestones = { 25: 2, 50: 3, 75: 4, 90: 5 };
+  window.addEventListener('scroll', function () {
+    var pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+    Object.keys(scrollMilestones).forEach(function (m) {
+      if (pct >= +m) addPoints('scroll_' + m + 'pct', scrollMilestones[m]);
+    });
+  }, { passive: true });
+
+  /* ── 3. Section visibility ── */
+  var sectionPts = {
+    'problem':    2,
+    'sdr-compare':3,
+    'system':     3,
+    'calculator': 5,
+    'close':      4
+  };
+  if (window.IntersectionObserver) {
+    var secObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && sectionPts[e.target.id]) {
+          addPoints('viewed_' + e.target.id, sectionPts[e.target.id]);
+          secObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    Object.keys(sectionPts).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) secObs.observe(el);
+    });
+  }
+
+  /* ── 4. Calculator interactions ── */
+  var contBtn = document.getElementById('continue-btn');
+  if (contBtn) {
+    contBtn.addEventListener('click', function () {
+      addPoints('calculator_step1_done', 8);
+    });
+  }
+  var slider = document.getElementById('leads-slider');
+  if (slider) {
+    slider.addEventListener('change', function () {
+      addPoints('calculator_completed', 15);
+    });
+  }
+
+  /* ── 5. CTA booking clicks ── */
+  document.querySelectorAll('a[href*="cal.com"]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      addPoints('cta_booking_clicked', 20);
+      /* Fire GA4 conversion event */
+      if (window.gtag) {
+        gtag('event', 'conversion', {
+          'event_category': 'engagement',
+          'event_label':    'booking_cta'
+        });
+      }
+    });
+  });
+
+  /* ── 6. Time on page ── */
+  setTimeout(function () { addPoints('time_30s',  3); },  30000);
+  setTimeout(function () { addPoints('time_2min', 5); }, 120000);
+  setTimeout(function () { addPoints('time_5min', 8); }, 300000);
+
+  /* ── 7. YouTube video events (IFrame API) ── */
+  var ytTag = document.createElement('script');
+  ytTag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(ytTag);
+
+  window.onYouTubeIframeAPIReady = function () {
+    var player = new YT.Player('yt-player', {
+      events: {
+        onStateChange: function (event) {
+          if (event.data === YT.PlayerState.PLAYING)  addPoints('video_started',   10);
+          if (event.data === YT.PlayerState.ENDED)    addPoints('video_completed',  5);
+        }
+      }
+    });
+  };
+
+})();
+</script>
+
+<!-- =========================================================
+     TAWK.TO LIVE CHAT
+     REPLACE the two placeholders below with your real IDs:
+       TAWK_PROPERTY_ID  → the long ID after embed.tawk.to/
+       TAWK_WIDGET_ID    → the short ID at the end of the URL
+     Example: https://embed.tawk.to/65abc123def456/1hxxxxxx
+                                      ^^^^^^^^^^^^^ ^^^^^^^^^
+                                      PROPERTY_ID   WIDGET_ID
+
+     After replacing, the agent chat dashboard will show each
+     visitor's lead_score and lead_tier automatically.
+========================================================= -->
+<script>
+var Tawk_API = Tawk_API || {};
+var Tawk_LoadStart = new Date();
+
+/* Set visitor score as soon as chat loads */
+Tawk_API.onLoad = function () {
+  var s = window.__lhScore ? window.__lhScore() : { score: 0, tier: '🔵 Cold (0-9)' };
+  Tawk_API.setAttributes({
+    'lead_score': String(s.score),
+    'lead_tier':  s.tier
+  }, function () {});
+};
+
+(function () {
+  var s1 = document.createElement('script');
+  var s0 = document.getElementsByTagName('script')[0];
+  s1.async = true;
+  s1.src   = 'https://embed.tawk.to/TAWK_PROPERTY_ID/TAWK_WIDGET_ID';
+  s1.charset = 'UTF-8';
+  s1.setAttribute('crossorigin', '*');
+  s0.parentNode.insertBefore(s1, s0);
+})();
+</script>
+<!-- ===== END TAWK.TO ===== -->
+
 </body>
 </html>
