@@ -1740,8 +1740,9 @@ window.addEventListener('load',   updateStickyHeaders);
 window.addEventListener('resize', updateStickyHeaders);
 
 /* ── APPLY PATH SELECTOR ── */
-// Configure: set your bot-call webhook URL here
-var BOT_CALL_WEBHOOK = ''; // e.g. 'https://hooks.zapier.com/hooks/catch/...'
+// Configure: set your n8n webhook URLs here
+var OPTION_A_WEBHOOK = ''; // ← URL del webhook n8n para Option A (formulario de cualificación)
+var OPTION_B_WEBHOOK = ''; // ← URL del webhook n8n para Option B (bot call via Atlas)
 
 function selectApplyPath(path) {
   var formA   = document.getElementById('apply-form-a');
@@ -1791,12 +1792,18 @@ if (botCallForm) {
     var displayEl = document.getElementById('bot-phone-display');
     if (displayEl) displayEl.textContent = phone;
 
-    // Fire webhook if configured
-    if (BOT_CALL_WEBHOOK) {
-      fetch(BOT_CALL_WEBHOOK, {
+    // Fire webhook to n8n → triggers Atlas call + follow-up sequence
+    if (OPTION_B_WEBHOOK) {
+      fetch(OPTION_B_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name, phone: phone, best_time: time, source: 'loophub_landing_bot_call' })
+        body: JSON.stringify({
+          source: 'loophub_option_b_bot_call',
+          name: name,
+          phone: phone,
+          best_time: time,
+          timestamp: new Date().toISOString()
+        })
       }).catch(function(){});
     }
 
@@ -1872,6 +1879,26 @@ document.getElementById('qual-form').addEventListener('submit', function(e) {
   var fd = new FormData(this);
   var score = calcFitScore(fd);
   var qualified = score >= QUAL_CONFIG.THRESHOLD;
+
+  // Fire webhook to n8n → saves to Google Sheets + triggers SMS/follow-up sequence
+  if (OPTION_A_WEBHOOK) {
+    fetch(OPTION_A_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        source: 'loophub_option_a',
+        industry: fd.get('industry') || '',
+        running_ads: fd.get('running_ads') || '',
+        monthly_leads: fd.get('monthly_leads') || '',
+        leads_ready: fd.get('leads_ready') || '',
+        deal_value: fd.get('deal_value') || '',
+        has_closer: fd.get('has_closer') || '',
+        score: score,
+        qualified: qualified,
+        timestamp: new Date().toISOString()
+      })
+    }).catch(function(){});
+  }
 
   document.getElementById('qf-state-form').style.display = 'none';
 
