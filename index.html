@@ -723,6 +723,32 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   .lang-switch.en .ls-puck { transform:translateX(22px); background:var(--pm); box-shadow:0 2px 10px rgba(91,33,255,.55); }
   @media(max-width:768px){ .nav-right{gap:8px;} .nav-right > .btn{display:none;} .ls-region{display:none;} }
 
+  /* ===== LANGUAGE HINT ARROW ===== */
+  .lang-hint {
+    position: absolute;
+    bottom: -30px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    animation: hintBounce 2s ease-in-out infinite;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .lang-hint-text {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+  .lang-hint.hidden { opacity: 0; pointer-events: none; }
+  @keyframes hintBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  @media(max-width:768px){ .lang-hint { bottom: -26px; right: 20px; } }
+
   /* ===== IMAGE BREAK ===== */
   .img-break { position: relative; overflow: hidden; }
   .img-break-img { width: 100%; height: auto; display: block; filter: brightness(.9) saturate(1.1); }
@@ -745,7 +771,7 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
     <li><a href="#pilot">The Campaign</a></li>
     <li><a href="#apply">Apply</a></li>
   </ul>
-  <div class="nav-right">
+  <div class="nav-right" style="position:relative">
     <!-- Language toggle -->
     <div class="lang-switch en" id="lang-switch" role="group" aria-label="Language / Idioma">
       <button class="ls-side ls-es" id="btn-es" onclick="setLang('es')" aria-label="Español — LATAM">
@@ -766,7 +792,14 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
         <span class="ls-region">US·UK·AU</span>
       </button>
     </div>
-    <a class="btn btn-p" href="#apply" style="font-size:14px;padding:11px 22px">Apply for the Test &rarr;</a>
+    <div class="lang-hint" id="lang-hint">
+      <svg class="lang-hint-arrow" width="32" height="24" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 22C8 18 14 8 28 4" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/>
+        <path d="M24 2L28 4L24 7" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="lang-hint-text">EN ↔ ES</span>
+    </div>
+    <a class="btn btn-p" href="#apply" style="font-size:14px;padding:11px 22px" data-i18n="nav_cta">Apply for the Test &rarr;</a>
   </div>
 </nav>
 
@@ -776,27 +809,27 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <div id="sticky-past-stack" aria-hidden="true">
   <div class="ssh-pill" data-target="leak">
     <span class="pill-num">01</span>
-    <span class="pill-title">The Problem</span>
+    <span class="pill-title" data-i18n="pill_01">The Problem</span>
   </div>
   <div class="ssh-pill" data-target="follow-up-gap">
     <span class="pill-num">02</span>
-    <span class="pill-title">The Follow-Up Gap</span>
+    <span class="pill-title" data-i18n="pill_02">The Follow-Up Gap</span>
   </div>
   <div class="ssh-pill" data-target="gap-section">
     <span class="pill-num">03</span>
-    <span class="pill-title">Where Deals Die</span>
+    <span class="pill-title" data-i18n="pill_03">Where Deals Die</span>
   </div>
   <div class="ssh-pill" data-target="mechanism">
     <span class="pill-num">04</span>
-    <span class="pill-title">How the Bot Works</span>
+    <span class="pill-title" data-i18n="pill_04">How the Bot Works</span>
   </div>
   <div class="ssh-pill" data-target="economics">
     <span class="pill-num">05</span>
-    <span class="pill-title">The Math</span>
+    <span class="pill-title" data-i18n="pill_05">The Math</span>
   </div>
   <div class="ssh-pill" data-target="pilot">
     <span class="pill-num">06</span>
-    <span class="pill-title">The 250-Lead Test</span>
+    <span class="pill-title" data-i18n="pill_06">The 250-Lead Test</span>
   </div>
 </div>
 
@@ -804,37 +837,37 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <section id="hero">
   <div class="hero-blob hero-blob-top" aria-hidden="true"><div></div></div>
   <div class="hero-blob hero-blob-btm" aria-hidden="true"><div></div></div>
-  <div class="badge rv"><span class="bdot"></span> For Businesses Already Running Ads or Generating Inbound Leads</div>
-  <h1 class="hero-h1 rv d1">
+  <div class="badge rv"><span class="bdot"></span> <span data-i18n="hero_badge">For Businesses Already Running Ads or Generating Inbound Leads</span></div>
+  <h1 class="hero-h1 rv d1" data-i18n-html="hero_h1">
     Turn More of Your Existing Leads<br>Into Booked Meetings —<br>
     <span class="grad">With an AI Sales Bot</span>
   </h1>
-  <p class="hero-sub rv d2">
+  <p class="hero-sub rv d2" data-i18n="hero_sub">
     The bot calls in under 5 minutes, follows up 5 times, and qualifies each lead —
     so your team only speaks with prospects who are ready.
     Apply for the 250-Lead Test Campaign.
   </p>
   <div class="qual-strip rv d2">
-    <span class="qs-item"><span class="qs-check">✓</span> Active ad spend or consistent inbound</span>
-    <span class="qs-item"><span class="qs-check">✓</span> 250+ leads ready to call</span>
-    <span class="qs-item"><span class="qs-check">✓</span> Real deal value</span>
-    <span class="qs-item"><span class="qs-check">✓</span> Someone to close</span>
+    <span class="qs-item"><span class="qs-check">✓</span> <span data-i18n="hero_qs1">Active ad spend or consistent inbound</span></span>
+    <span class="qs-item"><span class="qs-check">✓</span> <span data-i18n="hero_qs2">250+ leads ready to call</span></span>
+    <span class="qs-item"><span class="qs-check">✓</span> <span data-i18n="hero_qs3">Real deal value</span></span>
+    <span class="qs-item"><span class="qs-check">✓</span> <span data-i18n="hero_qs4">Someone to close</span></span>
   </div>
   <div class="hero-ctas rv d3">
-    <a class="btn btn-p" href="#apply" style="font-size:16px;padding:15px 32px">Apply for the 250-Lead Test &rarr;</a>
-    <a class="btn btn-g" href="#pilot" style="font-size:16px;padding:15px 30px">See What's Included</a>
+    <a class="btn btn-p" href="#apply" style="font-size:16px;padding:15px 32px" data-i18n-html="hero_cta1">Apply for the 250-Lead Test &rarr;</a>
+    <a class="btn btn-g" href="#pilot" style="font-size:16px;padding:15px 30px" data-i18n="hero_cta2">See What's Included</a>
   </div>
   <div class="stats-bar rv">
-    <div class="si"><div class="sn" style="color:var(--green)">250</div><div class="sl">Min. Test Leads</div></div>
-    <div class="si"><div class="sn" style="color:var(--green)">7 days</div><div class="sl">To Deploy</div></div>
-    <div class="si"><div class="sn">5&times;</div><div class="sl">Follow-Ups / Lead</div></div>
-    <div class="si"><div class="sn">0</div><div class="sl">Missed Contacts</div></div>
+    <div class="si"><div class="sn" style="color:var(--green)">250</div><div class="sl" data-i18n="stat_leads">Min. Test Leads</div></div>
+    <div class="si"><div class="sn" style="color:var(--green)">7 days</div><div class="sl" data-i18n="stat_deploy">To Deploy</div></div>
+    <div class="si"><div class="sn">5&times;</div><div class="sl" data-i18n="stat_followups">Follow-Ups / Lead</div></div>
+    <div class="si"><div class="sn">0</div><div class="sl" data-i18n="stat_missed">Missed Contacts</div></div>
   </div>
 </section>
 
 <!-- MANIFESTO -->
 <div class="manifesto">
-  <p class="rv">Most businesses don't have a lead problem. <em>They have a conversion problem.</em></p>
+  <p class="rv" data-i18n-html="manifesto">Most businesses don't have a lead problem. <em>They have a conversion problem.</em></p>
 </div>
 
 <!-- ===== STICKY SECTIONS ===== -->
@@ -844,15 +877,15 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   <section class="sticky-section" id="leak">
     <div class="sticky-section-header">
       <div class="ssh-inner">
-        <h2 class="ssh-title">Your Leads Are Going Cold Before Anyone Calls Them</h2>
-        <span class="ssh-num">01 &mdash; The Problem</span>
+        <h2 class="ssh-title" data-i18n="ssh1_title">Your Leads Are Going Cold Before Anyone Calls Them</h2>
+        <span class="ssh-num" data-i18n-html="ssh1_num">01 &mdash; The Problem</span>
       </div>
     </div>
     <div class="sticky-section-content">
       <div class="rv">
-        <div class="label">The Conversion Problem</div>
-        <h2 class="h2">You're already generating enough leads.<br>The problem is what happens next.</h2>
-        <p class="sub">More budget. More ads. More volume. But the pipeline doesn't move because the leads that come in aren't being worked properly. The leak isn't at the top of the funnel.</p>
+        <div class="label" data-i18n="leak_label">The Conversion Problem</div>
+        <h2 class="h2" data-i18n-html="leak_h2">You're already generating enough leads.<br>The problem is what happens next.</h2>
+        <p class="sub" data-i18n="leak_sub">More budget. More ads. More volume. But the pipeline doesn't move because the leads that come in aren't being worked properly. The leak isn't at the top of the funnel.</p>
       </div>
       <div class="pgrid">
         <div class="pcard rv d1">
@@ -883,20 +916,20 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   <section class="sticky-section" id="follow-up-gap">
     <div class="sticky-section-header">
       <div class="ssh-inner">
-        <h2 class="ssh-title">Most Teams Stop Too Early</h2>
-        <span class="ssh-num">02B — The Gap</span>
+        <h2 class="ssh-title" data-i18n="ssh2b_title">Most Teams Stop Too Early</h2>
+        <span class="ssh-num" data-i18n-html="ssh2b_num">02B — The Gap</span>
       </div>
     </div>
 
     <div class="sticky-section-content">
       <div class="fug-wrapper">
-        <h2 class="fug-heading">Most teams stop too early.<br>That's where deals die.</h2>
+        <h2 class="fug-heading" data-i18n-html="fug_heading">Most teams stop too early.<br>That's where deals die.</h2>
 
-        <p class="fug-text">
+        <p class="fug-text" data-i18n="fug_text">
           The problem usually isn't the lead. It's what happens after the form fill. Most teams follow up once or twice, then move on. But the data tells a different story.
         </p>
 
-        <p class="fug-source">
+        <p class="fug-source" data-i18n-html="fug_source">
           According to <strong>Grant Cardone</strong> &mdash; one of the top sales authorities in the world:
         </p>
 
@@ -908,11 +941,11 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
           />
         </div>
 
-        <p class="fug-caption">
+        <p class="fug-caption" data-i18n-html="fug_caption">
           <strong>80% of sales happen after the 5th contact.</strong> Yet 90% of reps stop before that.
         </p>
 
-        <p class="fug-transition">
+        <p class="fug-transition" data-i18n-html="fug_transition">
           That's why the bot calls fast, follows up 5 times automatically, and keeps working the lead until there's a real outcome &mdash; not just a missed call.
         </p>
       </div>
@@ -966,8 +999,8 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   <section class="sticky-section" id="mechanism">
     <div class="sticky-section-header">
       <div class="ssh-inner">
-        <h2 class="ssh-title">How the AI Sales Bot Works</h2>
-        <span class="ssh-num">03 &mdash; The Mechanism</span>
+        <h2 class="ssh-title" data-i18n="ssh3_title">How the AI Sales Bot Works</h2>
+        <span class="ssh-num" data-i18n-html="ssh3_num">03 &mdash; The Mechanism</span>
       </div>
     </div>
     <div class="sticky-section-content">
@@ -1033,15 +1066,15 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   <section class="sticky-section" id="economics">
     <div class="sticky-section-header">
       <div class="ssh-inner">
-        <h2 class="ssh-title">The Economics</h2>
-        <span class="ssh-num">04 &mdash; The Math</span>
+        <h2 class="ssh-title" data-i18n="ssh4_title">The Economics</h2>
+        <span class="ssh-num" data-i18n-html="ssh4_num">04 &mdash; The Math</span>
       </div>
     </div>
     <div class="sticky-section-content">
       <div class="rv">
-        <div class="label">Capacity vs. Cost</div>
-        <h2 class="h2">Before you buy more leads,<br>prove you can convert the ones you have.</h2>
-        <p class="sub">A fully-loaded SDR costs $9k–$11k/month and reaches 250–350 leads. The math on this system is in a different category. Run your own numbers below.</p>
+        <div class="label" data-i18n="econ_label">Capacity vs. Cost</div>
+        <h2 class="h2" data-i18n-html="econ_h2">Before you buy more leads,<br>prove you can convert the ones you have.</h2>
+        <p class="sub" data-i18n="econ_sub">A fully-loaded SDR costs $9k–$11k/month and reaches 250–350 leads. The math on this system is in a different category. Run your own numbers below.</p>
       </div>
       <div class="twrap rv">
         <table>
@@ -1066,9 +1099,9 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 
       <!-- CALCULATOR -->
       <div class="tc rv" style="margin-bottom:32px">
-        <div class="label">Run Your Numbers</div>
-        <h3 class="h2">See how little you need to close to break even.</h3>
-        <p class="sub" style="margin:0 auto">Two inputs. Your break-even in seconds.</p>
+        <div class="label" data-i18n="calc_label">Run Your Numbers</div>
+        <h3 class="h2" data-i18n="calc_h2">See how little you need to close to break even.</h3>
+        <p class="sub" style="margin:0 auto" data-i18n="calc_sub">Two inputs. Your break-even in seconds.</p>
       </div>
       <div class="calc-wrap rv" id="calc-wrapper">
         <div class="calc-step" id="step1">
@@ -1131,14 +1164,14 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   <section class="sticky-section" id="pilot">
     <div class="sticky-section-header">
       <div class="ssh-inner">
-        <h2 class="ssh-title">The 250-Lead Test Campaign</h2>
-        <span class="ssh-num">05 &mdash; The Offer</span>
+        <h2 class="ssh-title" data-i18n="ssh5_title">The 250-Lead Test Campaign</h2>
+        <span class="ssh-num" data-i18n-html="ssh5_num">05 &mdash; The Offer</span>
       </div>
     </div>
     <div class="sticky-section-content">
       <div class="rv">
-        <div class="label">The Pilot Campaign</div>
-        <h2 class="h2">A controlled test with your actual leads.<br>Not a demo. <span class="grad">Real results.</span></h2>
+        <div class="label" data-i18n="pilot_label">The Pilot Campaign</div>
+        <h2 class="h2" data-i18n-html="pilot_h2">A controlled test with your actual leads.<br>Not a demo. <span class="grad">Real results.</span></h2>
         <p class="sub">We run the AI Sales Bot against 250 of your leads to measure contact rate, qualified conversations, and booked meetings — before you commit to anything larger.</p>
       </div>
 
@@ -1213,9 +1246,9 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <section id="apply">
   <div class="container tc">
     <div class="rv">
-      <div class="label">Apply Now</div>
-      <h2 class="h2">Two Ways to Find Out<br>If You Qualify</h2>
-      <p class="sub" style="margin:0 auto">Qualify yourself in 90 seconds with the form — or let the bot call you and experience the product live before you spend a dollar.</p>
+      <div class="label" data-i18n="apply_label">Apply Now</div>
+      <h2 class="h2" data-i18n-html="apply_h2">Two Ways to Find Out<br>If You Qualify</h2>
+      <p class="sub" style="margin:0 auto" data-i18n="apply_sub">Qualify yourself in 90 seconds with the form — or let the bot call you and experience the product live before you spend a dollar.</p>
     </div>
   </div>
 
@@ -1224,18 +1257,18 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
     <div class="apply-path-grid rv">
 
       <div class="apply-path-card" id="path-card-a">
-        <div class="apply-path-tag">Option A</div>
-        <h3>Qualify Yourself</h3>
-        <p>Answer 6 questions. Takes under 90 seconds. See your result instantly — and access the planning call link if you qualify.</p>
-        <button class="btn btn-p" onclick="selectApplyPath('a')">Answer the Questions &rarr;</button>
+        <div class="apply-path-tag" data-i18n="apply_optA_badge">Option A</div>
+        <h3 data-i18n="apply_optA_title">Qualify Yourself</h3>
+        <p data-i18n="apply_optA_desc">Answer 6 questions. Takes under 90 seconds. See your result instantly — and access the planning call link if you qualify.</p>
+        <button class="btn btn-p" onclick="selectApplyPath('a')" data-i18n-html="apply_optA_btn">Answer the Questions &rarr;</button>
       </div>
 
       <div class="apply-path-card featured" id="path-card-b">
-        <div class="apply-path-tag featured">Option B &mdash; Recommended</div>
-        <h3>Let the Bot Call You</h3>
-        <p>Enter your number. The same AI Sales Bot we build for clients calls you in under 5 minutes, qualifies your business live, and books the planning call if you're a fit.</p>
-        <p style="font-size:13px;font-weight:600;color:var(--green)">This is the product &mdash; working on you, in real time.</p>
-        <button class="btn btn-green" onclick="selectApplyPath('b')">Call Me Now &rarr;</button>
+        <div class="apply-path-tag featured" data-i18n-html="apply_optB_badge">Option B &mdash; Recommended</div>
+        <h3 data-i18n="apply_optB_title">Let the Bot Call You</h3>
+        <p data-i18n="apply_optB_desc">Enter your number. The same AI Sales Bot we build for clients calls you in under 5 minutes, qualifies your business live, and books the planning call if you're a fit.</p>
+        <p style="font-size:13px;font-weight:600;color:var(--green)" data-i18n-html="apply_optB_highlight">This is the product &mdash; working on you, in real time.</p>
+        <button class="btn btn-green" onclick="selectApplyPath('b')" data-i18n-html="apply_optB_btn">Call Me Now &rarr;</button>
       </div>
 
     </div>
@@ -1421,14 +1454,14 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <!-- CLOSE -->
 <section id="close">
   <div class="container">
-    <h2 class="close-h rv">
+    <h2 class="close-h rv" data-i18n-html="close_h">
       Before you spend more on ads,<br>prove you can convert<br>the leads <span class="grad">you already have.</span>
     </h2>
-    <p class="close-sub rv">
+    <p class="close-sub rv" data-i18n="close_sub">
       The 250-Lead Test is designed to answer one question: does AI calling work for your specific lead source, offer, and deal economics? Run the test. Get the data. Then decide.
     </p>
     <div class="close-ctas rv">
-      <a class="btn btn-p" href="#apply" style="font-size:16px;padding:16px 36px">
+      <a class="btn btn-p" href="#apply" style="font-size:16px;padding:16px 36px" data-i18n-html="close_cta">
         Apply for the 250-Lead Test &rarr;
       </a>
       <a class="btn btn-g" href="tel:+17869402394" style="font-size:16px;padding:16px 36px">
@@ -1450,7 +1483,7 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
     <div class="flinks">
       <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a>
       <a href="tel:+17869402394">+1 (786) 940 2394</a>
-      <a href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener">Book a Call</a>
+      <a href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" data-i18n="footer_book">Book a Call</a>
     </div>
     <span class="fcopy">&copy; 2026 LoopHub Solutions</span>
   </div>
@@ -1874,11 +1907,177 @@ document.getElementById('qual-form').addEventListener('submit', function(e) {
 var _LH_I18N = {
   en: {
     nav_cta: 'Apply for the Test \u2192',
+    // Hero
+    hero_badge: 'For Businesses Already Running Ads or Generating Inbound Leads',
+    hero_h1: 'Turn More of Your Existing Leads<br>Into Booked Meetings \u2014<br><span class="grad">With an AI Sales Bot</span>',
+    hero_sub: 'The bot calls in under 5 minutes, follows up 5 times, and qualifies each lead \u2014 so your team only speaks with prospects who are ready. Apply for the 250-Lead Test Campaign.',
+    hero_qs1: 'Active ad spend or consistent inbound',
+    hero_qs2: '250+ leads ready to call',
+    hero_qs3: 'Real deal value',
+    hero_qs4: 'Someone to close',
+    hero_cta1: 'Apply for the 250-Lead Test \u2192',
+    hero_cta2: 'See What\u2019s Included',
+    stat_leads: 'Min. Test Leads',
+    stat_deploy: 'To Deploy',
+    stat_followups: 'Follow-Ups / Lead',
+    stat_missed: 'Missed Contacts',
+    manifesto: 'Most businesses don\u2019t have a lead problem. <em>They have a conversion problem.</em>',
+    // Sticky pills
+    pill_01: 'The Problem',
+    pill_02: 'The Follow-Up Gap',
+    pill_03: 'Where Deals Die',
+    pill_04: 'How the Bot Works',
+    pill_05: 'The Math',
+    pill_06: 'The 250-Lead Test',
+    // Section 1: Leak
+    ssh1_title: 'Your Leads Are Going Cold Before Anyone Calls Them',
+    ssh1_num: '01 \u2014 The Problem',
+    leak_label: 'The Silent Revenue Killer',
+    leak_h2: 'You\u2019re paying for leads.<br>Most of them never get a real conversation.',
+    leak_sub: 'The average team takes 24\u201372 hours to make the first call. By then, the lead has moved on or gone cold.',
+    // Section 2B: Follow-up Gap
+    ssh2b_title: 'Most Teams Stop Too Early',
+    ssh2b_num: '02B \u2014 The Gap',
+    fug_heading: 'Most teams stop too early.<br>That\u2019s where deals die.',
+    fug_text: 'The problem usually isn\u2019t the lead. It\u2019s what happens after the form fill. Most teams follow up once or twice, then move on. But the data tells a different story.',
+    fug_source: 'According to <strong>Grant Cardone</strong> \u2014 one of the top sales authorities in the world:',
+    fug_caption: '<strong>80% of sales happen after the 5th contact.</strong> Yet 90% of reps stop before that.',
+    fug_transition: 'That\u2019s why the bot calls fast, follows up 5 times automatically, and keeps working the lead until there\u2019s a real outcome \u2014 not just a missed call.',
+    // Section 3: Mechanism
+    ssh3_title: 'How the AI Sales Bot Works',
+    ssh3_num: '03 \u2014 The Mechanism',
+    // Section 4: Economics
+    ssh4_title: 'The Economics',
+    ssh4_num: '04 \u2014 The Math',
+    econ_label: 'Capacity vs. Cost',
+    econ_h2: 'Before you buy more leads,<br>prove you can convert the ones you have.',
+    econ_sub: 'A fully-loaded SDR costs $9k\u2013$11k/month and reaches 250\u2013350 leads.',
+    calc_label: 'Run Your Numbers',
+    calc_h2: 'See how little you need to close to break even.',
+    calc_sub: 'Two inputs. Your break-even in seconds.',
+    // Section 5: Pilot
+    ssh5_title: 'The 250-Lead Test Campaign',
+    ssh5_num: '05 \u2014 The Offer',
+    pilot_label: 'The Pilot Campaign',
+    pilot_h2: 'A controlled test with your actual leads.<br>Not a demo. <span class="grad">Real results.</span>',
+    // Apply section
+    apply_label: 'Apply Now',
+    apply_h2: 'Two Ways to Find Out<br>If You Qualify',
+    apply_sub: 'Qualify yourself in 90 seconds with the form \u2014 or let the bot call you and experience the product live before you spend a dollar.',
+    apply_optA_badge: 'Option A',
+    apply_optA_title: 'Qualify Yourself',
+    apply_optA_desc: 'Answer 6 questions. Takes under 90 seconds. See your result instantly \u2014 and access the planning call link if you qualify.',
+    apply_optA_btn: 'Answer the Questions \u2192',
+    apply_optB_badge: 'Option B \u2014 Recommended',
+    apply_optB_title: 'Let the Bot Call You',
+    apply_optB_desc: 'Enter your number. The same AI Sales Bot we build for clients calls you in under 5 minutes, qualifies your business live, and books the planning call if you\u2019re a fit.',
+    apply_optB_highlight: 'This is the product \u2014 working on you, in real time.',
+    apply_optB_btn: 'Call Me Now \u2192',
+    // Close
+    close_h: 'Your leads are already coming in.<br>Make sure someone answers.',
+    close_sub: 'The 250-Lead Test Campaign is live. Apply now and deploy in 7 days.',
+    close_cta: 'Apply for the 250-Lead Test \u2192',
+    // Exit popup
+    exit_label: '\ud83d\udea8 WAIT!',
+    exit_title: 'Get the AI Sales Bot on a Call',
+    exit_sub: 'Don\u2019t leave empty-handed. Let Emma call you in the next 5 minutes.',
+    exit_name: 'Name *',
+    exit_email: 'Email *',
+    exit_phone: 'Phone *',
+    exit_btn: 'Call Me Right Now \u2192',
+    exit_guarantee: '\u2713 We\u2019ll call you in under 5 minutes',
+    exit_success_title: 'Perfect!',
+    exit_success_text: 'We\u2019re calling you in the next 5 minutes.',
+    exit_success_sub: 'Emma will walk you through a live demo of the AI Sales Bot.',
+    // Footer
     footer_book: 'Book a Call'
   },
   es: {
     nav_cta: 'Aplicar al Piloto \u2192',
-    footer_book: 'Reservar llamada'
+    // Hero
+    hero_badge: 'Para Negocios que ya Invierten en Publicidad o Generan Leads',
+    hero_h1: 'Convierte M\u00e1s de Tus Leads Actuales<br>en Citas Agendadas \u2014<br><span class="grad">Con un Bot de Ventas IA</span>',
+    hero_sub: 'El bot llama en menos de 5 minutos, hace seguimiento 5 veces y califica cada lead \u2014 para que tu equipo solo hable con prospectos listos para comprar. Aplica a la Campa\u00f1a de Prueba de 250 Leads.',
+    hero_qs1: 'Inversi\u00f3n activa en ads o inbound constante',
+    hero_qs2: '250+ leads listos para llamar',
+    hero_qs3: 'Ticket promedio real',
+    hero_qs4: 'Alguien que cierre',
+    hero_cta1: 'Aplicar a la Prueba de 250 Leads \u2192',
+    hero_cta2: 'Ver Qu\u00e9 Incluye',
+    stat_leads: 'Leads M\u00ednimos',
+    stat_deploy: 'Para Activar',
+    stat_followups: 'Seguimientos / Lead',
+    stat_missed: 'Contactos Perdidos',
+    manifesto: 'La mayor\u00eda de negocios no tiene un problema de leads. <em>Tienen un problema de conversi\u00f3n.</em>',
+    // Sticky pills
+    pill_01: 'El Problema',
+    pill_02: 'La Brecha de Seguimiento',
+    pill_03: 'D\u00f3nde Mueren los Deals',
+    pill_04: 'C\u00f3mo Funciona el Bot',
+    pill_05: 'Los N\u00fameros',
+    pill_06: 'La Prueba de 250 Leads',
+    // Section 1: Leak
+    ssh1_title: 'Tus Leads Se Enfr\u00edan Antes de que Alguien los Llame',
+    ssh1_num: '01 \u2014 El Problema',
+    leak_label: 'El Asesino Silencioso de Ingresos',
+    leak_h2: 'Est\u00e1s pagando por leads.<br>La mayor\u00eda nunca recibe una conversaci\u00f3n real.',
+    leak_sub: 'El equipo promedio tarda 24\u201372 horas en hacer la primera llamada. Para entonces, el lead ya se fue o se enfri\u00f3.',
+    // Section 2B: Follow-up Gap
+    ssh2b_title: 'La Mayor\u00eda Se Detiene Demasiado Pronto',
+    ssh2b_num: '02B \u2014 La Brecha',
+    fug_heading: 'La mayor\u00eda se detiene demasiado pronto.<br>Ah\u00ed es donde mueren los deals.',
+    fug_text: 'El problema generalmente no es el lead. Es lo que pasa despu\u00e9s del formulario. La mayor\u00eda hace seguimiento una o dos veces y sigue adelante. Pero los datos cuentan otra historia.',
+    fug_source: 'Seg\u00fan <strong>Grant Cardone</strong> \u2014 una de las mayores autoridades en ventas del mundo:',
+    fug_caption: '<strong>El 80% de las ventas ocurren despu\u00e9s del 5to contacto.</strong> Pero el 90% de los vendedores se detienen antes.',
+    fug_transition: 'Por eso el bot llama r\u00e1pido, hace seguimiento 5 veces autom\u00e1ticamente, y sigue trabajando el lead hasta obtener un resultado real \u2014 no solo una llamada perdida.',
+    // Section 3: Mechanism
+    ssh3_title: 'C\u00f3mo Funciona el Bot de Ventas IA',
+    ssh3_num: '03 \u2014 El Mecanismo',
+    // Section 4: Economics
+    ssh4_title: 'Los N\u00fameros',
+    ssh4_num: '04 \u2014 La Econom\u00eda',
+    econ_label: 'Capacidad vs. Costo',
+    econ_h2: 'Antes de comprar m\u00e1s leads,<br>demuestra que puedes convertir los que ya tienes.',
+    econ_sub: 'Un SDR con costo completo cuesta $9k\u2013$11k/mes y alcanza 250\u2013350 leads.',
+    calc_label: 'Calcula Tus N\u00fameros',
+    calc_h2: 'Mira qu\u00e9 poco necesitas cerrar para recuperar la inversi\u00f3n.',
+    calc_sub: 'Dos datos. Tu punto de equilibrio en segundos.',
+    // Section 5: Pilot
+    ssh5_title: 'La Campa\u00f1a de Prueba de 250 Leads',
+    ssh5_num: '05 \u2014 La Oferta',
+    pilot_label: 'La Campa\u00f1a Piloto',
+    pilot_h2: 'Una prueba controlada con tus leads reales.<br>No es un demo. <span class="grad">Resultados reales.</span>',
+    // Apply section
+    apply_label: 'Aplica Ahora',
+    apply_h2: 'Dos Formas de Saber<br>Si Calificas',
+    apply_sub: 'Calif\u00edcate t\u00fa mismo en 90 segundos con el formulario \u2014 o deja que el bot te llame y experimenta el producto en vivo antes de gastar un peso.',
+    apply_optA_badge: 'Opci\u00f3n A',
+    apply_optA_title: 'Calif\u00edcate T\u00fa Mismo',
+    apply_optA_desc: 'Responde 6 preguntas. Toma menos de 90 segundos. Ve tu resultado al instante \u2014 y accede al link de la llamada si calificas.',
+    apply_optA_btn: 'Responder las Preguntas \u2192',
+    apply_optB_badge: 'Opci\u00f3n B \u2014 Recomendada',
+    apply_optB_title: 'Que el Bot Te Llame',
+    apply_optB_desc: 'Ingresa tu n\u00famero. El mismo Bot de Ventas IA que construimos para clientes te llama en menos de 5 minutos, califica tu negocio en vivo, y agenda la llamada si eres buen fit.',
+    apply_optB_highlight: 'Este es el producto \u2014 funcionando contigo, en tiempo real.',
+    apply_optB_btn: 'Ll\u00e1mame Ahora \u2192',
+    // Close
+    close_h: 'Tus leads ya est\u00e1n llegando.<br>Aseg\u00farate de que alguien conteste.',
+    close_sub: 'La Campa\u00f1a de Prueba de 250 Leads est\u00e1 activa. Aplica ahora y activa en 7 d\u00edas.',
+    close_cta: 'Aplicar a la Prueba de 250 Leads \u2192',
+    // Exit popup
+    exit_label: '\ud83d\udea8 \u00a1ESPERA!',
+    exit_title: 'Recibe una Llamada del Bot de Ventas IA',
+    exit_sub: 'No te vayas sin probar. Deja que Emma te llame en los pr\u00f3ximos 5 minutos.',
+    exit_name: 'Nombre *',
+    exit_email: 'Email *',
+    exit_phone: 'Tel\u00e9fono *',
+    exit_btn: 'Ll\u00e1mame Ahora \u2192',
+    exit_guarantee: '\u2713 Te llamamos en menos de 5 minutos',
+    exit_success_title: '\u00a1Perfecto!',
+    exit_success_text: 'Te estamos llamando en los pr\u00f3ximos 5 minutos.',
+    exit_success_sub: 'Emma te har\u00e1 un demo en vivo del Bot de Ventas IA.',
+    // Footer
+    footer_book: 'Reservar Llamada'
   }
 };
 
@@ -1898,6 +2097,9 @@ function setLang(lang) {
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
   try { localStorage.setItem('lh_lang', lang); } catch(e) {}
+  // Hide language hint on first toggle
+  var hint = document.getElementById('lang-hint');
+  if (hint) hint.classList.add('hidden');
 }
 
 function toggleLang() { setLang(window.__lhLang === 'en' ? 'es' : 'en'); }
@@ -1910,6 +2112,14 @@ function toggleLang() { setLang(window.__lhLang === 'en' ? 'es' : 'en'); }
     if (bl.indexOf('es') === 0) saved = 'es';
   }
   if (saved === 'es') setLang('es');
+})();
+
+// Auto-hide language hint after 8 seconds
+(function() {
+  var langHint = document.getElementById('lang-hint');
+  if (langHint) {
+    setTimeout(function() { langHint.classList.add('hidden'); }, 8000);
+  }
 })();
 </script>
 
@@ -2043,37 +2253,37 @@ Tawk_API.onLoad = function () {
     <button class="exit-popup-close" onclick="closeExitPopup()">&times;</button>
 
     <div class="exit-popup-header">
-      <div class="exit-popup-label">🚨 WAIT!</div>
-      <h2 class="exit-popup-title">Get the AI Sales Bot on a Call</h2>
-      <p class="exit-popup-subtitle">Don't leave empty-handed. Let Emma call you in the next 5 minutes.</p>
+      <div class="exit-popup-label" data-i18n="exit_label">🚨 WAIT!</div>
+      <h2 class="exit-popup-title" data-i18n="exit_title">Get the AI Sales Bot on a Call</h2>
+      <p class="exit-popup-subtitle" data-i18n="exit_sub">Don't leave empty-handed. Let Emma call you in the next 5 minutes.</p>
     </div>
 
     <form id="exit-popup-form" class="exit-popup-form" onsubmit="submitExitPopupForm(event)">
       <div class="exit-form-group">
-        <label for="exit-name">Name *</label>
+        <label for="exit-name" data-i18n="exit_name">Name *</label>
         <input type="text" id="exit-name" name="name" placeholder="Your name" required>
       </div>
 
       <div class="exit-form-group">
-        <label for="exit-email">Email *</label>
+        <label for="exit-email" data-i18n="exit_email">Email *</label>
         <input type="email" id="exit-email" name="email" placeholder="your@email.com" required>
       </div>
 
       <div class="exit-form-group">
-        <label for="exit-phone">Phone *</label>
+        <label for="exit-phone" data-i18n="exit_phone">Phone *</label>
         <input type="tel" id="exit-phone" name="phone" placeholder="+1 (555) 000-0000" required>
       </div>
 
-      <button type="submit" class="exit-popup-btn">Call Me Right Now →</button>
+      <button type="submit" class="exit-popup-btn" data-i18n-html="exit_btn">Call Me Right Now →</button>
 
-      <p class="exit-popup-guarantee">✓ We'll call you in under 5 minutes</p>
+      <p class="exit-popup-guarantee" data-i18n="exit_guarantee">✓ We'll call you in under 5 minutes</p>
     </form>
 
     <div id="exit-popup-success" class="exit-popup-success" style="display:none;">
       <div class="success-checkmark">✓</div>
-      <h3>Perfect!</h3>
-      <p>We're calling you in the next 5 minutes.</p>
-      <p class="success-subtext">Emma will walk you through a live demo of the AI Sales Bot.</p>
+      <h3 data-i18n="exit_success_title">Perfect!</h3>
+      <p data-i18n="exit_success_text">We're calling you in the next 5 minutes.</p>
+      <p class="success-subtext" data-i18n="exit_success_sub">Emma will walk you through a live demo of the AI Sales Bot.</p>
     </div>
   </div>
 </div>
