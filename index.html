@@ -721,69 +721,127 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
     left: 24px;
     z-index: 300;
     display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(12,12,26,0.95);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    align-items: stretch;
+    gap: 0;
+    background: rgba(12,12,26,0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
-    padding: 14px 20px;
-    max-width: 360px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    border-radius: 16px;
+    max-width: 400px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,216,101,0.06);
     transform: translateY(120%);
     opacity: 0;
-    transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
+    transition: transform 0.55s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
     pointer-events: none;
+    overflow: hidden;
   }
   .sp-toast.sp-show {
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
   }
-  .sp-avatar {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--purple), var(--green));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: 700;
-    color: white;
+  .sp-map {
+    width: 90px;
+    height: auto;
     flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    background: rgba(0,216,101,0.04);
   }
-  .sp-body {
+  .sp-map img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    filter: brightness(0.8) saturate(0.6);
+  }
+  .sp-map-pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+    animation: sp-pulse 2s ease-in-out infinite;
+  }
+  @keyframes sp-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.15); }
+  }
+  .sp-content {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    padding: 14px 18px 14px 14px;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+  .sp-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sp-live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: sp-blink 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes sp-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
   }
   .sp-name {
     font-size: 13px;
     font-weight: 600;
     color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sp-niche {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--purple);
+    background: rgba(91,33,255,0.12);
+    border: 1px solid rgba(91,33,255,0.2);
+    border-radius: 100px;
+    padding: 2px 8px;
+    display: inline-block;
+    width: fit-content;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
   }
   .sp-action {
-    font-size: 11px;
+    font-size: 11.5px;
     color: var(--muted);
     line-height: 1.4;
+  }
+  .sp-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2px;
   }
   .sp-time {
     font-size: 10px;
     color: var(--green);
     font-weight: 600;
-    margin-top: 2px;
   }
   .sp-verified {
-    font-size: 10px;
-    color: rgba(255,255,255,0.3);
+    font-size: 9px;
+    color: rgba(255,255,255,0.25);
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
   }
   @media(max-width:768px) {
     .sp-toast { left: 12px; right: 12px; max-width: none; bottom: 16px; }
+    .sp-map { width: 72px; }
   }
 
   /* ===== IMAGE BREAK ===== */
@@ -2262,11 +2320,21 @@ Tawk_API.onLoad = function () {
 
 <!-- SOCIAL PROOF TOAST -->
 <div class="sp-toast" id="sp-toast">
-  <div class="sp-avatar" id="sp-avatar"></div>
-  <div class="sp-body">
-    <div class="sp-name" id="sp-name"></div>
+  <div class="sp-map" id="sp-map">
+    <img id="sp-map-img" src="" alt="" />
+    <div class="sp-map-pin">📍</div>
+  </div>
+  <div class="sp-content">
+    <div class="sp-header">
+      <div class="sp-live-dot"></div>
+      <div class="sp-name" id="sp-name"></div>
+    </div>
+    <div class="sp-niche" id="sp-niche"></div>
     <div class="sp-action" id="sp-action"></div>
-    <div class="sp-time" id="sp-time"></div>
+    <div class="sp-bottom">
+      <div class="sp-time" id="sp-time"></div>
+      <div class="sp-verified">✓ verified</div>
+    </div>
   </div>
 </div>
 
@@ -2274,42 +2342,49 @@ Tawk_API.onLoad = function () {
 /* ── SOCIAL PROOF NOTIFICATIONS ── */
 (function() {
   var SP_DATA = [
-    { name: 'Carlos M.', city: 'Ciudad de M\u00e9xico', action_en: 'applied for the 250-Lead Test', action_es: 'aplic\u00f3 a la Prueba de 250 Leads', time_en: 'min ago', time_es: 'min atr\u00e1s' },
-    { name: 'Sarah K.', city: 'Austin, TX', action_en: 'requested a demo call', action_es: 'solicit\u00f3 una llamada demo', time_en: 'min ago', time_es: 'min atr\u00e1s' },
-    { name: 'Andr\u00e9s R.', city: 'Bogot\u00e1', action_en: 'qualified for the pilot campaign', action_es: 'calific\u00f3 para la campa\u00f1a piloto', time_en: 'min ago', time_es: 'min atr\u00e1s' },
-    { name: 'Mike T.', city: 'Miami, FL', action_en: 'applied for the 250-Lead Test', action_es: 'aplic\u00f3 a la Prueba de 250 Leads', time_en: 'min ago', time_es: 'min atr\u00e1s' },
-    { name: 'Laura G.', city: 'Monterrey', action_en: 'let the bot call her', action_es: 'dej\u00f3 que el bot la llamara', time_en: 'min ago', time_es: 'min atr\u00e1s' },
-    { name: 'James W.', city: 'New York', action_en: 'started his 250-lead test', action_es: 'comenz\u00f3 su prueba de 250 leads', time_en: 'min ago', time_es: 'min atr\u00e1s' },
-    { name: 'Diego F.', city: 'Buenos Aires', action_en: 'booked a planning call', action_es: 'agend\u00f3 una llamada de planeaci\u00f3n', time_en: 'min ago', time_es: 'min atr\u00e1s' },
-    { name: 'Rachel P.', city: 'Los Angeles', action_en: 'applied for the 250-Lead Test', action_es: 'aplic\u00f3 a la Prueba de 250 Leads', time_en: 'min ago', time_es: 'min atr\u00e1s' },
-    { name: 'Mart\u00edn L.', city: 'Medell\u00edn', action_en: 'requested a demo call', action_es: 'solicit\u00f3 una llamada demo', time_en: 'min ago', time_es: 'min atr\u00e1s' },
-    { name: 'Emily S.', city: 'Chicago', action_en: 'qualified for the pilot campaign', action_es: 'calific\u00f3 para la campa\u00f1a piloto', time_en: 'min ago', time_es: 'min atr\u00e1s' }
+    { name: 'Carlos M.', city: 'Ciudad de México', niche_en: 'Real Estate', niche_es: 'Bienes Raíces', lat: 19.43, lng: -99.13, action_en: 'applied for the 250-Lead Test', action_es: 'aplicó a la Prueba de 250 Leads' },
+    { name: 'Sarah K.', city: 'Austin, TX', niche_en: 'Solar Energy', niche_es: 'Energía Solar', lat: 30.27, lng: -97.74, action_en: 'requested a demo call', action_es: 'solicitó una llamada demo' },
+    { name: 'Andrés R.', city: 'Bogotá', niche_en: 'Insurance', niche_es: 'Seguros', lat: 4.71, lng: -74.07, action_en: 'qualified for the pilot campaign', action_es: 'calificó para la campaña piloto' },
+    { name: 'Mike T.', city: 'Miami, FL', niche_en: 'Roofing', niche_es: 'Techos', lat: 25.76, lng: -80.19, action_en: 'applied for the 250-Lead Test', action_es: 'aplicó a la Prueba de 250 Leads' },
+    { name: 'Laura G.', city: 'Monterrey', niche_en: 'Med Spa', niche_es: 'Med Spa', lat: 25.67, lng: -100.31, action_en: 'let the bot call her', action_es: 'dejó que el bot la llamara' },
+    { name: 'James W.', city: 'New York', niche_en: 'Mortgage', niche_es: 'Hipotecas', lat: 40.71, lng: -74.01, action_en: 'started his 250-lead test', action_es: 'comenzó su prueba de 250 leads' },
+    { name: 'Diego F.', city: 'Buenos Aires', niche_en: 'Auto Dealership', niche_es: 'Concesionaria', lat: -34.60, lng: -58.38, action_en: 'booked a planning call', action_es: 'agendó una llamada de planeación' },
+    { name: 'Rachel P.', city: 'Los Angeles', niche_en: 'Home Services', niche_es: 'Servicios del Hogar', lat: 34.05, lng: -118.24, action_en: 'applied for the 250-Lead Test', action_es: 'aplicó a la Prueba de 250 Leads' },
+    { name: 'Martín L.', city: 'Medellín', niche_en: 'Dental Clinic', niche_es: 'Clínica Dental', lat: 6.25, lng: -75.56, action_en: 'requested a demo call', action_es: 'solicitó una llamada demo' },
+    { name: 'Emily S.', city: 'Chicago', niche_en: 'HVAC', niche_es: 'Climatización', lat: 41.88, lng: -87.63, action_en: 'qualified for the pilot campaign', action_es: 'calificó para la campaña piloto' },
+    { name: 'Roberto A.', city: 'Guadalajara', niche_en: 'E-commerce', niche_es: 'E-commerce', lat: 20.67, lng: -103.35, action_en: 'let the bot call him', action_es: 'dejó que el bot lo llamara' },
+    { name: 'Jessica M.', city: 'Dallas, TX', niche_en: 'Legal Services', niche_es: 'Servicios Legales', lat: 32.78, lng: -96.80, action_en: 'started her 250-lead test', action_es: 'comenzó su prueba de 250 leads' }
   ];
 
-  var toast     = document.getElementById('sp-toast');
-  var spAvatar  = document.getElementById('sp-avatar');
-  var spName    = document.getElementById('sp-name');
-  var spAction  = document.getElementById('sp-action');
-  var spTime    = document.getElementById('sp-time');
-  var idx       = 0;
-  var showing   = false;
+  var toast   = document.getElementById('sp-toast');
+  var spName  = document.getElementById('sp-name');
+  var spNiche = document.getElementById('sp-niche');
+  var spAction= document.getElementById('sp-action');
+  var spTime  = document.getElementById('sp-time');
+  var spMapImg= document.getElementById('sp-map-img');
+  var idx     = 0;
+  var showing = false;
 
-  function getInitials(name) {
-    return name.split(' ').map(function(w) { return w[0]; }).join('');
+  function mapUrl(lat, lng) {
+    var z = 10;
+    var n = Math.pow(2, z);
+    var x = Math.floor((lng + 180) / 360 * n);
+    var y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * n);
+    return 'https://a.basemaps.cartocdn.com/dark_all/' + z + '/' + x + '/' + y + '.png';
   }
 
   function showToast() {
     if (showing) return;
     showing = true;
-
     var item = SP_DATA[idx % SP_DATA.length];
     var lang = window.__lhLang || 'en';
-    var mins = Math.floor(Math.random() * 12) + 2;
+    var mins = Math.floor(Math.random() * 14) + 2;
 
-    spAvatar.textContent = getInitials(item.name);
-    spName.textContent   = item.name + ' \u2014 ' + item.city;
+    spMapImg.src = mapUrl(item.lat, item.lng);
+    spName.textContent   = item.name + ' — ' + item.city;
+    spNiche.textContent  = lang === 'es' ? item.niche_es : item.niche_en;
     spAction.textContent = lang === 'es' ? item.action_es : item.action_en;
-    spTime.textContent   = '\u2713 ' + mins + ' ' + (lang === 'es' ? item.time_es : item.time_en);
+    spTime.textContent   = '🕐 ' + mins + ' ' + (lang === 'es' ? 'min atrás' : 'min ago');
 
     toast.classList.add('sp-show');
 
@@ -2317,17 +2392,17 @@ Tawk_API.onLoad = function () {
       toast.classList.remove('sp-show');
       showing = false;
       idx++;
-    }, 4500);
+    }, 5000);
   }
 
-  // Start after 12 seconds, then every 25-40 seconds
+  // Start after 10 seconds, then every 25-40 seconds
   setTimeout(function() {
     showToast();
     setInterval(function() {
       var delay = Math.floor(Math.random() * 15000) + 25000;
       setTimeout(showToast, delay % 15000);
     }, 30000);
-  }, 12000);
+  }, 10000);
 })();
 </script>
 
