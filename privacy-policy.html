@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy & Data Policy — LoopHub Solutions</title>
+<meta name="description" content="LoopHub Solutions Privacy & Data Treatment Policy. Learn how we collect, use, and protect your information, including AI calls and meeting recordings." />
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:     #06060F;
+    --bg2:    #0C0C1A;
+    --purple: #5B21FF;
+    --pm:     #7C4DFF;
+    --green:  #00D865;
+    --white:  #F2F2FF;
+    --muted:  #6E6E99;
+    --border: rgba(255,255,255,0.07);
+    --card:   rgba(255,255,255,0.035);
+    --r:      16px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  a { color: var(--pm); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* NAV */
+  #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; background: rgba(6,6,15,.92); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); }
+  .nav-logo-link { display: flex; align-items: center; flex-shrink: 0; }
+  .nav-logo-img { height: 36px; width: auto; display: block; object-fit: contain; }
+  .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: var(--muted); transition: color .2s; }
+  .nav-back:hover { color: var(--white); text-decoration: none; }
+  @media(max-width:768px){ #nav{padding:14px 20px;} }
+
+  /* MAIN */
+  .container { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+  main { padding: 120px 0 80px; }
+
+  /* HERO */
+  .pp-hero { text-align: center; padding: 60px 24px 56px; border-bottom: 1px solid var(--border); margin-bottom: 56px; }
+  .pp-badge { display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; background: rgba(91,33,255,.1); border: 1px solid rgba(91,33,255,.28); border-radius: 100px; font-size: 11px; font-weight: 700; color: #A078FF; margin-bottom: 24px; letter-spacing: 1.5px; text-transform: uppercase; }
+  .pp-title { font-size: clamp(28px, 4vw, 48px); font-weight: 900; line-height: 1.12; letter-spacing: -1.5px; margin-bottom: 16px; }
+  .pp-title span { background: linear-gradient(130deg, #7C4DFF 0%, #A44DFF 45%, #00D865 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .pp-subtitle { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 560px; margin: 0 auto 20px; }
+  .pp-date { font-size: 13px; color: var(--muted); opacity: .7; }
+
+  /* CONSENT BANNER */
+  .consent-box { background: linear-gradient(135deg, rgba(91,33,255,.1), rgba(0,216,101,.06)); border: 1px solid rgba(91,33,255,.25); border-radius: 20px; padding: 32px; margin-bottom: 32px; }
+  .consent-box h2 { font-size: 18px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .consent-box > p { font-size: 14px; color: var(--muted); line-height: 1.72; margin-bottom: 20px; }
+  .consent-check-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .consent-check-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: rgba(242,242,255,.85); line-height: 1.6; }
+  .ck-icon { flex-shrink: 0; width: 20px; height: 20px; background: rgba(0,216,101,.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .ck-icon svg { width: 11px; height: 11px; color: var(--green); }
+  .consent-note { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+  .consent-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-accept { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; background: var(--green); color: #06060F; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; font-family: inherit; transition: all .2s; }
+  .btn-accept:hover { background: #00f074; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,216,101,.3); text-decoration: none; }
+  .btn-accept:disabled { background: rgba(0,216,101,.15); color: var(--green); border: 1px solid rgba(0,216,101,.3); cursor: default; transform: none; box-shadow: none; }
+  .btn-decline { display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; background: transparent; color: var(--muted); border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); font-family: inherit; transition: all .2s; }
+  .btn-decline:hover { color: var(--white); border-color: rgba(255,255,255,.14); text-decoration: none; }
+  .consent-status { display: none; font-size: 13px; font-weight: 600; color: var(--green); margin-top: 14px; align-items: center; gap: 6px; }
+  .consent-status.visible { display: flex; }
+
+  /* INFO BOXES */
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 48px; }
+  @media(max-width:600px){ .info-grid{grid-template-columns:1fr;} }
+  .info-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+  .info-box.ai-call { border-color: rgba(124,77,255,.25); }
+  .info-box.recording { border-color: rgba(0,216,101,.2); }
+  .info-box-icon { font-size: 26px; margin-bottom: 12px; display: block; }
+  .info-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .info-box p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* CONTENT */
+  .pp-section { margin-bottom: 48px; }
+  .pp-section h2 { font-size: 20px; font-weight: 800; letter-spacing: -.4px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .pp-section h3 { font-size: 15px; font-weight: 700; color: var(--white); margin: 20px 0 10px; }
+  .pp-section p { font-size: 14.5px; color: rgba(242,242,255,.75); line-height: 1.8; margin-bottom: 14px; }
+  .pp-section ul, .pp-section ol { padding-left: 20px; margin-bottom: 14px; }
+  .pp-section li { font-size: 14.5px; color: rgba(242,242,255,.75); line-height: 1.8; margin-bottom: 6px; }
+  .highlight-box { background: rgba(91,33,255,.07); border-left: 3px solid var(--pm); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 20px 0; }
+  .highlight-box p { margin: 0; font-size: 14px; }
+  .highlight-box.green { background: rgba(0,216,101,.06); border-left-color: var(--green); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 40px 24px; }
+  .fi { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .flogo img { height: 32px; opacity: .8; }
+  .flinks { display: flex; gap: 24px; flex-wrap: wrap; }
+  .flinks a { font-size: 13px; color: var(--muted); transition: color .2s; }
+  .flinks a:hover { color: var(--white); text-decoration: none; }
+  .fcopy { font-size: 12px; color: var(--muted); opacity: .6; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo-link" href="/">
+    <img src="images/loophub-logo.png" alt="LoopHub" class="nav-logo-img" />
+  </a>
+  <a class="nav-back" href="/">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to home
+  </a>
+</nav>
+
+<main>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="pp-hero">
+    <div class="pp-badge">🔒 Privacy & Data</div>
+    <h1 class="pp-title">Privacy &amp; <span>Data Policy</span></h1>
+    <p class="pp-subtitle">How LoopHub Solutions collects, uses, and protects your personal information — including AI-powered calls, call recordings, and meeting transcriptions.</p>
+    <p class="pp-date">Last updated: March 16, 2026 &nbsp;·&nbsp; Version 1.1</p>
+  </div>
+
+  <!-- CONSENT OPT-IN BOX -->
+  <div class="consent-box" id="consent-box">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00D865" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Informed Consent — Data Processing
+    </h2>
+    <p>By submitting your information to LoopHub Solutions, you expressly authorize the processing of your personal data for the purposes described below, including:</p>
+    <ul class="consent-check-list">
+      <li>
+        <span class="ck-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+        Receiving outbound phone calls made by a <strong>LoopHub AI agent</strong> for lead qualification, scheduling, and sales follow-up on behalf of our clients.
+      </li>
+      <li>
+        <span class="ck-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+        <strong>Recording and transcription of AI-initiated calls.</strong> These calls may be recorded and transcribed by automated systems to ensure quality, train models, and improve service delivery.
+      </li>
+      <li>
+        <span class="ck-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+        <strong>Recording and transcription of meetings.</strong> Discovery calls and demos may include an AI notetaker that records, transcribes, and summarizes the conversation to help us serve you better.
+      </li>
+      <li>
+        <span class="ck-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+        Receiving WhatsApp messages, emails, and SMS with commercial information and follow-up communications from LoopHub Solutions.
+      </li>
+      <li>
+        <span class="ck-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+        Storage and processing of your name, phone number, email address, and activity data in our CRM and sales systems.
+      </li>
+      <li>
+        <span class="ck-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+        Transfer of your data to our clients (businesses that use LoopHub) for the specific campaign you are part of.
+      </li>
+    </ul>
+    <p class="consent-note">You may withdraw your consent at any time by emailing <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a>. Withdrawal does not affect the lawfulness of processing carried out before the request.</p>
+    <div class="consent-actions">
+      <button class="btn-accept" id="btn-accept" onclick="acceptConsent()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        I accept the data processing terms
+      </button>
+      <a class="btn-decline" href="mailto:contact@loophub.solutions?subject=Consent%20Withdrawal%20Request">
+        Decline / Withdraw
+      </a>
+    </div>
+    <div class="consent-status" id="consent-status">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Consent recorded successfully. Thank you.
+    </div>
+  </div>
+
+  <!-- INFO BOXES -->
+  <div class="info-grid">
+    <div class="info-box ai-call">
+      <span class="info-box-icon">🤖</span>
+      <h3>You will be called by an AI</h3>
+      <p>LoopHub uses conversational AI agents to make outbound calls on behalf of our clients. These calls are <strong>not made by a human</strong>. You will be informed at the start of the call. You can opt out at any time by saying "stop calling me" or emailing us.</p>
+    </div>
+    <div class="info-box recording">
+      <span class="info-box-icon">🎙️</span>
+      <h3>Calls &amp; meetings are recorded</h3>
+      <p>AI-initiated calls are recorded and transcribed. Discovery meetings include an AI notetaker that records the conversation to generate summaries and action items — so we can <strong>serve you better</strong>. You'll always be notified before recording starts.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="pp-section">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pm)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      1. Data Controller
+    </h2>
+    <p><strong>LoopHub Solutions</strong> ("LoopHub", "we", "us") is the data controller for personal information collected through <a href="https://loophub.solutions">loophub.solutions</a>, its forms, communication channels, and marketing campaigns.</p>
+    <p><strong>Email:</strong> <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a><br/>
+    <strong>Phone:</strong> <a href="tel:+17869402394">+1 (786) 940 2394</a></p>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="pp-section">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pm)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      2. Data We Collect
+    </h2>
+    <h3>2.1 Information you provide directly</h3>
+    <ul>
+      <li>Full name and company name</li>
+      <li>Phone number (mobile or landline)</li>
+      <li>Email address</li>
+      <li>Business information (industry, size, lead volume, monthly revenue)</li>
+      <li>Any additional details shared in forms, calls, or meetings</li>
+    </ul>
+    <h3>2.2 Automatically collected data</h3>
+    <ul>
+      <li>IP address and approximate geolocation</li>
+      <li>Browser type and operating system</li>
+      <li>Pages visited, time on site, and browsing behavior</li>
+      <li>Traffic source (ad, organic search, referral)</li>
+      <li>Email open rates and click interactions</li>
+    </ul>
+    <h3>2.3 Data generated through AI interactions</h3>
+    <ul>
+      <li><strong>Call recordings and transcripts</strong> from AI-initiated phone calls</li>
+      <li>Lead qualification scores and responses captured during calls</li>
+      <li><strong>Meeting recordings, transcripts, and summaries</strong> generated by AI notetakers during discovery calls and demos</li>
+      <li>Follow-up history and pipeline status within our CRM</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="pp-section">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pm)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      3. How We Use Your Data
+    </h2>
+    <h3>Primary purposes (required for service delivery)</h3>
+    <ul>
+      <li><strong>AI-powered outbound calls:</strong> Calling your phone number using an automated AI voice agent to qualify your interest, schedule meetings, and follow up — on behalf of LoopHub or our clients.</li>
+      <li><strong>Call recording &amp; transcription:</strong> Recording and transcribing AI calls for quality assurance, compliance, and service improvement.</li>
+      <li><strong>Meeting notetaking:</strong> An AI notetaker joins scheduled discovery calls or demos to record, transcribe, and summarize the conversation so our team can follow up accurately and provide better service.</li>
+      <li><strong>Lead qualification:</strong> Evaluating fit between your needs and our services or our clients' offerings.</li>
+      <li><strong>Scheduling:</strong> Booking discovery calls, demos, or kick-off meetings.</li>
+      <li><strong>Service delivery:</strong> If you become a client, using your data to configure and run AI campaigns.</li>
+    </ul>
+    <h3>Secondary purposes (with your consent)</h3>
+    <ul>
+      <li>Sending educational content, case studies, and product updates.</li>
+      <li>Statistical analysis and improvement of our AI qualification models.</li>
+      <li>Retargeting ads on platforms such as Meta and Google.</li>
+    </ul>
+    <div class="highlight-box">
+      <p>🤖 <strong>AI Calls:</strong> By submitting your phone number to LoopHub, you expressly consent to receiving voice calls made entirely or partially by an artificial intelligence system. These calls are commercial in nature. You may opt out at any time verbally during a call or by contacting us.</p>
+    </div>
+    <div class="highlight-box green">
+      <p>🎙️ <strong>Recordings &amp; Transcripts:</strong> All AI calls and scheduled meetings may be recorded and transcribed. Recordings are used strictly to improve service quality, generate meeting summaries, and maintain accurate records. You will be informed before any recording begins. You may request deletion of your recordings at any time.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="pp-section">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pm)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      4. Data Sharing
+    </h2>
+    <p>Your data may be shared with:</p>
+    <ul>
+      <li><strong>LoopHub clients:</strong> Businesses that hire our platform will receive your information as part of the lead campaign you opted into.</li>
+      <li><strong>Technology providers:</strong> CRM tools, VoIP telephony, AI transcription services, and automation platforms we use to operate (all bound by data processing agreements).</li>
+      <li><strong>Analytics platforms:</strong> Google Analytics, Meta Pixel, and similar tools for behavior analysis (anonymized or pseudonymized where possible).</li>
+    </ul>
+    <p>We do not sell your personal data to unrelated third parties.</p>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="pp-section">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pm)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      5. Data Security
+    </h2>
+    <p>We implement appropriate technical and organizational measures to protect your personal data:</p>
+    <ul>
+      <li>Encryption in transit (HTTPS/TLS) and at rest for all sensitive data.</li>
+      <li>Access restricted to authorized personnel only.</li>
+      <li>Regular security reviews and vulnerability management.</li>
+      <li>Data processing agreements with all vendors who access personal information.</li>
+    </ul>
+    <p>In the event of a data breach affecting your information, we will notify you within the timeframes required by applicable law.</p>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="pp-section">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pm)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      6. Your Rights
+    </h2>
+    <p>As the data subject, you have the following rights:</p>
+    <ul>
+      <li><strong>Access:</strong> Know what data we hold about you and how it is processed.</li>
+      <li><strong>Rectification:</strong> Correct inaccurate or incomplete data.</li>
+      <li><strong>Erasure:</strong> Request deletion of your data when it is no longer necessary or you withdraw consent.</li>
+      <li><strong>Objection:</strong> Object to processing for specific purposes.</li>
+      <li><strong>Portability:</strong> Receive your data in a structured, machine-readable format.</li>
+      <li><strong>Withdrawal of consent:</strong> Revoke your consent at any time without affecting the lawfulness of prior processing.</li>
+    </ul>
+    <p>To exercise any of these rights, email <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a>. We will respond within 15 business days.</p>
+    <div class="highlight-box green">
+      <p>📵 <strong>To stop AI calls:</strong> Say "stop calling me" during any call, or email <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a> with subject "Opt Out — Calls". We will process your request within 24 business hours.<br/><br/>
+      🗑️ <strong>To delete your recordings:</strong> Email us with subject "Delete My Recordings" and we will remove them within 5 business days.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="pp-section">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pm)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      7. Data Retention
+    </h2>
+    <ul>
+      <li><strong>Non-converted leads:</strong> Up to 24 months from last contact.</li>
+      <li><strong>Active clients:</strong> Duration of the contract plus up to 5 years for legal and fiscal obligations.</li>
+      <li><strong>Call recordings &amp; transcripts:</strong> Up to 12 months, unless required longer by law.</li>
+      <li><strong>Meeting recordings &amp; summaries:</strong> Up to 12 months, or until you request deletion.</li>
+      <li><strong>Analytics data:</strong> Indefinitely in anonymized form.</li>
+    </ul>
+    <p>After these periods, data is securely deleted or anonymized.</p>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="pp-section">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pm)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      8. Cookies &amp; Tracking
+    </h2>
+    <p>Our website uses cookies and similar technologies to:</p>
+    <ul>
+      <li>Ensure the technical functionality of the site.</li>
+      <li>Measure traffic and user behavior (Google Analytics).</li>
+      <li>Run retargeting campaigns (Meta Pixel, Google Ads).</li>
+    </ul>
+    <p>You can configure your browser to refuse cookies. Some site features may be affected.</p>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="pp-section">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pm)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      9. Policy Updates
+    </h2>
+    <p>LoopHub reserves the right to update this Privacy Policy at any time. Material changes will be communicated via email to registered users or via a prominent notice on our website at least 15 days in advance.</p>
+    <p>Continued use of our services after changes are published constitutes acceptance of the updated policy.</p>
+  </div>
+
+  <!-- SECTION 10 -->
+  <div class="pp-section">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pm)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.4 2 2 0 0 1 3.58 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+      10. Contact
+    </h2>
+    <p>For questions, rights requests, or complaints regarding your personal data:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a></li>
+      <li><strong>Phone:</strong> <a href="tel:+17869402394">+1 (786) 940 2394</a></li>
+      <li><strong>Hours:</strong> Monday – Friday, 9:00 AM – 6:00 PM EST</li>
+    </ul>
+    <p>If you believe your data is not being processed in accordance with applicable law, you have the right to lodge a complaint with the relevant data protection authority in your jurisdiction.</p>
+  </div>
+
+</div>
+</main>
+
+<footer>
+  <div class="fi">
+    <a class="flogo" href="/">
+      <img src="images/loophub-logo.png" alt="LoopHub" />
+    </a>
+    <div class="flinks">
+      <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a>
+      <a href="tel:+17869402394">+1 (786) 940 2394</a>
+      <a href="/">Home</a>
+    </div>
+    <span class="fcopy">&copy; 2026 LoopHub Solutions</span>
+  </div>
+</footer>
+
+<script>
+(function() {
+  try {
+    if (localStorage.getItem('lh_consent') === 'accepted') {
+      var btn = document.getElementById('btn-accept');
+      var status = document.getElementById('consent-status');
+      if (btn) { btn.innerHTML = '✓ Consent already recorded'; btn.disabled = true; }
+      if (status) status.classList.add('visible');
+    }
+  } catch(e) {}
+})();
+
+function acceptConsent() {
+  var btn = document.getElementById('btn-accept');
+  var status = document.getElementById('consent-status');
+  try { localStorage.setItem('lh_consent', 'accepted'); } catch(e) {}
+  try { localStorage.setItem('lh_consent_date', new Date().toISOString()); } catch(e) {}
+  if (btn) {
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Consent recorded';
+    btn.disabled = true;
+  }
+  if (status) status.classList.add('visible');
+}
+</script>
+
+</body>
+</html>
