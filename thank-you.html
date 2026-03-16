@@ -42,7 +42,7 @@
   .grad { background: linear-gradient(130deg, #7C4DFF 0%, #A44DFF 45%, #00D865 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
   /* ── HERO ── */
-  #hero { padding: 60px 24px 80px; text-align: center; position: relative; overflow: hidden; }
+  #hero { padding: 80px 24px 80px; text-align: center; position: relative; overflow: hidden; }
   .hero-blob { position: absolute; inset-x: 0; overflow: hidden; filter: blur(80px); pointer-events: none; z-index: 0; }
   .hero-blob-top { top: -180px; }
   .hero-blob > div { clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%); aspect-ratio: 1155 / 678; width: min(1000px, 90vw); position: relative; opacity: 0.28; }
@@ -132,6 +132,15 @@
   .flinks a:hover { color: var(--white); }
   .fcopy { font-size: 12px; color: var(--muted); opacity: .6; }
 
+  /* ── LANG TIP ── */
+  #lang-tip { position: fixed; top: 66px; right: 32px; z-index: 300; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; animation: langTipIn .5s .8s cubic-bezier(0.34,1.56,0.64,1) both; }
+  .lang-tip-arrow { width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 9px solid rgba(91,33,255,.9); margin-right: 28px; }
+  .lang-tip-bubble { background: rgba(91,33,255,.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 8px 14px; font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap; line-height: 1.5; box-shadow: 0 8px 24px rgba(91,33,255,.35); }
+  .lang-tip-bubble span { display: block; font-size: 10px; font-weight: 500; color: rgba(255,255,255,.7); margin-top: 1px; }
+  @keyframes langTipIn { from{opacity:0;transform:translateY(-8px);} to{opacity:1;transform:none;} }
+  #lang-tip.hidden { opacity: 0; transition: opacity .4s ease; }
+  @media(max-width:480px){ #lang-tip{ right:14px; } }
+
   /* ── CONFETTI ── */
   .confetti-piece { position: fixed; top: -10px; border-radius: 2px; animation: confettiFall linear forwards; z-index: 999; pointer-events: none; }
   @keyframes confettiFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
@@ -149,6 +158,15 @@
     <button class="lang-pill" id="btn-es" onclick="setLang('es')"><span>🇲🇽</span> ES</button>
   </div>
 </nav>
+
+<!-- LANG TIP -->
+<div id="lang-tip">
+  <div class="lang-tip-arrow"></div>
+  <div class="lang-tip-bubble">
+    🌐 Switch language
+    <span>Cambiar idioma aquí</span>
+  </div>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -426,6 +444,16 @@ function setLang(lang) {
 (function() {
   var path = window.location.pathname;
   if (path.indexOf('/es') !== -1) setLang('es');
+})();
+
+/* ── LANG TIP AUTO-DISMISS ── */
+(function() {
+  var tip = document.getElementById('lang-tip');
+  if (!tip) return;
+  setTimeout(function() {
+    tip.classList.add('hidden');
+    setTimeout(function() { tip.style.display = 'none'; }, 450);
+  }, 5000);
 })();
 
 /* ── CONFETTI ── */
