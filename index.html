@@ -190,46 +190,71 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
     letter-spacing: 2px; color: var(--muted); flex-shrink: 0;
   }
 
-  /* ── FIXED PAST-PILL STACK ──
-     One pill per section; appears (fixed) when section is fully scrolled past. */
+  /* ── HORIZONTAL STORYBRAND PROGRESS BAR ──
+     Single fixed row showing all 6 steps. Past=✓ green, Active=purple, Future=dim. */
   #sticky-past-stack {
     position: fixed;
-    top: 64px;    /* updated by JS to match real nav height */
+    top: 64px;          /* updated by JS */
     left: 0; right: 0;
     z-index: 20;
-    pointer-events: none;
-  }
-  .ssh-pill {
+    display: flex;
+    flex-direction: row;
     height: 0;
     overflow: hidden;
     background: rgba(6,6,14,.97);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    display: flex;
-    align-items: center;
-    padding: 0 24px;
-    gap: 14px;
-    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,.07);
     pointer-events: none;
     transition: height .22s cubic-bezier(.4,0,.2,1);
   }
-  .ssh-pill.ssh-pill-on {
-    height: 30px;
+  #sticky-past-stack.bar-visible {
+    height: 40px;
     pointer-events: auto;
   }
-  .ssh-pill:hover { background: rgba(14,14,24,.98); }
+  .ssh-pill {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 10px;
+    cursor: pointer;
+    border-right: 1px solid rgba(255,255,255,.05);
+    opacity: 0.22;
+    transition: opacity .2s, background .2s;
+    position: relative;
+  }
+  .ssh-pill:last-child { border-right: none; }
+  .ssh-pill:hover { opacity: 0.75 !important; background: rgba(255,255,255,.03); }
   .pill-num {
-    font-size: 10px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 2px; color: var(--muted); opacity: .65; flex-shrink: 0;
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--muted); flex-shrink: 0;
   }
   .pill-title {
-    font-size: 11px; font-weight: 600; letter-spacing: .5px;
-    text-transform: uppercase; color: rgba(255,255,255,.5);
+    font-size: 10px; font-weight: 600; letter-spacing: .3px;
+    text-transform: uppercase; color: rgba(255,255,255,.45);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     transition: color .18s;
   }
-  .ssh-pill:hover .pill-title { color: rgba(255,255,255,.85); }
+  /* PAST: dimmed + green check */
+  .ssh-pill.ssh-pill-past { opacity: 0.55; }
+  .ssh-pill.ssh-pill-past .pill-num { color: var(--green); }
+  .ssh-pill.ssh-pill-past .pill-title { color: rgba(255,255,255,.4); }
+  .ssh-pill.ssh-pill-past::after {
+    content: '✓'; font-size: 9px; color: var(--green);
+    margin-left: 4px; opacity: .8; flex-shrink: 0;
+  }
+  /* ACTIVE: full brightness + purple underline */
+  .ssh-pill.ssh-pill-active { opacity: 1; background: rgba(91,33,255,.1); }
+  .ssh-pill.ssh-pill-active::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: var(--purple);
+  }
+  .ssh-pill.ssh-pill-active .pill-num { color: #A078FF; }
+  .ssh-pill.ssh-pill-active .pill-title { color: var(--white); }
+  @media(max-width:640px) { .pill-title { display: none; } .ssh-pill { justify-content: center; } }
 
   .sticky-section-content { max-width: 1100px; margin: 0 auto; padding: 80px 24px; }
   @media(max-width:768px){ .ssh-num{ display:none; } .sticky-section-content{ padding: 56px 24px; } }
@@ -1699,12 +1724,11 @@ window.updateCalc = updateCalc;
 </script>
 
 <script>
-/* ── STICKY HEADERS: FIXED PILL STACK ──
-   Uses fixed-position pills that appear when each section scrolls past.
-   The active section's sticky header stays in-flow via position:sticky.
-   Pills stack at the top below the nav. */
+/* ── STICKY HEADERS: HORIZONTAL STORYBRAND PROGRESS BAR ──
+   Single fixed row, always 40px, showing all 6 steps simultaneously.
+   Past = ✓ green, Active = purple underline, Future = dim. */
 
-var PILL_H = 30; // height of each pill
+var BAR_H = 40; // height of the single horizontal progress bar
 
 function updateStickyHeaders() {
   var navEl    = document.getElementById('nav');
@@ -1716,35 +1740,39 @@ function updateStickyHeaders() {
 
   if (!sections.length) return;
 
-  // Update the fixed stack container position
+  // Position bar immediately below nav
   if (stack) stack.style.top = navH + 'px';
 
-  var pillCount = 0; // how many pills are visible
+  var barOffset  = navH + BAR_H;
+  var anyInRange = false;
 
   sections.forEach(function(section, i) {
     var absTop    = section.offsetTop;
     var absBottom = section.offsetTop + section.offsetHeight;
 
-    // Section is PAST when its bottom has scrolled above the viewport + pill stack
-    var isPast   = absBottom < scrollY + navH + (pillCount * PILL_H) + PILL_H + 2;
-    // Section is ACTIVE when visible in the viewport area
-    var isActive = !isPast && (absTop <= scrollY + navH + (pillCount * PILL_H) + 60);
+    // Show the bar once user is within 120px of entering the first sticky section
+    if (absTop <= scrollY + navH + 120) anyInRange = true;
 
-    // Show/hide the pill for this section
+    var isPast   = absBottom < scrollY + barOffset + 2;
+    var isActive = !isPast && absTop <= scrollY + barOffset + 60;
+
     if (pills[i]) {
-      pills[i].classList.toggle('ssh-pill-on', isPast);
+      pills[i].classList.toggle('ssh-pill-past',   isPast);
+      pills[i].classList.toggle('ssh-pill-active',  isActive && !isPast);
+      pills[i].classList.toggle('ssh-pill-future',  !isPast && !isActive);
     }
 
-    // Update the sticky header top to sit below nav + pill stack
+    // All section headers sit at the same fixed offset (nav + bar)
     var header = section.querySelector('.sticky-section-header');
     if (header) {
-      header.style.top = (navH + (pillCount * PILL_H) - 1) + 'px';
+      header.style.top = (barOffset - 1) + 'px';
       header.classList.toggle('ssh-active', isActive);
-      header.classList.toggle('ssh-past', isPast);
+      header.classList.toggle('ssh-past',   isPast);
     }
-
-    if (isPast) pillCount++;
   });
+
+  // Show/hide the bar itself
+  if (stack) stack.classList.toggle('bar-visible', anyInRange);
 }
 
 // Click on a pill → scroll back to that section
