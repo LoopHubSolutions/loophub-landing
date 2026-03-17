@@ -851,6 +851,18 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   .img-break::after  { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 18%; background: linear-gradient(to top, var(--bg2) 0%, transparent 100%); z-index: 2; pointer-events: none; }
   .img-break-label { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 10px; background: rgba(6,6,15,.55); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.09); border-radius: 100px; padding: 10px 22px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); white-space: nowrap; }
   .img-break-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; box-shadow: 0 0 10px var(--green); }
+
+  /* ── FLOATING CTA BAR ── */
+  #float-cta-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 150; background: rgba(6,6,15,.97); backdrop-filter: blur(24px); border-top: 1px solid rgba(255,255,255,.07); padding: 14px 32px; display: flex; align-items: center; justify-content: center; gap: 20px; transform: translateY(100%); transition: transform .4s cubic-bezier(0.4,0,0.2,1); pointer-events: none; }
+  #float-cta-bar.fcta-visible { transform: translateY(0); pointer-events: auto; }
+  .fcta-text { font-size: 14px; color: var(--muted); white-space: nowrap; }
+  .fcta-btns { display: flex; gap: 10px; flex-shrink: 0; }
+  @media(max-width: 640px) { .fcta-text { display: none; } #float-cta-bar { padding: 12px 16px; gap: 10px; } }
+
+  /* ── SECTION MINI CTA ── */
+  .scta { text-align: center; padding-top: 36px; margin-top: 36px; border-top: 1px solid rgba(255,255,255,.05); }
+  .scta a { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 100px; font-size: 14px; font-weight: 700; background: rgba(91,33,255,.08); border: 1px solid rgba(91,33,255,.22); color: #A078FF; transition: all .2s; }
+  .scta a:hover { background: rgba(91,33,255,.18); border-color: rgba(91,33,255,.45); color: #fff; transform: translateY(-1px); }
 </style>
 </head>
 <body>
@@ -947,6 +959,15 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   <p class="rv" data-i18n-html="manifesto">Most businesses don't have a lead problem. <em>They have a conversion problem.</em></p>
 </div>
 
+<!-- FLOATING CTA BAR -->
+<div id="float-cta-bar" role="complementary" aria-label="Apply">
+  <span class="fcta-text" data-i18n="fcta_text">Ready to test the AI on your leads?</span>
+  <div class="fcta-btns">
+    <a class="btn btn-p" href="#apply" style="font-size:14px;padding:11px 24px" data-i18n-html="fcta_btn1">Apply for the Test &rarr;</a>
+    <a class="btn btn-g" href="#apply" style="font-size:14px;padding:11px 20px" onclick="event.preventDefault();document.getElementById('apply').scrollIntoView({behavior:'smooth'});setTimeout(function(){selectApplyPath('b')},500)" data-i18n="fcta_btn2">Call Me Now</a>
+  </div>
+</div>
+
 <!-- ===== STICKY SECTIONS ===== -->
 <div class="sticky-sections">
 
@@ -986,6 +1007,7 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
           <p data-i18n="pcard4_p">Ad spend, content, referrals — every lead has a cost. When follow-up fails, you're not just losing the deal. You're losing the entire acquisition cost on top of it. The waste compounds every month.</p>
         </div>
       </div>
+      <div class="scta"><a href="#apply" data-i18n-html="scta_btn">Apply for the 250-Lead Test &rarr;</a></div>
     </div>
   </section>
 
@@ -1027,6 +1049,7 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
           That's why the bot calls fast, follows up 5 times automatically, and keeps working the lead until there's a real outcome &mdash; not just a missed call.
         </p>
       </div>
+      <div class="scta"><a href="#apply" data-i18n-html="scta_btn">Apply for the 250-Lead Test &rarr;</a></div>
     </div>
   </section>
 
@@ -1070,6 +1093,7 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
           </ul>
         </div>
       </div>
+      <div class="scta"><a href="#apply" data-i18n-html="scta_btn">Apply for the 250-Lead Test &rarr;</a></div>
     </div>
   </section>
 
@@ -1137,6 +1161,7 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
           </div>
         </div>
       </div>
+      <div class="scta"><a href="#apply" data-i18n-html="scta_btn">Apply for the 250-Lead Test &rarr;</a></div>
     </div>
   </section>
 
@@ -2211,6 +2236,10 @@ var _LH_I18N = {
     pilot_bad_5: 'Looking for a generic free consultation, not a structured test',
     pilot_cta_btn: 'Apply for the 250-Lead Test &rarr;',
     pilot_cta_note: "We review every application. Not everyone gets in. That\u2019s the point.",
+    fcta_text: 'Ready to test the AI on your leads?',
+    fcta_btn1: 'Apply for the Test &rarr;',
+    fcta_btn2: 'Call Me Now',
+    scta_btn: 'Apply for the 250-Lead Test &rarr;',
     // Qualification form
     qf_q1_label: 'What industry are you in?',
     qf_ind_placeholder: 'Select your industry...',
@@ -2480,6 +2509,10 @@ var _LH_I18N = {
     pilot_bad_5: 'Buscando una consultor\u00eda gen\u00e9rica gratuita, no una prueba estructurada',
     pilot_cta_btn: 'Aplicar a la Prueba de 250 Leads &rarr;',
     pilot_cta_note: 'Revisamos cada aplicaci\u00f3n. No todos entran. Ese es el punto.',
+    fcta_text: '\u00bfListo para probar la IA en tus leads?',
+    fcta_btn1: 'Aplicar al Test &rarr;',
+    fcta_btn2: 'Llámame',
+    scta_btn: 'Aplicar a la Prueba de 250 Leads &rarr;',
     // Qualification form
     qf_q1_label: '\u00bfEn qu\u00e9 industria est\u00e1s?',
     qf_ind_placeholder: 'Selecciona tu industria...',
@@ -2808,6 +2841,29 @@ Tawk_API.onLoad = function () {
       setTimeout(showToast, delay % 15000);
     }, 30000);
   }, 10000);
+})();
+
+/* ── FLOATING CTA BAR — show after hero, hide at #apply ── */
+(function() {
+  var bar   = document.getElementById('float-cta-bar');
+  var hero  = document.getElementById('hero');
+  var apply = document.getElementById('apply');
+  if (!bar || !hero || !apply) return;
+  var heroGone  = false;
+  var applyVis  = false;
+  function update() {
+    if (heroGone && !applyVis) bar.classList.add('fcta-visible');
+    else bar.classList.remove('fcta-visible');
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.target === hero)  { heroGone  = !e.isIntersecting; }
+      if (e.target === apply) { applyVis  =  e.isIntersecting; }
+      update();
+    });
+  }, { threshold: 0.05 });
+  obs.observe(hero);
+  obs.observe(apply);
 })();
 </script>
 
