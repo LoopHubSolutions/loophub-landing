@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --green: #00c566;
+  --green-hover: #00d970;
+  --lime: #d4ff00;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #000000;
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #00c566; }
+
+/* ── Selection ── */
+::selection { background: rgba(0,197,102,0.25); color: #fff; }
+
+/* ── Green highlight text ── */
+.text-highlight {
+  color: #00c566;
+}
+
+/* ── Grain overlay ── */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Button base ── */
+.btn-primary {
+  @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200;
+  background: #00c566;
+  color: #000;
+}
+.btn-primary:hover {
+  background: #00d970;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px rgba(0,197,102,0.35);
+}
+
+.btn-secondary {
+  @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200;
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.btn-secondary:hover {
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.05);
+  transform: translateY(-1px);
+}
+
+/* ── Card ── */
+.card {
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+}
+
+/* ── Section spacing ── */
+.section-pad {
+  @apply py-24 px-6;
+}
+@media (min-width: 768px) {
+  .section-pad { @apply py-32 px-12; }
+}
+@media (min-width: 1280px) {
+  .section-pad { @apply px-24; }
+}
+
+/* ── Section label ── */
+.section-label {
+  @apply text-xs font-semibold tracking-widest uppercase;
+  color: #00c566;
+}
+
+/* ── Green ring timer ── */
+@keyframes timerStroke {
+  from { stroke-dashoffset: 283; }
+  to   { stroke-dashoffset: 0; }
+}
+.timer-ring {
+  animation: timerStroke 8s linear infinite;
+}
+
+/* ── Tommy eye blink ── */
+@keyframes eyeBlink {
+  0%, 88%, 100% { transform: scaleY(1); }
+  92%           { transform: scaleY(0.08); }
+}
+.eye-blink { animation: eyeBlink 4s ease-in-out infinite; }
+
+/* ── Tommy headset glow ── */
+@keyframes headsetPulse {
+  0%, 100% { filter: drop-shadow(0 0 4px #00c566); }
+  50%       { filter: drop-shadow(0 0 14px #00c566) drop-shadow(0 0 28px rgba(0,197,102,0.4)); }
+}
+.headset-glow { animation: headsetPulse 2s ease-in-out infinite; }
+
+/* ── Tommy float ── */
+@keyframes tommyFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-14px); }
+}
+.tommy-float { animation: tommyFloat 3.5s ease-in-out infinite; }
+
+/* ── Tommy antenna pulse ── */
+@keyframes antennaPulse {
+  0%, 100% { r: 5; opacity: 1; }
+  50%       { r: 8; opacity: 0.7; }
+}
+.antenna-dot { animation: antennaPulse 1.5s ease-in-out infinite; }
+
+/* ── Phone ring ── */
+@keyframes phoneRing {
+  0%, 100% { transform: rotate(-12deg); }
+  50%       { transform: rotate(12deg); }
+}
+.phone-ring { animation: phoneRing 0.4s ease-in-out infinite; }
+
+/* ── Count up number ── */
+.stat-number {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* ── Step connector line ── */
+.step-line {
+  width: 2px;
+  background: linear-gradient(to bottom, #00c566, transparent);
+}
+
+/* ── Gradient text ── */
+.gradient-text {
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Social proof lime card ── */
+.lime-card {
+  background: #d4ff00;
+  color: #000;
+  border-radius: 24px;
+}
+
+/* ── Before/after bar ── */
+.bar-before { background: rgba(255,255,255,0.1); }
+.bar-after  { background: #00c566; }
+
+/* ── Glow dot ── */
+.glow-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #00c566;
+  box-shadow: 0 0 10px #00c566, 0 0 20px rgba(0,197,102,0.5);
+}
+
+/* ── Industry card hover ── */
+.industry-card {
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.industry-card:hover {
+  border-color: rgba(0,197,102,0.4) !important;
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,197,102,0.1);
+}
+
+/* ── Form input ── */
+.form-input {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  color: #fff;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-input:focus {
+  border-color: #00c566;
+  box-shadow: 0 0 0 3px rgba(0,197,102,0.1);
+}
+.form-input::placeholder { color: rgba(255,255,255,0.3); }
+
+/* ── Timer countdown visual ── */
+@keyframes countdown8 {
+  0%   { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 226; }
+}
+.countdown-circle {
+  stroke-dasharray: 226;
+  stroke-dashoffset: 0;
+  animation: countdown8 8s linear infinite;
+}
+
+/* ── Phone pulse (hero) ── */
+@keyframes phonePulse {
+  from { box-shadow: 0 0 20px rgba(0,197,102,0.2); transform: scale(1); }
+  to   { box-shadow: 0 0 48px rgba(0,197,102,0.5); transform: scale(1.04); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Float chip ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1; transform: scale(1.02); }
+}
+@keyframes bounceSlow {
+  0%, 100% { transform: scaleY(0.4); }
+  50%       { transform: scaleY(1); }
+}
+
+/* ── Responsive nav ── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+}
