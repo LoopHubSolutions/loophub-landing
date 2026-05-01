@@ -101,7 +101,11 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   .badge { display:inline-flex; align-items:center; gap:9px; padding:8px 18px; background:rgba(91,33,255,.1); border:1px solid rgba(91,33,255,.28); border-radius:100px; font-size:12px; font-weight:700; color:#A078FF; margin-bottom:36px; letter-spacing:1px; text-transform:uppercase; position:relative; z-index:2; }
   .bdot { width:7px; height:7px; background:var(--pm); border-radius:50%; box-shadow:0 0 10px var(--pm); animation:blink 2.2s infinite; }
   @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-  .hero-h1 { font-size:clamp(34px,4.6vw,64px); font-weight:900; line-height:1.12; letter-spacing:-2px; max-width:860px; margin-bottom:24px; position:relative; z-index:2; }
+  .hero-h1 { font-size:clamp(28px,4vw,60px); font-weight:900; line-height:1.15; letter-spacing:-2px; max-width:860px; margin-bottom:24px; position:relative; z-index:2; }
+  .hero-h1 { display:flex; flex-direction:column; align-items:center; }
+  .hero-line1, .hero-line2 { display:block; }
+  .hero-dash { display:block; font-size:.4em; color:rgba(255,255,255,.22); line-height:1.2; margin:0; }
+  .hero-countdown { display:inline-block; min-width:.7em; text-align:center; }
   .hero-sub { font-size:clamp(15px,1.6vw,18px); color:var(--muted); max-width:620px; line-height:1.78; margin-bottom:36px; position:relative; z-index:2; }
   .hero-ctas { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:36px; position:relative; z-index:2; }
 
@@ -890,38 +894,134 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   .scta a:hover { background: rgba(91,33,255,.18); border-color: rgba(91,33,255,.45); color: #fff; transform: translateY(-1px); }
 
   /* ===== HERO PHONE MOCKUP ===== */
-  .hero-phone-wrap { position:relative; width:280px; margin:36px auto 44px; z-index:2; }
-  .hero-phone { width:280px; border-radius:28px; overflow:hidden; background:#0d0d0d; border:1px solid rgba(255,255,255,0.08); box-shadow:0 40px 120px rgba(0,0,0,.8),0 0 60px rgba(0,216,101,.07); }
-  .hp-notch { width:80px; height:6px; background:rgba(255,255,255,.1); border-radius:3px; margin:12px auto 0; }
-  .hp-body { padding:14px; display:flex; flex-direction:column; gap:10px; margin-top:12px; }
-  .hp-header { display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(0,216,101,.07); border:1px solid rgba(0,216,101,.14); border-radius:14px; }
+  .hero-phone-wrap {
+    position:relative; width:260px; margin:40px auto 52px; z-index:2;
+    filter: drop-shadow(0 60px 80px rgba(0,0,0,.7)) drop-shadow(0 0 80px rgba(0,216,101,.07));
+  }
+
+  /* Outer frame — the physical phone body */
+  .hp-frame {
+    width:260px; height:520px;
+    border-radius:48px;
+    background:linear-gradient(155deg,#252538 0%,#18182a 30%,#0e0e1a 65%,#08080f 100%);
+    border:1px solid rgba(255,255,255,0.10);
+    box-shadow:
+      /* outer edge highlight */
+      0 1px 0 rgba(255,255,255,0.12),
+      /* inner screen border */
+      inset 0 0 0 6px #14141f,
+      /* deep ground shadow */
+      0 60px 120px rgba(0,0,0,.9),
+      0 30px 60px rgba(0,0,0,.6),
+      /* green ambient glow */
+      0 0 80px rgba(0,216,101,.06);
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  /* Glass shine on frame top-left */
+  .hp-frame-shine {
+    position:absolute; top:0; left:0; right:0; bottom:0;
+    border-radius:48px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.055) 0%, transparent 45%);
+    pointer-events:none; z-index:10;
+  }
+  /* Side buttons */
+  .hp-frame::before {
+    content:'';
+    position:absolute;
+    right:-5px; top:100px;
+    width:4px; height:58px;
+    background:linear-gradient(180deg,#252538,#1a1a2a);
+    border-radius:0 3px 3px 0;
+    box-shadow:0 42px 0 #1e1e2e, 0 84px 0 #1e1e2e, inset -1px 0 0 rgba(255,255,255,0.06);
+  }
+  .hp-frame::after {
+    content:'';
+    position:absolute;
+    left:-5px; top:120px;
+    width:4px; height:44px;
+    background:linear-gradient(180deg,#252538,#1a1a2a);
+    border-radius:3px 0 0 3px;
+    box-shadow:0 58px 0 #1e1e2e, inset 1px 0 0 rgba(255,255,255,0.06);
+  }
+
+  /* Top bar: camera + speaker */
+  .hp-topbar {
+    display:flex; align-items:center; justify-content:center;
+    gap:8px; padding:14px 0 10px;
+    flex-shrink:0;
+  }
+  .hp-speaker { width:52px; height:5px; border-radius:3px; background:rgba(255,255,255,.12); }
+  .hp-camera  { width:10px; height:10px; border-radius:50%; background:#111; border:2px solid rgba(255,255,255,.15); }
+
+  /* Screen area */
+  .hp-screen {
+    flex:1;
+    background:#06060F;
+    margin:0 4px 4px;
+    border-radius:0 0 42px 42px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* Status bar */
+  .hp-statusbar {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8px 16px 4px;
+    font-size:9px; font-weight:700; color:rgba(255,255,255,.5);
+    flex-shrink:0;
+  }
+
+  /* Scrollable content area */
+  .hp-content {
+    flex:1;
+    padding:10px 12px 14px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    overflow:hidden;
+  }
+  .hp-header { display:flex; align-items:center; gap:8px; padding:10px 12px; background:rgba(0,216,101,.07); border:1px solid rgba(0,216,101,.14); border-radius:14px; flex-shrink:0; }
   .hp-icon { width:30px; height:30px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .hp-name { font-size:11px; font-weight:700; color:#fff; }
-  .hp-status { font-size:10px; color:rgba(255,255,255,.5); }
-  .hp-badge { margin-left:auto; font-size:9px; font-weight:700; padding:3px 8px; border-radius:100px; }
+  .hp-status { font-size:9px; color:rgba(255,255,255,.5); margin-top:1px; }
+  .hp-badge { margin-left:auto; font-size:8px; font-weight:700; padding:3px 8px; border-radius:100px; flex-shrink:0; }
   .hp-badge.ready { background:rgba(255,255,255,.08); color:rgba(255,255,255,.4); }
-  .hp-badge.live  { background:rgba(0,216,101,.2); color:var(--green); }
-  .hp-badge.done  { background:rgba(255,255,255,.05); color:rgba(255,255,255,.3); }
-  .hp-section-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,.3); margin-bottom:2px; }
-  .hp-row { font-size:11px; padding:8px 10px; border-radius:8px; background:rgba(255,255,255,.04); color:rgba(255,255,255,.65); }
-  .hp-call-btn { margin-top:4px; text-align:center; padding:8px; border-radius:8px; background:rgba(0,216,101,.14); color:var(--green); font-size:11px; font-weight:700; }
-  .hp-bubble-bot { font-size:11px; padding:10px 12px; border-radius:12px 12px 12px 2px; background:rgba(0,216,101,.1); border:1px solid rgba(0,216,101,.15); color:rgba(255,255,255,.85); line-height:1.5; }
-  .hp-bubble-user { font-size:11px; padding:10px 12px; border-radius:12px 12px 2px 12px; background:rgba(255,255,255,.06); color:rgba(255,255,255,.7); line-height:1.5; align-self:flex-end; margin-left:20px; }
-  .hp-wave { display:flex; align-items:center; gap:2px; margin-top:4px; }
-  .hp-wave span { display:inline-block; width:3px; border-radius:2px; background:var(--green); opacity:.6; }
+  .hp-badge.live  { background:rgba(0,216,101,.2); color:var(--green); animation:blink 1.5s infinite; }
+  .hp-badge.done  { background:rgba(91,33,255,.15); color:#a078ff; }
+  .hp-section-label { font-size:8px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,.28); margin-bottom:2px; }
+  .hp-step { display:flex; flex-direction:column; gap:6px; }
+  .hp-row { font-size:10px; padding:7px 10px; border-radius:8px; background:rgba(255,255,255,.04); color:rgba(255,255,255,.65); }
+  .hp-call-btn { text-align:center; padding:8px; border-radius:8px; background:rgba(0,216,101,.13); color:var(--green); font-size:10px; font-weight:700; border:1px solid rgba(0,216,101,.2); }
+  .hp-bubble-bot { font-size:10px; padding:9px 11px; border-radius:12px 12px 12px 2px; background:rgba(0,216,101,.1); border:1px solid rgba(0,216,101,.15); color:rgba(255,255,255,.85); line-height:1.55; }
+  .hp-bubble-user { font-size:10px; padding:9px 11px; border-radius:12px 12px 2px 12px; background:rgba(255,255,255,.06); color:rgba(255,255,255,.7); line-height:1.55; align-self:flex-end; margin-left:16px; }
+  .hp-wave { display:flex; align-items:center; gap:2px; margin-top:2px; }
+  .hp-wave span { display:inline-block; width:3px; border-radius:2px; background:var(--green); opacity:.7; animation:bounceSlow .4s ease-in-out infinite alternate; }
+  .hp-wave span:nth-child(2){ animation-delay:.07s; }
+  .hp-wave span:nth-child(3){ animation-delay:.14s; }
+  .hp-wave span:nth-child(4){ animation-delay:.21s; }
+  .hp-wave span:nth-child(5){ animation-delay:.28s; }
+  .hp-wave span:nth-child(6){ animation-delay:.35s; }
+  .hp-wave span:nth-child(7){ animation-delay:.28s; }
+  .hp-wave span:nth-child(8){ animation-delay:.21s; }
+  .hp-wave span:nth-child(9){ animation-delay:.14s; }
+  .hp-wave span:nth-child(10){ animation-delay:.07s; }
   .hp-calendar { padding:10px 12px; border-radius:12px; background:rgba(0,216,101,.07); border:1px solid rgba(0,216,101,.18); }
-  .hp-calendar-title { font-size:11px; font-weight:700; color:#fff; margin-bottom:4px; }
+  .hp-calendar-title { font-size:11px; font-weight:700; color:#fff; margin-bottom:3px; }
   .hp-calendar-time { font-size:10px; color:rgba(255,255,255,.6); }
   .hp-calendar-name { font-size:10px; color:var(--green); margin-top:3px; }
-  .hp-checks { font-size:10px; color:rgba(255,255,255,.5); padding:8px 10px; border-radius:8px; background:rgba(255,255,255,.03); line-height:1.9; }
-  /* floating chips on phone */
-  .hp-chip { position:absolute; display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:12px; background:rgba(0,0,0,.88); border:1px solid rgba(0,216,101,.2); backdrop-filter:blur(12px); }
+  .hp-checks { font-size:10px; color:rgba(255,255,255,.5); padding:9px 11px; border-radius:8px; background:rgba(255,255,255,.03); line-height:2; }
+  /* floating chips */
+  .hp-chip { position:absolute; display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:12px; background:rgba(6,6,15,.95); border:1px solid rgba(0,216,101,.2); backdrop-filter:blur(12px); }
   .hp-chip-icon { width:22px; height:22px; border-radius:7px; background:rgba(0,216,101,.14); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .hp-chip-title { font-size:10px; font-weight:700; color:#fff; white-space:nowrap; }
   .hp-chip-sub { font-size:9px; color:rgba(255,255,255,.45); white-space:nowrap; }
-  .hp-chip-right { right:-12px; top:24px; animation:float 4s ease-in-out infinite; animation-delay:.5s; }
-  .hp-chip-left  { left:-12px; bottom:32px; animation:float 4s ease-in-out infinite; animation-delay:1.5s; }
-  @media(max-width:480px){ .hero-phone-wrap{ width:260px; } .hero-phone{ width:260px; } }
+  .hp-chip-right { right:-148px; top:60px; animation:float 4s ease-in-out infinite; animation-delay:.5s; }
+  .hp-chip-left  { left:-148px; bottom:80px; animation:float 4s ease-in-out infinite; animation-delay:1.5s; }
+  @media(max-width:700px){ .hp-chip{ display:none; } }
 </style>
 </head>
 <body>
@@ -985,64 +1085,76 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <section id="hero">
   <div class="hero-blob hero-blob-top" aria-hidden="true"><div></div></div>
   <div class="hero-blob hero-blob-btm" aria-hidden="true"><div></div></div>
-  <div class="badge rv"><span class="bdot"></span> <span data-i18n="hero_badge">For Businesses Already Running Ads or Generating Inbound Leads</span></div>
+  <div class="badge rv"><span class="bdot"></span> <span data-i18n="hero_badge">STOP LOSING LEADS YOU ALREADY PAID FOR</span></div>
   <h1 class="hero-h1 rv d1" data-i18n-html="hero_h1">
-    Turn More of Your Existing Leads<br>Into Booked Meetings —<br>
-    <span class="grad">With an AI Sales Bot</span>
+    <span class="hero-line1">Your Leads Go Cold in 5 Minutes.</span>
+    <span class="hero-dash">—</span>
+    <span class="hero-line2">We Call Them in <span class="grad hero-countdown" id="hero-countdown">8</span> Sec.</span>
   </h1>
 
   <!-- PHONE MOCKUP -->
   <div class="hero-phone-wrap rv d2">
-    <div class="hero-phone">
-      <div class="hp-notch"></div>
-      <div class="hp-body">
-        <!-- Header -->
-        <div class="hp-header">
-          <div class="hp-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.53 9.77a19.79 19.79 0 01-3.07-8.67A2 2 0 012.44 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 9.4A16 16 0 0015.54 18l.77-.77a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 19.41z" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <div class="hp-name">Tommy · LoopHub</div>
-            <div class="hp-status" id="hp-status">New lead detected</div>
-          </div>
-          <span class="hp-badge ready" id="hp-badge">READY</span>
+    <div class="hp-frame">
+      <div class="hp-frame-shine" aria-hidden="true"></div>
+      <div class="hp-topbar">
+        <div class="hp-camera"></div>
+        <div class="hp-speaker"></div>
+      </div>
+      <div class="hp-screen">
+        <div class="hp-statusbar">
+          <span>9:41</span>
+          <span style="letter-spacing:1px">● ● ●</span>
+          <span>100%</span>
         </div>
-        <!-- Step content -->
-        <div id="hp-step-0">
-          <div class="hp-section-label">New Lead</div>
-          <div class="hp-row">Name: John Martinez</div>
-          <div class="hp-row">Phone: +1 803 555-0147</div>
-          <div class="hp-row">Source: Website Form</div>
-          <div class="hp-row">Time: Just now</div>
-          <div class="hp-call-btn">⏱ Calling in 8 seconds...</div>
-        </div>
-        <div id="hp-step-1" style="display:none;flex-direction:column;gap:8px;">
-          <div class="hp-section-label">Live Transcript</div>
-          <div class="hp-bubble-bot">Hi John! This is Tommy from LoopHub. I see you just requested info — do you have 2 minutes?</div>
-          <div class="hp-bubble-user">Yeah, sure! I was just looking at your website...</div>
-          <div class="hp-wave" id="hp-wave">
-            <span style="height:4px"></span><span style="height:10px"></span><span style="height:16px"></span><span style="height:20px"></span><span style="height:14px"></span><span style="height:8px"></span><span style="height:18px"></span><span style="height:12px"></span><span style="height:6px"></span><span style="height:16px"></span>
+        <div class="hp-content">
+          <!-- Header -->
+          <div class="hp-header">
+            <div class="hp-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.53 9.77a19.79 19.79 0 01-3.07-8.67A2 2 0 012.44 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 9.4A16 16 0 0015.54 18l.77-.77a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 19.41z" stroke="#00D865" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <div class="hp-name">Tommy · LoopHub</div>
+              <div class="hp-status" id="hp-status">New lead detected</div>
+            </div>
+            <span class="hp-badge ready" id="hp-badge">READY</span>
           </div>
-        </div>
-        <div id="hp-step-2" style="display:none;flex-direction:column;gap:8px;">
-          <div class="hp-section-label">Appointment Booked</div>
-          <div class="hp-calendar">
-            <div class="hp-calendar-title">📅 Thursday, April 10</div>
-            <div class="hp-calendar-time">2:00 PM — 2:30 PM</div>
-            <div class="hp-calendar-name">John Martinez · Qualified Lead</div>
+          <!-- Step content -->
+          <div id="hp-step-0" class="hp-step">
+            <div class="hp-section-label" data-i18n="hp_label_0">New Lead</div>
+            <div class="hp-row" data-i18n="hp_row_name">Name: John Martinez</div>
+            <div class="hp-row" data-i18n="hp_row_phone">Phone: +1 803 555-0147</div>
+            <div class="hp-row" data-i18n="hp_row_source">Source: Website Form</div>
+            <div class="hp-row" data-i18n="hp_row_time">Time: Just now</div>
+            <div class="hp-call-btn" data-i18n="hp_call_btn">⏱ Calling in 8 seconds...</div>
           </div>
-          <div class="hp-checks">✅ CRM Updated<br>✅ Calendar invite sent<br>✅ Reminder set 24h before</div>
+          <div id="hp-step-1" class="hp-step" style="display:none">
+            <div class="hp-section-label" data-i18n="hp_label_1">Live Transcript</div>
+            <div class="hp-bubble-bot" data-i18n="hp_bubble_bot">Hi John! This is Tommy from LoopHub. I see you just requested info — do you have 2 minutes?</div>
+            <div class="hp-bubble-user" data-i18n="hp_bubble_user">Yeah, sure! I was just looking at your website...</div>
+            <div class="hp-wave">
+              <span style="height:4px"></span><span style="height:10px"></span><span style="height:16px"></span><span style="height:20px"></span><span style="height:14px"></span><span style="height:8px"></span><span style="height:18px"></span><span style="height:12px"></span><span style="height:6px"></span><span style="height:16px"></span>
+            </div>
+          </div>
+          <div id="hp-step-2" class="hp-step" style="display:none">
+            <div class="hp-section-label" data-i18n="hp_label_2">Appointment Booked</div>
+            <div class="hp-calendar">
+              <div class="hp-calendar-title" data-i18n="hp_cal_title">📅 Thursday, April 10</div>
+              <div class="hp-calendar-time">2:00 PM — 2:30 PM</div>
+              <div class="hp-calendar-name" data-i18n="hp_cal_name">John Martinez · Qualified Lead</div>
+            </div>
+            <div class="hp-checks" data-i18n-html="hp_checks">✅ CRM Updated<br>✅ Calendar invite sent<br>✅ Reminder set 24h before</div>
+          </div>
         </div>
       </div>
     </div>
     <!-- Floating chips -->
     <div class="hp-chip hp-chip-right">
       <div class="hp-chip-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z" stroke="#00D865" stroke-width="2" stroke-linecap="round"/></svg></div>
-      <div><div class="hp-chip-title">Form Submitted</div><div class="hp-chip-sub">Tommy calling...</div></div>
+      <div><div class="hp-chip-title" data-i18n="hp_chip1_title">Form Submitted</div><div class="hp-chip-sub" data-i18n="hp_chip1_sub">Tommy calling...</div></div>
     </div>
     <div class="hp-chip hp-chip-left">
       <div class="hp-chip-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke="#00D865" stroke-width="2" stroke-linecap="round"/></svg></div>
-      <div><div class="hp-chip-title" style="color:#00D865">+78% conversions</div><div class="hp-chip-sub">vs. 2-hr response</div></div>
+      <div><div class="hp-chip-title" style="color:#00D865" data-i18n="hp_chip2_title">+78% conversions</div><div class="hp-chip-sub" data-i18n="hp_chip2_sub">vs. 2-hr response</div></div>
     </div>
   </div>
   <!-- END PHONE MOCKUP -->
@@ -1466,159 +1578,14 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   <div class="container tc">
     <div class="rv">
       <div class="label" data-i18n="apply_label">Apply Now</div>
-      <h2 class="h2" data-i18n-html="apply_h2">Two Ways to Find Out<br>If You Qualify</h2>
-      <p class="sub" style="margin:0 auto" data-i18n="apply_sub">Qualify yourself in 90 seconds with the form — or let the bot call you and experience the product live before you spend a dollar.</p>
+      <h2 class="h2" data-i18n-html="apply_h2">Let the Bot Call You.<br><span class="grad">Experience the Product Live.</span></h2>
+      <p class="sub" style="margin:0 auto" data-i18n="apply_sub">Enter your number. The same AI Sales Bot we build for clients calls you in under 5 minutes, qualifies your business live, and books the planning call if you're a fit.</p>
+      <p style="font-size:14px;font-weight:600;color:var(--green);margin-top:12px" data-i18n-html="apply_highlight">This is the product &mdash; working on you, in real time.</p>
     </div>
   </div>
 
-  <!-- PATH SELECTOR CARDS -->
+  <!-- BOT CALL FORM -->
   <div class="container" style="margin-top:48px">
-    <div class="apply-path-grid rv">
-
-      <div class="apply-path-card" id="path-card-a">
-        <div class="apply-path-tag" data-i18n="apply_optA_badge">Option A</div>
-        <h3 data-i18n="apply_optA_title">Qualify Yourself</h3>
-        <p data-i18n="apply_optA_desc">Answer 6 questions. Takes under 90 seconds. See your result instantly — and access the planning call link if you qualify.</p>
-        <button class="btn btn-p" onclick="selectApplyPath('a')" data-i18n-html="apply_optA_btn">Answer the Questions &rarr;</button>
-      </div>
-
-      <div class="apply-path-card featured" id="path-card-b">
-        <div class="apply-path-tag featured" data-i18n-html="apply_optB_badge">Option B &mdash; Recommended</div>
-        <h3 data-i18n="apply_optB_title">Let the Bot Call You</h3>
-        <p data-i18n="apply_optB_desc">Enter your number. The same AI Sales Bot we build for clients calls you in under 5 minutes, qualifies your business live, and books the planning call if you're a fit.</p>
-        <p style="font-size:13px;font-weight:600;color:var(--green)" data-i18n-html="apply_optB_highlight">This is the product &mdash; working on you, in real time.</p>
-        <button class="btn btn-green" onclick="selectApplyPath('b')" data-i18n-html="apply_optB_btn">Call Me Now &rarr;</button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- PATH A: Self-qualify form -->
-  <div class="container" id="apply-form-a" style="display:none;margin-top:48px">
-    <div class="qual-form-wrap">
-
-      <div id="qf-state-form">
-        <form id="qual-form" novalidate>
-          <div class="qf-fields">
-
-            <div class="qf-field rv d1">
-              <label for="qf-industry" data-i18n="qf_q1_label">What industry are you in?</label>
-              <div class="qf-select-wrap">
-                <select id="qf-industry" name="industry" class="qf-select" required>
-                  <option value="" data-i18n="qf_ind_placeholder">Select your industry...</option>
-                  <option value="real_estate" data-i18n="qf_ind_re">Real Estate</option>
-                  <option value="insurance" data-i18n="qf_ind_ins">Insurance</option>
-                  <option value="mortgage" data-i18n="qf_ind_mort">Mortgage / Finance</option>
-                  <option value="home_services" data-i18n="qf_ind_home">Home Services / Contractors</option>
-                  <option value="auto" data-i18n="qf_ind_auto">Auto / Dealerships</option>
-                  <option value="saas_tech" data-i18n="qf_ind_saas">SaaS / Tech</option>
-                  <option value="b2b_services" data-i18n="qf_ind_b2b">B2B Services / Consulting</option>
-                  <option value="healthcare" data-i18n="qf_ind_health">Healthcare / Med Spa</option>
-                  <option value="other" data-i18n="qf_ind_other">Other</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="qf-field rv d1">
-              <label data-i18n="qf_q2_label">Are you currently running paid ads or generating consistent inbound leads?</label>
-              <div class="qf-radio-group" data-radio="running_ads">
-                <label class="qf-radio-label"><input type="radio" name="running_ads" value="yes"> <span data-i18n="qf_ads_yes">Yes — ads or inbound are active right now</span></label>
-                <label class="qf-radio-label"><input type="radio" name="running_ads" value="no"> <span data-i18n="qf_ads_no">Not currently</span></label>
-              </div>
-            </div>
-
-            <div class="qf-field rv d2">
-              <label for="qf-monthly-leads" data-i18n="qf_q3_label">How many leads do you generate per month?</label>
-              <div class="qf-select-wrap">
-                <select id="qf-monthly-leads" name="monthly_leads" class="qf-select" required>
-                  <option value="" data-i18n="qf_leads_placeholder">Select a range...</option>
-                  <option value="under100" data-i18n="qf_leads_u100">Under 100</option>
-                  <option value="100to250" data-i18n="qf_leads_100">100 – 250</option>
-                  <option value="250to500" data-i18n="qf_leads_250">250 – 500</option>
-                  <option value="500plus" data-i18n="qf_leads_500">500+</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="qf-field rv d2">
-              <label data-i18n="qf_q4_label">Do you have at least 250 leads ready to call right now?</label>
-              <div class="qf-radio-group" data-radio="leads_ready">
-                <label class="qf-radio-label"><input type="radio" name="leads_ready" value="yes"> <span data-i18n="qf_ready_yes">Yes — we have them ready in our CRM</span></label>
-                <label class="qf-radio-label"><input type="radio" name="leads_ready" value="consistent"> <span data-i18n="qf_ready_con">Not 250 yet, but we generate that volume consistently</span></label>
-                <label class="qf-radio-label"><input type="radio" name="leads_ready" value="no"> <span data-i18n="qf_ready_no">No — our lead flow is inconsistent or sparse</span></label>
-              </div>
-            </div>
-
-            <div class="qf-field rv d3">
-              <label for="qf-deal-value" data-i18n="qf_q5_label">What is your average deal value?</label>
-              <div class="qf-select-wrap">
-                <select id="qf-deal-value" name="deal_value" class="qf-select" required>
-                  <option value="" data-i18n="qf_deal_placeholder">Select a range...</option>
-                  <option value="under500" data-i18n="qf_deal_u500">Under $500</option>
-                  <option value="500to1000" data-i18n="qf_deal_500">$500 – $1,000</option>
-                  <option value="1000to2500" data-i18n="qf_deal_1k">$1,000 – $2,500</option>
-                  <option value="2500to5000" data-i18n="qf_deal_2k5">$2,500 – $5,000</option>
-                  <option value="5000plus" data-i18n="qf_deal_5k">$5,000+</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="qf-field rv d3">
-              <label for="qf-closer" data-i18n="qf_q6_label">Who handles sales after a lead is qualified?</label>
-              <div class="qf-select-wrap">
-                <select id="qf-closer" name="has_closer" class="qf-select" required>
-                  <option value="" data-i18n="qf_closer_placeholder">Select...</option>
-                  <option value="owner" data-i18n="qf_closer_owner">Owner / Founder closes personally</option>
-                  <option value="sales_team" data-i18n="qf_closer_team">Dedicated sales team</option>
-                  <option value="single_rep" data-i18n="qf_closer_rep">Single sales rep</option>
-                  <option value="no_one" data-i18n="qf_closer_none">No one — that's the gap we're trying to fill</option>
-                </select>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="qf-submit rv">
-            <button type="submit" class="btn btn-p qf-submit-btn" data-i18n-html="qf_submit_btn">See If I Qualify &rarr;</button>
-            <p class="qf-note" data-i18n="qf_submit_note">No spam. No obligation. We review every application personally.</p>
-          </div>
-        </form>
-      </div>
-
-      <!-- QUALIFIED -->
-      <div id="qf-state-qualified" style="display:none">
-        <div class="qf-result qualified">
-          <div class="qf-result-badge" data-i18n="qf_qual_badge">&#10003; You Qualify</div>
-          <h3 data-i18n="qf_qual_h3">Your business looks like a strong fit for the 250-Lead Test Campaign.</h3>
-          <p data-i18n="qf_qual_p1">The next step is a 20-minute planning call to review your lead source, define the qualification criteria, and confirm the AI call flow before we run the first batch.</p>
-          <p data-i18n-html="qf_qual_p2">This is the <strong style="color:var(--white)">250-Lead Test Planning Call</strong> &mdash; not a generic demo. We review fit on both sides before running anything.</p>
-          <a class="btn btn-green" href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" style="font-size:16px;padding:16px 36px;width:fit-content" data-i18n-html="qf_qual_btn">
-            Book the 250-Lead Test Planning Call &rarr;
-          </a>
-          <p class="qf-note" data-i18n="qf_qual_note">Slots are limited. We run a small number of test campaigns at a time to maintain quality.</p>
-        </div>
-      </div>
-
-      <!-- NOT QUALIFIED -->
-      <div id="qf-state-rejected" style="display:none">
-        <div class="qf-result rejected">
-          <div class="qf-result-badge" data-i18n="qf_rej_badge">Not the Right Fit — Yet</div>
-          <h3 data-i18n="qf_rej_h3">The 250-Lead Test is designed for businesses where the economics already make sense.</h3>
-          <p data-i18n="qf_rej_p1">Based on your answers, your business doesn't currently meet the criteria we need to make this test genuinely useful for you. AI calling works best when there's enough lead volume, deal value, and closing capacity for the numbers to work.</p>
-          <p data-i18n-html="qf_rej_p2">If your situation changes, apply again. Questions? <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a></p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- DIVIDER between paths -->
-  <div class="container" id="apply-form-b-container" style="display:none">
-    <div class="apply-path-divider" style="margin-top:48px">or</div>
-  </div>
-
-  <!-- PATH B: Bot call form -->
-  <div class="container" id="apply-form-b" style="display:none;margin-top:0">
     <div class="qual-form-wrap">
 
       <div id="qfb-state-form">
@@ -1631,20 +1598,18 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
             </div>
 
             <div class="qf-field rv d2">
+              <label for="bot-email"><span data-i18n="botf_email_label">Email</span> <span style="color:rgba(255,110,110,.9)">*</span></label>
+              <input type="email" id="bot-email" name="email" class="qf-input" placeholder="you@company.com" required autocomplete="email" />
+            </div>
+
+            <div class="qf-field rv d3">
               <label for="bot-phone"><span data-i18n="botf_q2_label">Phone number</span> <span style="color:rgba(255,110,110,.9)">*</span></label>
               <input type="tel" id="bot-phone" name="phone" class="qf-input" placeholder="+1 (555) 000-0000" required autocomplete="tel" />
             </div>
 
-            <div class="qf-field rv d3">
-              <label for="bot-time" data-i18n="botf_q3_label">When should the bot call?</label>
-              <div class="qf-select-wrap">
-                <select id="bot-time" name="best_time" class="qf-select">
-                  <option value="now" data-i18n="botf_time_now">Now — call me as soon as possible</option>
-                  <option value="morning" data-i18n="botf_time_morning">Morning (8 am – 12 pm)</option>
-                  <option value="afternoon" data-i18n="botf_time_afternoon">Afternoon (12 pm – 5 pm)</option>
-                  <option value="evening" data-i18n="botf_time_evening">Evening (5 pm – 8 pm)</option>
-                </select>
-              </div>
+            <div class="qf-field rv d4">
+              <label for="bot-biz" data-i18n="botf_biz_label">Tell us about your business</label>
+              <textarea id="bot-biz" name="business_info" class="qf-input" rows="4" placeholder="What's your main challenge with lead follow-up? What industry are you in? Anything that helps us understand your situation." style="resize:vertical;min-height:110px"></textarea>
             </div>
 
           </div>
@@ -1712,6 +1677,20 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 <!-- ===== SCRIPTS ===== -->
 
 <script>
+/* ── HERO COUNTDOWN ── */
+(function() {
+  var start = 8;
+  var n = start;
+  function tick() {
+    var el = document.getElementById('hero-countdown');
+    if (!el) return;
+    n--;
+    if (n < 1) n = start;
+    el.textContent = n;
+  }
+  setInterval(tick, 1000);
+})();
+
 /* ── GLOW BORDER ── */
 (function () {
   const TARGETS = '.pcard, .scard, .fit-card, .sb, .oc, .calc-wrap, .qf-result';
@@ -2166,9 +2145,16 @@ var _LH_I18N = {
     nav_apply: 'Apply',
     nav_cta: 'Apply for the Test \u2192',
     // Hero
-    hero_badge: 'For Businesses Already Running Ads or Generating Inbound Leads',
-    hero_h1: 'Turn More of Your Existing Leads<br>Into Booked Meetings \u2014<br><span class="grad">With an AI Sales Bot</span>',
+    hero_badge: 'STOP LOSING LEADS YOU ALREADY PAID FOR',
+    hero_h1: '<span class="hero-line1">Your Leads Go Cold in 5 Minutes.</span><span class="hero-dash">\u2014</span><span class="hero-line2">We Call Them in <span class="grad hero-countdown" id="hero-countdown">8</span> Sec.</span>',
     hero_sub: 'The bot calls in under 5 minutes, follows up 5 times, and qualifies each lead \u2014 so your team only speaks with prospects who are ready. Apply for the 250-Lead Test Campaign.',
+    // Phone mockup
+    hp_label_0:'New Lead', hp_row_name:'Name: John Martinez', hp_row_phone:'Phone: +1 803 555-0147', hp_row_source:'Source: Website Form', hp_row_time:'Time: Just now', hp_call_btn:'\u23f1 Calling in 8 seconds...',
+    hp_label_1:'Live Transcript', hp_bubble_bot:'Hi John! This is Tommy from LoopHub. I see you just requested info \u2014 do you have 2 minutes?', hp_bubble_user:'Yeah, sure! I was just looking at your website...',
+    hp_label_2:'Appointment Booked', hp_cal_title:'\ud83d\udcc5 Thursday, April 10', hp_cal_name:'John Martinez \u00b7 Qualified Lead', hp_checks:'\u2705 CRM Updated<br>\u2705 Calendar invite sent<br>\u2705 Reminder set 24h before',
+    hp_status_0:'New lead detected', hp_status_1:'Calling now...', hp_status_2:'Call complete',
+    hp_badge_0:'READY', hp_badge_1:'LIVE', hp_badge_2:'DONE',
+    hp_chip1_title:'Form Submitted', hp_chip1_sub:'Tommy calling...', hp_chip2_title:'+78% conversions', hp_chip2_sub:'vs. 2-hr response',
     hero_qs1: 'Active ad spend or consistent inbound',
     hero_qs2: '250+ leads ready to call',
     hero_qs3: 'Real deal value',
@@ -2443,9 +2429,16 @@ var _LH_I18N = {
     nav_apply: 'Aplicar',
     nav_cta: 'Aplicar al Piloto \u2192',
     // Hero
-    hero_badge: 'Para Negocios que ya Invierten en Publicidad o Generan Leads',
-    hero_h1: 'Convierte M\u00e1s de Tus Leads Actuales<br>en Citas Agendadas \u2014<br><span class="grad">Con un Bot de Ventas IA</span>',
+    hero_badge: 'NO PIERDAS LEADS QUE YA TE COSTARON DINERO',
+    hero_h1: '<span class="hero-line1">Tus Leads se Enfr\u00edan en 5 Minutos.</span><span class="hero-dash">\u2014</span><span class="hero-line2">Los Llamamos en <span class="grad hero-countdown" id="hero-countdown">8</span> Seg.</span>',
     hero_sub: 'El bot llama en menos de 5 minutos, hace seguimiento 5 veces y califica cada lead \u2014 para que tu equipo solo hable con prospectos listos para comprar. Aplica a la Campa\u00f1a de Prueba de 250 Leads.',
+    // Phone mockup
+    hp_label_0:'Nuevo Lead', hp_row_name:'Nombre: John Martinez', hp_row_phone:'Tel\u00e9fono: +1 803 555-0147', hp_row_source:'Fuente: Formulario Web', hp_row_time:'Hora: Ahora mismo', hp_call_btn:'\u23f1 Llamando en 8 segundos...',
+    hp_label_1:'Transcripci\u00f3n en Vivo', hp_bubble_bot:'\u00a1Hola John! Soy Tommy de LoopHub. Veo que acabas de solicitar informaci\u00f3n \u2014 \u00bftienes 2 minutos?', hp_bubble_user:'\u00a1Claro! Estaba viendo tu p\u00e1gina web...',
+    hp_label_2:'Cita Agendada', hp_cal_title:'\ud83d\udcc5 Jueves, 10 de Abril', hp_cal_name:'John Martinez \u00b7 Lead Calificado', hp_checks:'\u2705 CRM Actualizado<br>\u2705 Invitaci\u00f3n de calendario enviada<br>\u2705 Recordatorio en 24h',
+    hp_status_0:'Nuevo lead detectado', hp_status_1:'Llamando ahora...', hp_status_2:'Llamada completada',
+    hp_badge_0:'LISTO', hp_badge_1:'EN VIVO', hp_badge_2:'HECHO',
+    hp_chip1_title:'Formulario Enviado', hp_chip1_sub:'Tommy llamando...', hp_chip2_title:'+78% conversiones', hp_chip2_sub:'vs. respuesta 2hrs',
     hero_qs1: 'Inversi\u00f3n activa en ads o inbound constante',
     hero_qs2: '250+ leads listos para llamar',
     hero_qs3: 'Ticket promedio real',
@@ -3037,19 +3030,18 @@ Tawk_API.onLoad = function () {
 
 <script>
 (function(){
-  var steps=[0,1,2],cur=0;
-  var statusMap=['New lead detected','Calling now...','Call complete'];
-  var badgeMap=['READY','LIVE','DONE'];
+  var cur=0;
   var badgeClass=['ready','live','done'];
   function show(n){
     [0,1,2].forEach(function(i){
       var el=document.getElementById('hp-step-'+i);
       if(el) el.style.display=(i===n?'flex':'none');
     });
+    var t=(_LH_I18N&&_LH_I18N[window.__lhLang||'en'])||{};
     var st=document.getElementById('hp-status');
     var bd=document.getElementById('hp-badge');
-    if(st) st.textContent=statusMap[n];
-    if(bd){ bd.textContent=badgeMap[n]; bd.className='hp-badge '+badgeClass[n]; }
+    if(st) st.textContent=t['hp_status_'+n]||['New lead detected','Calling now...','Call complete'][n];
+    if(bd){ bd.textContent=t['hp_badge_'+n]||['READY','LIVE','DONE'][n]; bd.className='hp-badge '+badgeClass[n]; }
   }
   show(0);
   setInterval(function(){ cur=(cur+1)%3; show(cur); },3000);
