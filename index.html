@@ -450,7 +450,7 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
         <input type="tel" id="af-phone" placeholder="+1 555 000 0000" required />
 
         <label for="af-industry">Industry *</label>
-        <select id="af-industry" required>
+        <select id="af-industry" required onchange="toggleOtherIndustry(this)">
           <option value="">Select your industry...</option>
           <option>Real Estate</option>
           <option>Insurance</option>
@@ -460,26 +460,27 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
           <option>SaaS / Tech</option>
           <option>B2B Services / Consulting</option>
           <option>Healthcare / Med Spa</option>
-          <option>Other</option>
+          <option value="Other">Other</option>
         </select>
+        <input type="text" id="af-industry-other" placeholder="Please specify your industry" style="display:none;margin-top:8px" />
 
         <label for="af-leads">Monthly lead volume *</label>
         <select id="af-leads" required>
           <option value="">Select a range...</option>
-          <option>Under 100</option>
-          <option>100 – 250</option>
-          <option>250 – 500</option>
-          <option>500+</option>
+          <option>500 – 1,500</option>
+          <option>1,500 – 5,000</option>
+          <option>5,000 – 15,000</option>
+          <option>15,000+</option>
         </select>
 
-        <label for="af-deal">Average deal value *</label>
+        <label for="af-deal">How much does a typical client pay you? *</label>
         <select id="af-deal" required>
           <option value="">Select a range...</option>
-          <option>Under $500</option>
-          <option>$500 – $1,000</option>
-          <option>$1,000 – $2,500</option>
-          <option>$2,500 – $5,000</option>
-          <option>$5,000+</option>
+          <option>Under $1,000</option>
+          <option>$1,000 – $5,000</option>
+          <option>$5,000 – $15,000</option>
+          <option>$15,000 – $50,000</option>
+          <option>$50,000+</option>
         </select>
 
         <button type="button" class="apply-submit" id="apply-btn" onclick="submitApplication()">Apply for the 250-Lead Test &rarr;</button>
@@ -524,11 +525,19 @@ src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
   // Application form
   var WEBHOOK = 'https://n8n.pts-automation.cloud/webhook/1a42eb24-2db5-45c0-a56b-73a2d5a03cfb';
 
+  function toggleOtherIndustry(sel) {
+    var other = document.getElementById('af-industry-other');
+    other.style.display = sel.value === 'Other' ? 'block' : 'none';
+    other.required = sel.value === 'Other';
+  }
+
   function submitApplication() {
     var name     = document.getElementById('af-name').value.trim();
     var email    = document.getElementById('af-email').value.trim();
     var phone    = document.getElementById('af-phone').value.trim();
-    var industry = document.getElementById('af-industry').value;
+    var industrySel   = document.getElementById('af-industry').value;
+    var industryOther = document.getElementById('af-industry-other').value.trim();
+    var industry = industrySel === 'Other' ? (industryOther || '') : industrySel;
     var leads    = document.getElementById('af-leads').value;
     var deal     = document.getElementById('af-deal').value;
 
