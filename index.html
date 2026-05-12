@@ -17,3035 +17,449 @@ fbq('track', 'PageView');
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"
 /></noscript>
-<!-- End Meta Pixel Code -->
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X0TW55L1T1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-X0TW55L1T1', { 'send_page_view': true, 'cookie_flags': 'SameSite=None;Secure' });
+  gtag('config', 'G-X0TW55L1T1');
 </script>
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>LoopHub — AI Sales Bot for Existing Lead Flow</title>
-<meta name="description" content="AI Sales Bot that calls your leads, follows up 5 times, and qualifies — so your team only talks to ready buyers. Apply for the 250-Lead Test Campaign." />
+<title>PTS AI — Stop Losing Leads You Already Paid For</title>
+<meta name="description" content="PTS AI calls your leads in under 5 minutes, follows up 5 times, qualifies them, and hands your team only the conversations worth taking. Apply for the 250-Lead Test." />
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
-<link rel="alternate icon" href="images/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 <style>
-  /* ===== RESET ===== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg:     #06060F;
-    --bg2:    #0C0C1A;
-    --purple: #5B21FF;
-    --pm:     #7C4DFF;
-    --green:  #00D865;
-    --white:  #F2F2FF;
-    --muted:  #6E6E99;
-    --border: rgba(255,255,255,0.07);
-    --card:   rgba(255,255,255,0.035);
-    --card-h: rgba(255,255,255,0.065);
-    --r:      16px;
+    --navy:   #0D1B2A;
+    --orange: #E8611A;
+    --orange2:#FF7A36;
+    --white:  #FFFFFF;
+    --bg2:    #F5F7FA;
+    --muted:  #64748B;
+    --border: rgba(0,0,0,0.08);
+    --r:      14px;
   }
   html { scroll-behavior: smooth; }
-  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--white); color: var(--navy); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
   a { color: inherit; text-decoration: none; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 
-  /* ===== UTILS ===== */
-  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-  .tc { text-align: center; }
-  .grad { background: linear-gradient(130deg, #7C4DFF 0%, #A44DFF 45%, #00D865 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .label { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--pm); margin-bottom: 18px; }
-  .h2 { font-size: clamp(28px,4vw,52px); font-weight: 800; line-height: 1.13; letter-spacing: -1.5px; margin-bottom: 18px; }
-  .sub { font-size: 17px; color: var(--muted); line-height: 1.72; max-width: 600px; }
-  .section { padding: 100px 0; }
+  /* ── NAV ── */
+  #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0); transition: background .3s, border-color .3s; border-bottom: 1px solid transparent; }
+  #nav.sc { background: rgba(255,255,255,.97); backdrop-filter: blur(20px); border-bottom-color: var(--border); }
+  .nav-logo { height: 34px; width: auto; display: block; }
+  .nav-logo-text { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; color: var(--navy); }
+  .nav-logo-text span { color: var(--orange); }
+  .btn-nav { display: inline-flex; align-items: center; gap: 6px; padding: 10px 22px; background: var(--orange); color: #fff; border-radius: 10px; font-size: 14px; font-weight: 700; transition: all .2s; }
+  .btn-nav:hover { background: var(--orange2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,97,26,.3); }
+  @media(max-width:600px){ #nav { padding: 14px 20px; } }
 
-  /* ===== BUTTONS ===== */
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all .2s; border: none; font-family: inherit; }
-  .btn-p  { background: var(--purple); color: #fff; }
-  .btn-p:hover  { background: var(--pm); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(91,33,255,.35); }
-  .btn-g  { background: transparent; color: var(--white); border: 1px solid var(--border); }
-  .btn-g:hover  { background: var(--card-h); border-color: rgba(255,255,255,.14); }
-  .btn-green { background: var(--green); color: #06060F; }
-  .btn-green:hover { background: #00f074; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,216,101,.3); }
+  /* ── BUTTONS ── */
+  .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 16px 36px; background: var(--orange); color: #fff; border-radius: 12px; font-size: 16px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; transition: all .2s; }
+  .btn-primary:hover { background: var(--orange2); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(232,97,26,.35); }
+  .btn-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: transparent; color: var(--navy); border-radius: 12px; font-size: 15px; font-weight: 600; border: 1.5px solid var(--border); cursor: pointer; font-family: inherit; transition: all .2s; }
+  .btn-secondary:hover { border-color: rgba(0,0,0,.18); background: rgba(0,0,0,.03); }
 
-  /* ===== REVEAL ===== */
-  .rv { opacity:0; transform:translateY(28px); transition: opacity .65s ease, transform .65s ease; }
-  .rv.on { opacity:1; transform:none; }
-  .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s}
+  /* ── HERO ── */
+  #hero { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 24px 80px; position: relative; background: var(--white); }
+  #hero::before { content:''; position:absolute; inset:0; background-image: linear-gradient(rgba(0,0,0,.055) 1px,transparent 1px), linear-gradient(90deg,rgba(0,0,0,.055) 1px,transparent 1px); background-size:60px 60px; mask-image:radial-gradient(ellipse 80% 60% at center,black 0%,transparent 70%); -webkit-mask-image:radial-gradient(ellipse 80% 60% at center,black 0%,transparent 70%); pointer-events:none; }
+  .hero-badge { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; background: rgba(232,97,26,.08); border: 1px solid rgba(232,97,26,.25); border-radius: 100px; font-size: 11px; font-weight: 800; color: var(--orange); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 32px; }
+  .hero-dot { width: 6px; height: 6px; background: var(--orange); border-radius: 50%; box-shadow: 0 0 8px var(--orange); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .hero-h1 { font-size: clamp(34px, 5.5vw, 72px); font-weight: 900; line-height: 1.08; letter-spacing: -2.5px; max-width: 880px; margin-bottom: 12px; position: relative; }
+  .hero-h1 em { font-style: normal; color: var(--orange); }
+  .hero-h2 { font-size: clamp(20px, 3vw, 36px); font-weight: 700; line-height: 1.25; letter-spacing: -1px; color: var(--muted); max-width: 780px; margin-bottom: 28px; position: relative; }
+  .hero-sub { font-size: clamp(15px, 1.6vw, 18px); color: var(--muted); max-width: 600px; line-height: 1.75; margin-bottom: 44px; position: relative; }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 52px; position: relative; }
+  .qual-strip { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; position: relative; }
+  .qs { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: rgba(0,0,0,.04); border: 1px solid rgba(0,0,0,.08); border-radius: 100px; font-size: 12px; font-weight: 600; color: var(--muted); }
+  .qs-check { color: var(--orange); font-weight: 800; }
 
-  /* ===== NAV ===== */
-  #nav { position:fixed; top:0; left:0; right:0; z-index:200; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; transition: background .3s, border-color .3s; border-bottom: 1px solid transparent; }
-  #nav.sc { background: rgba(6,6,15,.92); backdrop-filter: blur(24px); border-bottom-color: var(--border); }
-  .nav-logo-link { display: flex; align-items: center; flex-shrink: 0; }
-  .nav-logo-img { height: 36px; width: auto; display: block; object-fit: contain; }
-  .nav-links { display:flex; align-items:center; gap:36px; list-style:none; }
-  .nav-links a { font-size:14px; font-weight:500; color:var(--muted); transition:color .2s; }
-  .nav-links a:hover { color:var(--white); }
-  @media(max-width:768px){ #nav{padding:14px 20px;} .nav-links{display:none;} }
+  /* ── SECTION BASE ── */
+  .section { padding: 90px 0; }
+  .section-alt { background: var(--bg2); }
+  .section-label { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
+  .section-h2 { font-size: clamp(26px, 3.5vw, 48px); font-weight: 900; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 16px; }
+  .section-sub { font-size: 17px; color: var(--muted); line-height: 1.7; max-width: 580px; }
 
-  /* ===== HERO ===== */
-  #hero { min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:140px 24px 100px; position:relative; overflow:hidden; }
-  .hero-blob { position: absolute; inset-x: 0; overflow: hidden; filter: blur(80px); pointer-events: none; z-index: 0; will-change: filter; }
-  .hero-blob-top { top: -220px; }
-  .hero-blob-btm { bottom: -260px; }
-  .hero-blob > div { clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%); aspect-ratio: 1155 / 678; width: min(1155px, 95vw); position: relative; opacity: 0.32; }
-  .hero-blob-top > div { left: calc(50% - 30rem); transform: translateX(-50%) rotate(30deg); background: linear-gradient(135deg, #5B21FF 0%, #A44DFF 52%, #00D865 100%); }
-  .hero-blob-btm > div { left: calc(50% + 18rem); transform: translateX(-50%); background: linear-gradient(135deg, #7C4DFF 0%, #5B21FF 55%, #00D865 100%); }
-  #hero::before { content:''; position:absolute; inset:0; z-index:1; background-image: linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px); background-size:64px 64px; mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%); -webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%); pointer-events:none; }
-  .badge { display:inline-flex; align-items:center; gap:9px; padding:8px 18px; background:rgba(91,33,255,.1); border:1px solid rgba(91,33,255,.28); border-radius:100px; font-size:12px; font-weight:700; color:#A078FF; margin-bottom:36px; letter-spacing:1px; text-transform:uppercase; position:relative; z-index:2; }
-  .bdot { width:7px; height:7px; background:var(--pm); border-radius:50%; box-shadow:0 0 10px var(--pm); animation:blink 2.2s infinite; }
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-  .hero-h1 { font-size:clamp(28px,4vw,60px); font-weight:900; line-height:1.15; letter-spacing:-2px; max-width:860px; margin-bottom:24px; position:relative; z-index:2; }
-  .hero-h1 { display:flex; flex-direction:column; align-items:center; }
-  .hero-line1, .hero-line2 { display:block; }
-  .hero-dash { display:block; font-size:.4em; color:rgba(255,255,255,.22); line-height:1.2; margin:0; }
-  .hero-countdown { display:inline-block; min-width:.7em; text-align:center; }
-  .hero-sub { font-size:clamp(15px,1.6vw,18px); color:var(--muted); max-width:620px; line-height:1.78; margin-bottom:36px; position:relative; z-index:2; }
-  .hero-ctas { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:36px; position:relative; z-index:2; }
+  /* ── PROBLEM ── */
+  #problem .section-sub { margin-bottom: 52px; }
+  .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border-radius: 18px; overflow: hidden; border: 1px solid var(--border); }
+  .prob-card { background: var(--white); padding: 36px 32px; }
+  .prob-num { font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--orange); text-transform: uppercase; margin-bottom: 16px; }
+  .prob-icon { font-size: 28px; margin-bottom: 16px; }
+  .prob-card h3 { font-size: 18px; font-weight: 800; letter-spacing: -.4px; margin-bottom: 10px; }
+  .prob-card p { font-size: 15px; color: var(--muted); line-height: 1.65; }
+  @media(max-width:720px){ .problem-grid { grid-template-columns: 1fr; } }
 
-  /* Qualification strip */
-  .qual-strip { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:44px; position:relative; z-index:2; }
-  .qs-item { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); border-radius:100px; font-size:12px; font-weight:600; color:rgba(255,255,255,.55); }
-  .qs-check { color:var(--green); font-size:11px; }
+  /* ── HOW IT WORKS ── */
+  .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 52px; }
+  .how-card { padding: 32px 28px; border: 1px solid var(--border); border-radius: 18px; background: var(--white); transition: border-color .2s, box-shadow .2s; }
+  .how-card:hover { border-color: rgba(232,97,26,.3); box-shadow: 0 8px 32px rgba(232,97,26,.08); }
+  .how-step { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(232,97,26,.1); font-size: 13px; font-weight: 800; color: var(--orange); margin-bottom: 18px; }
+  .how-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; letter-spacing: -.3px; }
+  .how-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+  @media(max-width:720px){ .how-grid { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:480px){ .how-grid { grid-template-columns: 1fr; } }
 
-  .stats-bar { display:grid; grid-template-columns:repeat(4,1fr); max-width:720px; width:100%; background:var(--border); border:1px solid var(--border); border-radius:18px; overflow:hidden; gap:1px; position:relative; z-index:2; }
-  .si { background:var(--bg2); padding:22px 16px; text-align:center; }
-  .sn { font-size:26px; font-weight:900; letter-spacing:-1px; margin-bottom:4px; }
-  .sl { font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.6px; }
-  @media(max-width:600px){ .stats-bar{grid-template-columns:repeat(2,1fr);} }
+  /* ── CORE LINE ── */
+  #coreline { padding: 80px 0; text-align: center; background: var(--navy); color: var(--white); }
+  #coreline .section-label { color: rgba(255,255,255,.45); }
+  #coreline h2 { font-size: clamp(22px, 3.5vw, 44px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.2; max-width: 780px; margin: 0 auto 28px; }
+  #coreline h2 em { font-style: normal; color: var(--orange); }
+  #coreline .btn-primary { font-size: 16px; padding: 16px 38px; }
 
-  /* ===== MANIFESTO ===== */
-  .manifesto { background:linear-gradient(135deg,rgba(91,33,255,.08),rgba(0,216,101,.04)); border-top:1px solid rgba(91,33,255,.15); border-bottom:1px solid rgba(91,33,255,.15); padding:44px 24px; text-align:center; }
-  .manifesto p { font-size:clamp(18px,2.8vw,26px); font-weight:700; max-width:760px; margin:0 auto; line-height:1.5; letter-spacing:-.5px; }
-  .manifesto em { font-style:normal; color:var(--green); }
+  /* ── OFFER ── */
+  .offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+  .offer-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 18px; padding: 36px 32px; }
+  .offer-box-title { font-size: 13px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 20px; }
+  .offer-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .offer-list li { font-size: 15px; color: var(--navy); line-height: 1.5; display: flex; gap: 10px; }
+  .offer-list li::before { content: '→'; color: var(--orange); font-weight: 800; flex-shrink: 0; }
+  @media(max-width:680px){ .offer-grid { grid-template-columns: 1fr; } }
 
-  /* ===== STICKY SECTION TABS ===== */
-  .sticky-sections { }
-  .sticky-section { position: relative; }
-  .sticky-section:nth-child(odd)  { background: var(--bg2); }
-  .sticky-section:nth-child(even) { background: var(--bg);  }
+  /* ── FIT CHECK ── */
+  .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+  .fit-box { border-radius: 18px; padding: 36px 32px; }
+  .fit-good { background: rgba(232,97,26,.05); border: 1.5px solid rgba(232,97,26,.2); }
+  .fit-bad  { background: rgba(0,0,0,.03); border: 1.5px solid rgba(0,0,0,.08); }
+  .fit-label { font-size: 14px; font-weight: 800; margin-bottom: 20px; letter-spacing: -.2px; }
+  .fit-good .fit-label { color: var(--orange); }
+  .fit-bad  .fit-label { color: var(--muted); }
+  .fit-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .fit-list li { font-size: 15px; line-height: 1.5; display: flex; gap: 10px; }
+  .fit-good .fit-list li::before { content: '✓'; color: var(--orange); font-weight: 800; flex-shrink: 0; }
+  .fit-bad  .fit-list li::before { content: '✗'; color: var(--muted); flex-shrink: 0; }
+  @media(max-width:680px){ .fit-grid { grid-template-columns: 1fr; } }
 
-  /* Sticky header heights */
-  :root {
-    --ssh-full-h: 57px;
-    --ssh-mini-h: 30px;
-  }
+  /* ── APPLY ── */
+  #apply { padding: 100px 0; text-align: center; }
+  .apply-card { max-width: 560px; margin: 48px auto 0; background: var(--bg2); border: 1px solid var(--border); border-radius: 24px; padding: 48px 40px; text-align: left; }
+  .apply-card label { display: block; font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; margin-top: 20px; }
+  .apply-card label:first-of-type { margin-top: 0; }
+  .apply-card input, .apply-card select { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--white); color: var(--navy); outline: none; transition: border-color .2s; }
+  .apply-card input:focus, .apply-card select:focus { border-color: var(--orange); }
+  .apply-card select option { background: var(--white); }
+  .apply-submit { width: 100%; margin-top: 28px; padding: 15px; background: var(--orange); color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all .2s; }
+  .apply-submit:hover { background: var(--orange2); box-shadow: 0 8px 24px rgba(232,97,26,.3); transform: translateY(-1px); }
+  .apply-note { text-align: center; font-size: 13px; color: var(--muted); margin-top: 14px; }
+  .apply-success { text-align: center; padding: 48px 24px; }
+  .apply-success h3 { font-size: 24px; font-weight: 800; margin-bottom: 12px; }
+  .apply-success p { font-size: 16px; color: var(--muted); line-height: 1.6; }
 
-  /* Original sticky header — visible while section is in viewport */
-  .sticky-section-header {
-    position: sticky;
-    top: 63px;            /* overridden per-section by updateStickyHeaders() */
-    z-index: 10;
-    background: #08080F;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 4px 24px rgba(0,0,0,.7);
-    height: var(--ssh-full-h);
-    overflow: hidden;
-    transition: height 0.2s ease, opacity 0.2s ease;
-    cursor: pointer;
-  }
+  /* ── FOOTER ── */
+  footer { padding: 40px 24px; border-top: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .footer-links { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
+  .footer-links a { font-size: 14px; color: var(--muted); transition: color .2s; }
+  .footer-links a:hover { color: var(--navy); }
+  .footer-copy { font-size: 13px; color: rgba(0,0,0,.3); }
 
-  /* Past sections: compress to mini height, show only number */
-  .sticky-section-header.ssh-past {
-    height: var(--ssh-mini-h);
-    opacity: 0.6;
-    background: rgba(8, 8, 15, 0.8);
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-  }
-  .sticky-section-header.ssh-past .ssh-inner {
-    padding: 6px 24px;
-  }
-  .sticky-section-header.ssh-past .ssh-title {
-    display: none;
-  }
-  .sticky-section-header.ssh-past .ssh-num {
-    font-size: 8px;
-    padding: 3px 6px;
-    background: rgba(91, 33, 255, 0.2);
-    border-radius: 3px;
-    opacity: 0.8;
-  }
-
-  .sticky-section-header.ssh-active {
-    border-left: 3px solid var(--purple);
-    opacity: 1;
-    background: #0A0A14;
-  }
-  .sticky-section-header.ssh-active .ssh-title {
-    color: var(--white);
-  }
-  .ssh-inner {
-    max-width: 1100px; margin: 0 auto; padding: 18px 24px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .ssh-title {
-    font-size: clamp(15px, 2vw, 24px); font-weight: 700;
-    letter-spacing: -.4px; margin: 0; line-height: 1.2;
-  }
-  .ssh-num {
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 2px; color: var(--muted); flex-shrink: 0;
-  }
-
-  /* ── HORIZONTAL STORYBRAND PROGRESS BAR ──
-     Single fixed row showing all 6 steps. Past=✓ green, Active=purple, Future=dim. */
-  #sticky-past-stack {
-    position: fixed;
-    top: 64px;          /* updated by JS */
-    left: 0; right: 0;
-    z-index: 20;
-    display: flex;
-    flex-direction: row;
-    height: 0;
-    overflow: hidden;
-    background: rgba(6,6,14,.97);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255,255,255,.07);
-    pointer-events: none;
-    transition: height .22s cubic-bezier(.4,0,.2,1);
-  }
-  #sticky-past-stack.bar-visible {
-    height: 40px;
-    pointer-events: auto;
-  }
-  .ssh-pill {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    padding: 0 10px;
-    cursor: pointer;
-    border-right: 1px solid rgba(255,255,255,.05);
-    opacity: 0.22;
-    transition: opacity .2s, background .2s;
-    position: relative;
-  }
-  .ssh-pill:last-child { border-right: none; }
-  .ssh-pill:hover { opacity: 0.75 !important; background: rgba(255,255,255,.03); }
-  .pill-num {
-    font-size: 9px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1.5px; color: var(--muted); flex-shrink: 0;
-  }
-  .pill-title {
-    font-size: 10px; font-weight: 600; letter-spacing: .3px;
-    text-transform: uppercase; color: rgba(255,255,255,.45);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    transition: color .18s;
-  }
-  /* PAST: dimmed + green check */
-  .ssh-pill.ssh-pill-past { opacity: 0.55; }
-  .ssh-pill.ssh-pill-past .pill-num { color: var(--green); }
-  .ssh-pill.ssh-pill-past .pill-title { color: rgba(255,255,255,.4); }
-  .ssh-pill.ssh-pill-past::after {
-    content: '✓'; font-size: 9px; color: var(--green);
-    margin-left: 4px; opacity: .8; flex-shrink: 0;
-  }
-  /* ACTIVE: full brightness + purple underline */
-  .ssh-pill.ssh-pill-active { opacity: 1; background: rgba(91,33,255,.1); }
-  .ssh-pill.ssh-pill-active::before {
-    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-    height: 2px; background: var(--purple);
-  }
-  .ssh-pill.ssh-pill-active .pill-num { color: #A078FF; }
-  .ssh-pill.ssh-pill-active .pill-title { color: var(--white); }
-  @media(max-width:640px) { .pill-title { display: none; } .ssh-pill { justify-content: center; } }
-
-  .sticky-section-content { max-width: 1100px; margin: 0 auto; padding: 80px 24px; }
-  @media(max-width:768px){ .ssh-num{ display:none; } .sticky-section-content{ padding: 56px 24px; } }
-
-  /* ===== FOLLOW-UP GAP SECTION ===== */
-  .fug-wrapper {
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-  }
-
-  .fug-heading {
-    font-size: clamp(24px, 3.5vw, 42px);
-    font-weight: 800;
-    line-height: 1.2;
-    letter-spacing: -0.8px;
-    margin: 0;
-    color: var(--white);
-  }
-
-  .fug-text {
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--muted);
-    margin: 0;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .fug-image-wrapper {
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    display: flex;
-    justify-content: center;
-    padding: 0 24px;
-  }
-
-  .fug-image {
-    max-width: 960px;
-    width: 100%;
-    height: auto;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
-    display: block;
-  }
-
-  .fug-source {
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--muted);
-    margin: 0;
-  }
-  .fug-source strong {
-    color: var(--white);
-    font-weight: 700;
-  }
-
-  .fug-caption {
-    font-size: 15px;
-    color: var(--muted);
-    margin: 0;
-    font-weight: 500;
-    line-height: 1.5;
-  }
-  .fug-caption strong {
-    color: var(--green);
-    font-weight: 700;
-  }
-
-  .fug-transition {
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--white);
-    margin: 0;
-    font-weight: 500;
-    margin-top: 16px;
-  }
-
-  @media(max-width: 768px) {
-    .fug-wrapper {
-      gap: 24px;
-    }
-    .fug-heading {
-      font-size: clamp(20px, 3vw, 28px);
-    }
-    .fug-image {
-      max-width: 95vw;
-    }
-  }
-
-  /* ===== EXIT-INTENT POP-UP ===== */
-  .exit-popup-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(4px);
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    animation: fadeIn 0.3s ease;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  .exit-popup-modal {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 48px 40px;
-    max-width: 500px;
-    width: 100%;
-    position: relative;
-    box-shadow: 0 20px 60px rgba(91,33,255,0.2);
-    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  @keyframes slideUp {
-    from { transform: translateY(40px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  .exit-popup-close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: none;
-    border: none;
-    font-size: 32px;
-    color: var(--muted);
-    cursor: pointer;
-    transition: color 0.2s;
-    padding: 0;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .exit-popup-close:hover {
-    color: var(--white);
-  }
-  .exit-popup-header {
-    text-align: center;
-    margin-bottom: 32px;
-  }
-  .exit-popup-label {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--pm);
-    margin-bottom: 12px;
-  }
-  .exit-popup-title {
-    font-size: 28px;
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 12px;
-  }
-  .exit-popup-subtitle {
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-  .exit-popup-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .exit-form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .exit-form-group label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--white);
-  }
-  .exit-form-group input {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 14px;
-    color: var(--white);
-    font-family: inherit;
-    transition: background 0.2s, border-color 0.2s;
-  }
-  .exit-form-group input::placeholder {
-    color: rgba(255,255,255,0.4);
-  }
-  .exit-form-group input:focus {
-    outline: none;
-    background: rgba(255,255,255,0.1);
-    border-color: var(--purple);
-  }
-  .exit-popup-btn {
-    background: var(--purple);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 14px 24px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-    margin-top: 8px;
-  }
-  .exit-popup-btn:hover {
-    background: var(--pm);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(91,33,255,0.35);
-  }
-  .exit-popup-btn:active {
-    transform: translateY(0);
-  }
-  .exit-popup-guarantee {
-    text-align: center;
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 16px;
-  }
-  .exit-popup-success {
-    text-align: center;
-  }
-  .success-checkmark {
-    font-size: 60px;
-    margin-bottom: 16px;
-    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  @keyframes popIn {
-    0% { transform: scale(0); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-  }
-  .exit-popup-success h3 {
-    font-size: 24px;
-    margin-bottom: 8px;
-  }
-  .exit-popup-success p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-  .success-subtext {
-    margin-top: 12px;
-    font-size: 13px;
-    color: var(--green);
-  }
-
-  /* ===== PROBLEM / LEAK CARDS ===== */
-  .pgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:52px; }
-  .pcard { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:32px; transition:background .2s,border-color .2s; }
-  .pcard:hover { background:var(--card-h); border-color:rgba(255,255,255,.11); }
-  .picon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:18px; }
-  .pcard h3 { font-size:17px; font-weight:700; margin-bottom:10px; letter-spacing:-.3px; }
-  .pcard p { font-size:14px; color:var(--muted); line-height:1.68; }
-  @media(max-width:640px){ .pgrid{grid-template-columns:1fr;} }
-
-  /* ===== GAP / STORY ===== */
-  .sgrid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:52px; }
-  .scard { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:36px; }
-  .scard.new { background:rgba(91,33,255,.06); border-color:rgba(91,33,255,.18); }
-  .stag { display:inline-block; padding:5px 14px; border-radius:100px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; margin-bottom:22px; }
-  .stag.old { background:rgba(255,255,255,.06); color:var(--muted); }
-  .stag.new { background:rgba(91,33,255,.15); color:#A578FF; }
-  .scard h3 { font-size:21px; font-weight:700; margin-bottom:20px; letter-spacing:-.5px; }
-  .slist { list-style:none; display:flex; flex-direction:column; gap:13px; }
-  .slist li { font-size:14.5px; color:var(--muted); padding-left:26px; position:relative; line-height:1.55; }
-  .slist li::before { content:attr(data-m); position:absolute; left:0; font-size:14px; }
-  .slist.nl li::before { color:var(--green); }
-  @media(max-width:640px){ .sgrid{grid-template-columns:1fr;} }
-
-  /* ===== PITCH / SHADER CARDS ===== */
-  .pitchgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:52px; }
-  .pc { position: relative; border-radius: 20px; overflow: hidden; min-height: 280px; border: 1px solid rgba(255,255,255,0.07); transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease; display: flex; flex-direction: column; }
-  .pc:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.18); box-shadow: 0 20px 60px rgba(0,0,0,.45); }
-  .pc-shader { position: absolute; inset: -55%; width: 210%; height: 210%; filter: blur(30px); pointer-events: none; z-index: 0; will-change: transform; }
-  .pc::before { content: ''; position: absolute; inset: 0; background: rgba(6,6,15,0.80); z-index: 1; pointer-events: none; transition: background .35s ease; }
-  .pc:hover::before { background: rgba(6,6,15,0.70); }
-  .pc-content { position: relative; z-index: 2; padding: 30px 26px 32px; display: flex; flex-direction: column; flex: 1; }
-  .pci { font-size:28px; margin-bottom:18px; display:block; }
-  .pc h3 { font-size:15.5px; font-weight:700; margin-bottom:10px; letter-spacing:-.3px; line-height:1.4; }
-  .pc p  { font-size:13.5px; color:var(--muted); line-height:1.68; flex:1; }
-  .pc-1 .pc-shader { background: radial-gradient(circle at 30% 35%, rgba(91,33,255,0.90), transparent 45%), radial-gradient(circle at 75% 65%, rgba(164,77,255,0.70), transparent 45%); animation: pcm1 9s ease-in-out infinite alternate; }
-  .pc-2 .pc-shader { background: radial-gradient(circle at 25% 38%, rgba(0,130,255,0.85), transparent 45%), radial-gradient(circle at 70% 58%, rgba(0,70,210,0.65), transparent 45%); animation: pcm2 11s ease-in-out infinite alternate; }
-  .pc-3 .pc-shader { background: radial-gradient(circle at 35% 30%, rgba(0,216,101,0.85), transparent 45%), radial-gradient(circle at 65% 68%, rgba(0,180,80,0.65), transparent 40%); animation: pcm3 8s ease-in-out infinite alternate; }
-  .pc-4 .pc-shader { background: radial-gradient(circle at 40% 35%, rgba(255,130,0,0.85), transparent 45%), radial-gradient(circle at 65% 65%, rgba(255,55,15,0.65), transparent 45%); animation: pcm4 10s ease-in-out infinite alternate; }
-  .pc-5 .pc-shader { background: radial-gradient(circle at 45% 30%, rgba(168,0,255,0.80), transparent 45%), radial-gradient(circle at 70% 62%, rgba(255,0,155,0.58), transparent 40%); animation: pcm5 12s ease-in-out infinite alternate; }
-  .pc-6 .pc-shader { background: radial-gradient(circle at 55% 35%, rgba(0,210,195,0.80), transparent 45%), radial-gradient(circle at 28% 65%, rgba(0,165,255,0.62), transparent 40%); animation: pcm6 9.5s ease-in-out infinite alternate; }
-  @keyframes pcm1 { 0%{transform:translate(0,0) rotate(0deg)} 100%{transform:translate(8%,12%) rotate(28deg)} }
-  @keyframes pcm2 { 0%{transform:translate(0,0) rotate(0deg)} 100%{transform:translate(-10%,8%) rotate(-22deg)} }
-  @keyframes pcm3 { 0%{transform:translate(0,0) rotate(0deg)} 100%{transform:translate(12%,-8%) rotate(32deg)} }
-  @keyframes pcm4 { 0%{transform:translate(0,0) rotate(0deg)} 100%{transform:translate(-8%,11%) rotate(-18deg)} }
-  @keyframes pcm5 { 0%{transform:translate(0,0) rotate(0deg)} 100%{transform:translate(10%,-12%) rotate(22deg)} }
-  @keyframes pcm6 { 0%{transform:translate(0,0) rotate(0deg)} 100%{transform:translate(-12%,8%) rotate(-28deg)} }
-  @media(max-width:768px){ .pitchgrid{grid-template-columns:1fr 1fr;} }
-  @media(max-width:480px){ .pitchgrid{grid-template-columns:1fr;} }
-
-  /* ===== EVIDENCE TABLE ===== */
-  .twrap { overflow-x:auto; margin:48px 0 52px; border-radius:var(--r); border:1px solid var(--border); }
-  table { width:100%; border-collapse:collapse; min-width:480px; }
-  thead tr { background:rgba(255,255,255,.025); }
-  th { padding:17px 28px; text-align:left; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted); border-bottom:1px solid var(--border); }
-  th:not(:last-child), td:not(:last-child) { border-right:1px solid var(--border); }
-  td { padding:16px 28px; font-size:15px; border-bottom:1px solid var(--border); }
-  tbody tr:last-child td { border-bottom:none; }
-  tbody tr:hover td { background:rgba(255,255,255,.015); }
-  .tm { font-weight:600; color:rgba(255,255,255,.55); font-size:14px; }
-  .ts { color:rgba(255,255,255,.38); font-size:14px; }
-  .ta { color:var(--green); font-weight:700; }
-  .statrow { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-  .sb { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:36px 28px; text-align:center; }
-  .bn { font-size:52px; font-weight:900; letter-spacing:-2px; line-height:1; margin-bottom:10px; }
-  .bn.g { color:var(--green); } .bn.p { color:var(--pm); }
-  .sb p { font-size:14px; color:var(--muted); line-height:1.55; }
-  @media(max-width:640px){ .statrow{grid-template-columns:1fr;} }
-
-  /* ===== CALCULATOR ===== */
-  .calc-wrap { max-width:820px; margin:52px auto 0; background:var(--card); border:1px solid var(--border); border-radius:24px; overflow:hidden; }
-  .calc-step { padding:48px 52px; border-bottom:1px solid var(--border); }
-  .calc-step:last-child { border-bottom:none; }
-  .step-num { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:rgba(91,33,255,.15); border:1px solid rgba(91,33,255,.3); font-size:13px; font-weight:700; color:var(--pm); margin-bottom:20px; }
-  .step-num.done { background:rgba(0,216,101,.15); border-color:rgba(0,216,101,.3); color:var(--green); }
-  .calc-step-title { font-size:22px; font-weight:800; letter-spacing:-.5px; margin-bottom:8px; }
-  .calc-step-sub { font-size:14px; color:var(--muted); margin-bottom:28px; line-height:1.6; }
-  .deal-input-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
-  .deal-prefix { font-size:28px; font-weight:800; color:var(--muted); }
-  .deal-input { font-size:36px; font-weight:800; letter-spacing:-1.5px; background:transparent; border:none; border-bottom:2px solid rgba(255,255,255,.15); color:var(--white); outline:none; width:200px; padding:8px 0; font-family:inherit; transition:border-color .2s; }
-  .deal-input:focus { border-bottom-color:var(--pm); }
-  .deal-input::placeholder { color:rgba(255,255,255,.15); }
-  #step2 { max-height:0; padding-top:0; padding-bottom:0; overflow:hidden; opacity:0; transition: max-height .55s ease, opacity .45s ease, padding .4s ease; border-bottom:none; }
-  #step2.open { max-height:400px; opacity:1; padding:48px 52px; border-bottom:1px solid var(--border); }
-  .slider-val { font-size:48px; font-weight:900; letter-spacing:-2px; margin-bottom:16px; }
-  input[type=range] { width:100%; -webkit-appearance:none; height:4px; background:rgba(255,255,255,.1); border-radius:4px; outline:none; cursor:pointer; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:24px; height:24px; border-radius:50%; background:var(--pm); box-shadow:0 0 14px rgba(124,77,255,.6); cursor:pointer; transition:transform .15s; }
-  input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.2); }
-  .range-ends { display:flex; justify-content:space-between; margin-top:9px; font-size:12px; color:var(--muted); }
-  #results { max-height:0; overflow:hidden; opacity:0; transition: max-height .6s ease, opacity .5s ease; }
-  #results.open { max-height:600px; opacity:1; }
-  .results-inner { padding:40px 52px 48px; }
-  .results-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
-  .rc { background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:14px; padding:22px 20px; }
-  .rc.hl { background:rgba(0,216,101,.06); border-color:rgba(0,216,101,.2); }
-  .rc-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted); margin-bottom:10px; }
-  .rc-val { font-size:26px; font-weight:800; letter-spacing:-1px; line-height:1.1; }
-  .rc-val.g { color:var(--green); }
-  .rc-sub { font-size:12px; color:var(--muted); margin-top:5px; line-height:1.4; }
-  .breakeven-msg { background:rgba(91,33,255,.06); border:1px solid rgba(91,33,255,.15); border-radius:14px; padding:20px 24px; margin-bottom:28px; font-size:15px; line-height:1.65; }
-  .breakeven-msg strong { color:var(--white); }
-  .breakeven-msg .accent { color:var(--green); font-weight:700; }
-  .results-cta { text-align:center; }
-  .results-note { font-size:13px; color:var(--muted); margin-top:12px; }
-  @media(max-width:700px){ .calc-step, #step2.open, .results-inner { padding:32px 24px; } .results-grid{grid-template-columns:1fr;} .deal-input{font-size:28px;width:160px;} }
-
-  /* ===== OFFER / PILOT CARDS ===== */
-  .ogrid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:52px; }
-  .oc { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:36px; }
-  .oc.get { border-color:rgba(0,216,101,.15); }
-  .oc.protect { border-color:rgba(91,33,255,.15); }
-  .oct { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:24px; }
-  .oc.get .oct { color:var(--green); } .oc.protect .oct { color:var(--pm); }
-  .olist { list-style:none; display:flex; flex-direction:column; gap:14px; }
-  .olist li { display:flex; gap:13px; font-size:15px; color:rgba(255,255,255,.8); line-height:1.5; }
-  .olist li::before { content:attr(data-i); flex-shrink:0; margin-top:1px; }
-  @media(max-width:640px){ .ogrid{grid-template-columns:1fr;} }
-
-  /* Fit grid (2x2) */
-  .fit-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:40px; }
-  .fit-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:28px; }
-  .fit-card.good { border-color:rgba(0,216,101,.18); background:rgba(0,216,101,.03); }
-  .fit-card.bad  { border-color:rgba(255,80,80,.14); background:rgba(255,50,50,.025); }
-  .fit-card-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:16px; }
-  .fit-card.good .fit-card-label { color:var(--green); }
-  .fit-card.bad  .fit-card-label { color:rgba(255,100,100,.8); }
-  .fit-card ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
-  .fit-card ul li { font-size:14px; color:var(--muted); padding-left:22px; position:relative; line-height:1.5; }
-  .fit-card ul li::before { content:attr(data-m); position:absolute; left:0; }
-  @media(max-width:640px){ .fit-grid{grid-template-columns:1fr;} }
-
-  /* ===== APPLY PATH SELECTOR ===== */
-  .apply-path-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:860px; margin:0 auto; }
-  .apply-path-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:36px; display:flex; flex-direction:column; gap:16px; transition:border-color .2s; }
-  .apply-path-card.featured { border-color:rgba(0,216,101,.2); background:rgba(0,216,101,.025); }
-  .apply-path-card.active    { border-color:rgba(91,33,255,.4); box-shadow:0 0 40px rgba(91,33,255,.12); }
-  .apply-path-card.featured.active { border-color:rgba(0,216,101,.5); box-shadow:0 0 40px rgba(0,216,101,.12); }
-  .apply-path-tag { display:inline-block; padding:4px 13px; border-radius:100px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; background:rgba(255,255,255,.06); color:var(--muted); width:fit-content; }
-  .apply-path-tag.featured { background:rgba(0,216,101,.12); color:var(--green); border:1px solid rgba(0,216,101,.2); }
-  .apply-path-card h3 { font-size:22px; font-weight:800; letter-spacing:-.5px; line-height:1.25; }
-  .apply-path-card p { font-size:14px; color:var(--muted); line-height:1.65; }
-  .apply-path-card .btn { align-self:flex-start; margin-top:auto; }
-  .apply-path-divider { display:flex; align-items:center; justify-content:center; gap:16px; margin:28px 0; color:var(--muted); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:1.5px; max-width:860px; margin-left:auto; margin-right:auto; }
-  .apply-path-divider::before, .apply-path-divider::after { content:''; flex:1; height:1px; background:var(--border); }
-  @media(max-width:640px){ .apply-path-grid{grid-template-columns:1fr;} }
-
-  /* Text / tel inputs */
-  .qf-input { width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12); border-radius:10px; color:var(--white); padding:14px 16px; font-size:15px; font-family:inherit; outline:none; transition:border-color .2s, background .2s; }
-  .qf-input:focus { border-color:rgba(91,33,255,.5); background:rgba(91,33,255,.06); }
-  .qf-input::placeholder { color:rgba(255,255,255,.25); }
-
-  /* ===== QUALIFICATION FORM ===== */
-  #apply { padding: 100px 0; background: var(--bg2); }
-  .qual-form-wrap { max-width: 720px; margin: 52px auto 0; }
-  .qf-fields { display: flex; flex-direction: column; gap: 24px; }
-  .qf-field { display: flex; flex-direction: column; gap: 10px; }
-  .qf-field > label { font-size: 15px; font-weight: 600; color: var(--white); line-height: 1.4; }
-  .qf-select-wrap { position: relative; }
-  .qf-select-wrap::after { content: '↓'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 12px; pointer-events: none; }
-  .qf-select {
-    width: 100%; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12);
-    border-radius: 10px; color: var(--white); padding: 14px 40px 14px 16px;
-    font-size: 15px; font-family: inherit; outline: none; -webkit-appearance: none; appearance: none;
-    transition: border-color .2s, background .2s; cursor: pointer;
-  }
-  .qf-select:focus { border-color: rgba(91,33,255,.5); background: rgba(91,33,255,.06); }
-  .qf-select option { background: #0C0C1A; color: var(--white); }
-  .qf-radio-group { display: flex; flex-direction: column; gap: 8px; }
-  .qf-radio-label {
-    display: flex; align-items: center; gap: 12px; padding: 13px 16px;
-    background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.09);
-    border-radius: 10px; cursor: pointer; transition: background .2s, border-color .2s;
-    font-size: 14px; color: rgba(255,255,255,.7);
-  }
-  .qf-radio-label:hover { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.15); }
-  .qf-radio-label input[type="radio"] { width: 16px; height: 16px; accent-color: var(--pm); flex-shrink: 0; cursor: pointer; }
-  .qf-radio-label:has(input:checked) { background: rgba(91,33,255,.08); border-color: rgba(91,33,255,.28); color: var(--white); }
-  .qf-submit { margin-top: 36px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-  .qf-submit-btn { font-size: 16px; padding: 16px 36px; }
-  .qf-note { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  /* Result states */
-  .qf-result { border-radius: 20px; padding: 48px; display: flex; flex-direction: column; gap: 18px; }
-  .qf-result.qualified { background: rgba(0,216,101,.05); border: 1px solid rgba(0,216,101,.2); }
-  .qf-result.rejected  { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.09); }
-  .qf-result-badge { display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; width: fit-content; }
-  .qf-result.qualified .qf-result-badge { background: rgba(0,216,101,.12); color: var(--green); border: 1px solid rgba(0,216,101,.25); }
-  .qf-result.rejected  .qf-result-badge { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid rgba(255,255,255,.1); }
-  .qf-result h3 { font-size: clamp(20px,2.5vw,26px); font-weight: 800; letter-spacing: -.5px; line-height: 1.3; }
-  .qf-result p { font-size: 15px; color: var(--muted); line-height: 1.72; max-width: 580px; }
-  .qf-result a:not(.btn) { color: var(--pm); text-decoration: underline; text-underline-offset: 3px; }
-  @media(max-width:640px){ .qf-result{ padding: 32px 24px; } }
-
-  /* ===== CLOSE ===== */
-  #close { text-align:center; padding:120px 24px; position:relative; overflow:hidden; }
-  #close::before { content:''; position:absolute; width:700px; height:700px; border-radius:50%; background:radial-gradient(circle,rgba(91,33,255,.12) 0%,transparent 65%); bottom:-200px; left:50%; transform:translateX(-50%); pointer-events:none; }
-  .close-h { font-size:clamp(36px,5.5vw,68px); font-weight:900; line-height:1.08; letter-spacing:-2.5px; max-width:820px; margin:0 auto 22px; position:relative; z-index:1; }
-  .close-sub { font-size:17px; color:var(--muted); max-width:500px; margin:0 auto 44px; line-height:1.7; position:relative; z-index:1; }
-  .close-ctas { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:44px; position:relative; z-index:1; }
-  .ps { max-width:540px; margin:0 auto; background:rgba(255,255,255,.025); border:1px solid var(--border); border-radius:14px; padding:24px 28px; font-size:14px; color:var(--muted); line-height:1.7; text-align:left; position:relative; z-index:1; }
-  .ps strong { color:rgba(255,255,255,.65); }
-
-  /* ===== GLOW BORDER ===== */
-  .glow-effect { position: absolute; border-radius: inherit; inset: 0; padding: 1.5px; pointer-events: none; z-index: 0; opacity: var(--glow-opacity, 0); transition: opacity 0.55s ease;
-    background: conic-gradient(from calc(var(--g-angle, 0) * 1deg - 55deg), transparent 0deg, rgba(91,33,255,0.85) 40deg, rgba(124,77,255,1) 55deg, rgba(164,77,255,0.9) 68deg, rgba(0,216,101,0.85) 82deg, transparent 118deg);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: destination-out; mask-composite: exclude;
-  }
-
-  /* ===== FOOTER ===== */
-  footer { border-top:1px solid var(--border); padding:40px 24px; }
-  .fi { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
-  .flogo img { height:28px; width:auto; display:block; object-fit:contain; opacity:.85; }
-  .flinks { display:flex; gap:24px; flex-wrap:wrap; }
-  .flinks a { font-size:14px; color:var(--muted); transition:color .2s; }
-  .flinks a:hover { color:var(--white); }
-  .fcopy { font-size:13px; color:var(--muted); }
-
-  /* ===== LANGUAGE PILL TOGGLE ===== */
-  .nav-right { display:flex; align-items:center; gap:14px; }
-  .lang-pills { display:flex; align-items:center; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:100px; padding:3px; gap:2px; user-select:none; flex-shrink:0; }
-  .lang-pill { display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:100px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:13px; font-weight:600; color:var(--muted); letter-spacing:.3px; transition:all .3s ease; white-space:nowrap; }
-  .lang-pill:hover { color:var(--white); }
-  .lang-pill .lp-flag { font-size:16px; line-height:1; }
-  .lang-pill.lp-active { background:rgba(255,255,255,.12); color:var(--white); box-shadow:0 2px 8px rgba(0,0,0,.3); }
-  @media(max-width:768px){ .nav-right{gap:8px;} .nav-right > .btn{display:none;} .lang-pill{padding:5px 9px;font-size:12px;} .lang-pill .lp-flag{font-size:14px;} }
-
-
-  /* ===== SOCIAL PROOF TOAST ===== */
-  .sp-toast {
-    position: fixed;
-    bottom: 24px;
-    left: 24px;
-    z-index: 300;
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    background: rgba(12,12,26,0.96);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    max-width: 400px;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,216,101,0.06);
-    transform: translateY(120%);
-    opacity: 0;
-    transition: transform 0.55s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .sp-toast.sp-show {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .sp-map {
-    width: 90px;
-    height: auto;
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
-    background: rgba(0,216,101,0.04);
-  }
-  .sp-map img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.7;
-    filter: brightness(0.8) saturate(0.6);
-  }
-  .sp-map-pin {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 18px;
-    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
-    animation: sp-pulse 2s ease-in-out infinite;
-  }
-  @keyframes sp-pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.15); }
-  }
-  .sp-content {
-    display: flex;
-    flex-direction: column;
-    padding: 14px 18px 14px 14px;
-    gap: 4px;
-    flex: 1;
-    min-width: 0;
-  }
-  .sp-header {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .sp-live-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    animation: sp-blink 1.5s ease-in-out infinite;
-    flex-shrink: 0;
-  }
-  @keyframes sp-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-  .sp-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--white);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .sp-niche {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--purple);
-    background: rgba(91,33,255,0.12);
-    border: 1px solid rgba(91,33,255,0.2);
-    border-radius: 100px;
-    padding: 2px 8px;
-    display: inline-block;
-    width: fit-content;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-  }
-  .sp-action {
-    font-size: 11.5px;
-    color: var(--muted);
-    line-height: 1.4;
-  }
-  .sp-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 2px;
-  }
-  .sp-time {
-    font-size: 10px;
-    color: var(--green);
-    font-weight: 600;
-  }
-  .sp-verified {
-    font-size: 9px;
-    color: rgba(255,255,255,0.25);
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-  @media(max-width:768px) {
-    .sp-toast { left: 12px; right: 12px; max-width: none; bottom: 16px; }
-    .sp-map { width: 72px; }
-  }
-
-  /* ===== IMAGE BREAK ===== */
-  .img-break { position: relative; overflow: hidden; }
-  .img-break-img { width: 100%; height: auto; display: block; filter: brightness(.9) saturate(1.1); }
-  .img-break::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 18%; background: linear-gradient(to bottom, var(--bg2) 0%, transparent 100%); z-index: 2; pointer-events: none; }
-  .img-break::after  { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 18%; background: linear-gradient(to top, var(--bg2) 0%, transparent 100%); z-index: 2; pointer-events: none; }
-  .img-break-label { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 10px; background: rgba(6,6,15,.55); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.09); border-radius: 100px; padding: 10px 22px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); white-space: nowrap; }
-  .img-break-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; box-shadow: 0 0 10px var(--green); }
-
-  /* ── FLOATING CTA BAR ── */
-  #float-cta-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 150; background: rgba(6,6,15,.97); backdrop-filter: blur(24px); border-top: 1px solid rgba(255,255,255,.07); padding: 14px 32px; display: flex; align-items: center; justify-content: center; gap: 20px; transform: translateY(100%); transition: transform .4s cubic-bezier(0.4,0,0.2,1); pointer-events: none; }
-  #float-cta-bar.fcta-visible { transform: translateY(0); pointer-events: auto; }
-  .fcta-text { font-size: 14px; color: var(--muted); white-space: nowrap; }
-  .fcta-btns { display: flex; gap: 10px; flex-shrink: 0; }
-  @media(max-width: 640px) { .fcta-text { display: none; } #float-cta-bar { padding: 12px 16px; gap: 10px; } }
-
-  /* ── SECTION MINI CTA ── */
-  .scta { text-align: center; padding-top: 36px; margin-top: 36px; border-top: 1px solid rgba(255,255,255,.05); }
-  .scta a { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 100px; font-size: 14px; font-weight: 700; background: rgba(91,33,255,.08); border: 1px solid rgba(91,33,255,.22); color: #A078FF; transition: all .2s; }
-  .scta a:hover { background: rgba(91,33,255,.18); border-color: rgba(91,33,255,.45); color: #fff; transform: translateY(-1px); }
-
-  /* ===== HERO PHONE MOCKUP ===== */
-  .hero-phone-wrap {
-    position:relative; width:260px; margin:40px auto 52px; z-index:2;
-    filter: drop-shadow(0 60px 80px rgba(0,0,0,.7)) drop-shadow(0 0 80px rgba(0,216,101,.07));
-  }
-
-  /* Outer frame — the physical phone body */
-  .hp-frame {
-    width:260px; height:520px;
-    border-radius:48px;
-    background:linear-gradient(155deg,#252538 0%,#18182a 30%,#0e0e1a 65%,#08080f 100%);
-    border:1px solid rgba(255,255,255,0.10);
-    box-shadow:
-      /* outer edge highlight */
-      0 1px 0 rgba(255,255,255,0.12),
-      /* inner screen border */
-      inset 0 0 0 6px #14141f,
-      /* deep ground shadow */
-      0 60px 120px rgba(0,0,0,.9),
-      0 30px 60px rgba(0,0,0,.6),
-      /* green ambient glow */
-      0 0 80px rgba(0,216,101,.06);
-    position:relative;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-  }
-  /* Glass shine on frame top-left */
-  .hp-frame-shine {
-    position:absolute; top:0; left:0; right:0; bottom:0;
-    border-radius:48px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.055) 0%, transparent 45%);
-    pointer-events:none; z-index:10;
-  }
-  /* Side buttons */
-  .hp-frame::before {
-    content:'';
-    position:absolute;
-    right:-5px; top:100px;
-    width:4px; height:58px;
-    background:linear-gradient(180deg,#252538,#1a1a2a);
-    border-radius:0 3px 3px 0;
-    box-shadow:0 42px 0 #1e1e2e, 0 84px 0 #1e1e2e, inset -1px 0 0 rgba(255,255,255,0.06);
-  }
-  .hp-frame::after {
-    content:'';
-    position:absolute;
-    left:-5px; top:120px;
-    width:4px; height:44px;
-    background:linear-gradient(180deg,#252538,#1a1a2a);
-    border-radius:3px 0 0 3px;
-    box-shadow:0 58px 0 #1e1e2e, inset 1px 0 0 rgba(255,255,255,0.06);
-  }
-
-  /* Top bar: camera + speaker */
-  .hp-topbar {
-    display:flex; align-items:center; justify-content:center;
-    gap:8px; padding:14px 0 10px;
-    flex-shrink:0;
-  }
-  .hp-speaker { width:52px; height:5px; border-radius:3px; background:rgba(255,255,255,.12); }
-  .hp-camera  { width:10px; height:10px; border-radius:50%; background:#111; border:2px solid rgba(255,255,255,.15); }
-
-  /* Screen area */
-  .hp-screen {
-    flex:1;
-    background:#06060F;
-    margin:0 4px 4px;
-    border-radius:0 0 42px 42px;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-  }
-
-  /* Status bar */
-  .hp-statusbar {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:8px 16px 4px;
-    font-size:9px; font-weight:700; color:rgba(255,255,255,.5);
-    flex-shrink:0;
-  }
-
-  /* Scrollable content area */
-  .hp-content {
-    flex:1;
-    padding:10px 12px 14px;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    overflow:hidden;
-  }
-  .hp-header { display:flex; align-items:center; gap:8px; padding:10px 12px; background:rgba(0,216,101,.07); border:1px solid rgba(0,216,101,.14); border-radius:14px; flex-shrink:0; }
-  .hp-icon { width:30px; height:30px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .hp-name { font-size:11px; font-weight:700; color:#fff; }
-  .hp-status { font-size:9px; color:rgba(255,255,255,.5); margin-top:1px; }
-  .hp-badge { margin-left:auto; font-size:8px; font-weight:700; padding:3px 8px; border-radius:100px; flex-shrink:0; }
-  .hp-badge.ready { background:rgba(255,255,255,.08); color:rgba(255,255,255,.4); }
-  .hp-badge.live  { background:rgba(0,216,101,.2); color:var(--green); animation:blink 1.5s infinite; }
-  .hp-badge.done  { background:rgba(91,33,255,.15); color:#a078ff; }
-  .hp-section-label { font-size:8px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,.28); margin-bottom:2px; }
-  .hp-step { display:flex; flex-direction:column; gap:6px; }
-  .hp-row { font-size:10px; padding:7px 10px; border-radius:8px; background:rgba(255,255,255,.04); color:rgba(255,255,255,.65); }
-  .hp-call-btn { text-align:center; padding:8px; border-radius:8px; background:rgba(0,216,101,.13); color:var(--green); font-size:10px; font-weight:700; border:1px solid rgba(0,216,101,.2); }
-  .hp-bubble-bot { font-size:10px; padding:9px 11px; border-radius:12px 12px 12px 2px; background:rgba(0,216,101,.1); border:1px solid rgba(0,216,101,.15); color:rgba(255,255,255,.85); line-height:1.55; }
-  .hp-bubble-user { font-size:10px; padding:9px 11px; border-radius:12px 12px 2px 12px; background:rgba(255,255,255,.06); color:rgba(255,255,255,.7); line-height:1.55; align-self:flex-end; margin-left:16px; }
-  .hp-wave { display:flex; align-items:center; gap:2px; margin-top:2px; }
-  .hp-wave span { display:inline-block; width:3px; border-radius:2px; background:var(--green); opacity:.7; animation:bounceSlow .4s ease-in-out infinite alternate; }
-  .hp-wave span:nth-child(2){ animation-delay:.07s; }
-  .hp-wave span:nth-child(3){ animation-delay:.14s; }
-  .hp-wave span:nth-child(4){ animation-delay:.21s; }
-  .hp-wave span:nth-child(5){ animation-delay:.28s; }
-  .hp-wave span:nth-child(6){ animation-delay:.35s; }
-  .hp-wave span:nth-child(7){ animation-delay:.28s; }
-  .hp-wave span:nth-child(8){ animation-delay:.21s; }
-  .hp-wave span:nth-child(9){ animation-delay:.14s; }
-  .hp-wave span:nth-child(10){ animation-delay:.07s; }
-  .hp-calendar { padding:10px 12px; border-radius:12px; background:rgba(0,216,101,.07); border:1px solid rgba(0,216,101,.18); }
-  .hp-calendar-title { font-size:11px; font-weight:700; color:#fff; margin-bottom:3px; }
-  .hp-calendar-time { font-size:10px; color:rgba(255,255,255,.6); }
-  .hp-calendar-name { font-size:10px; color:var(--green); margin-top:3px; }
-  .hp-checks { font-size:10px; color:rgba(255,255,255,.5); padding:9px 11px; border-radius:8px; background:rgba(255,255,255,.03); line-height:2; }
-  /* floating chips */
-  .hp-chip { position:absolute; display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:12px; background:rgba(6,6,15,.95); border:1px solid rgba(0,216,101,.2); backdrop-filter:blur(12px); }
-  .hp-chip-icon { width:22px; height:22px; border-radius:7px; background:rgba(0,216,101,.14); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .hp-chip-title { font-size:10px; font-weight:700; color:#fff; white-space:nowrap; }
-  .hp-chip-sub { font-size:9px; color:rgba(255,255,255,.45); white-space:nowrap; }
-  .hp-chip-right { right:-148px; top:60px; animation:float 4s ease-in-out infinite; animation-delay:.5s; }
-  .hp-chip-left  { left:-148px; bottom:80px; animation:float 4s ease-in-out infinite; animation-delay:1.5s; }
-  @media(max-width:700px){ .hp-chip{ display:none; } }
+  /* ── REVEAL ── */
+  .rv { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .rv.on { opacity: 1; transform: none; }
+  .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s} .d5{transition-delay:.5s} .d6{transition-delay:.6s}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav id="nav">
-  <a class="nav-logo-link" href="#hero">
-    <img src="images/loophub-logo.png" alt="LoopHub" class="nav-logo-img" />
-  </a>
-  <ul class="nav-links">
-    <li><a href="#mechanism" data-i18n="nav_how">How It Works</a></li>
-    <li><a href="#economics" data-i18n="nav_math">The Math</a></li>
-    <li><a href="#pilot" data-i18n="nav_campaign">The Campaign</a></li>
-    <li><a href="#apply" data-i18n="nav_apply">Apply</a></li>
-  </ul>
-  <div class="nav-right" style="position:relative">
-    <!-- Language pills -->
-    <div class="lang-pills" id="lang-pills" role="group" aria-label="Language / Idioma">
-      <button class="lang-pill lp-active" id="btn-en" onclick="setLang('en')" aria-label="English">
-        <span class="lp-flag">🇺🇸</span> EN
-      </button>
-      <button class="lang-pill" id="btn-es" onclick="setLang('es')" aria-label="Español">
-        <span class="lp-flag">🇲🇽</span> ES
-      </button>
-    </div>
-    <a class="btn btn-p" href="#apply" style="font-size:14px;padding:11px 22px" data-i18n="nav_cta">Apply for the Test &rarr;</a>
-  </div>
+  <a href="/" class="nav-logo-text">PTS<span>.</span>AI</a>
+  <a href="#apply" class="btn-nav">Apply for the Test &rarr;</a>
 </nav>
-
-<!-- PAST-SECTION PILL STACK
-     Fixed overlay: pills appear here when their section is fully scrolled past.
-     Clicking a pill scrolls back to that section. JS manages visibility. -->
-<div id="sticky-past-stack" aria-hidden="true">
-  <div class="ssh-pill" data-target="leak">
-    <span class="pill-num">01</span>
-    <span class="pill-title" data-i18n="pill_01">The Problem</span>
-  </div>
-  <div class="ssh-pill" data-target="follow-up-gap">
-    <span class="pill-num">02</span>
-    <span class="pill-title" data-i18n="pill_02">The Follow-Up Gap</span>
-  </div>
-  <div class="ssh-pill" data-target="gap-section">
-    <span class="pill-num">03</span>
-    <span class="pill-title" data-i18n="pill_03">Where Deals Die</span>
-  </div>
-  <div class="ssh-pill" data-target="mechanism">
-    <span class="pill-num">04</span>
-    <span class="pill-title" data-i18n="pill_04">How the Bot Works</span>
-  </div>
-  <div class="ssh-pill" data-target="economics">
-    <span class="pill-num">05</span>
-    <span class="pill-title" data-i18n="pill_05">The Math</span>
-  </div>
-  <div class="ssh-pill" data-target="pilot">
-    <span class="pill-num">06</span>
-    <span class="pill-title" data-i18n="pill_06">The 250-Lead Test</span>
-  </div>
-</div>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-blob hero-blob-top" aria-hidden="true"><div></div></div>
-  <div class="hero-blob hero-blob-btm" aria-hidden="true"><div></div></div>
-  <div class="badge rv"><span class="bdot"></span> <span data-i18n="hero_badge">STOP LOSING LEADS YOU ALREADY PAID FOR</span></div>
-  <h1 class="hero-h1 rv d1" data-i18n-html="hero_h1">
-    <span class="hero-line1">Your Leads Go Cold in 5 Minutes.</span>
-    <span class="hero-dash">—</span>
-    <span class="hero-line2">We Call Them in <span class="grad hero-countdown" id="hero-countdown">8</span> Sec.</span>
-  </h1>
-
-  <!-- PHONE MOCKUP -->
-  <div class="hero-phone-wrap rv d2">
-    <div class="hp-frame">
-      <div class="hp-frame-shine" aria-hidden="true"></div>
-      <div class="hp-topbar">
-        <div class="hp-camera"></div>
-        <div class="hp-speaker"></div>
-      </div>
-      <div class="hp-screen">
-        <div class="hp-statusbar">
-          <span>9:41</span>
-          <span style="letter-spacing:1px">● ● ●</span>
-          <span>100%</span>
-        </div>
-        <div class="hp-content">
-          <!-- Header -->
-          <div class="hp-header">
-            <div class="hp-icon">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.53 9.77a19.79 19.79 0 01-3.07-8.67A2 2 0 012.44 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 9.4A16 16 0 0015.54 18l.77-.77a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 19.41z" stroke="#00D865" stroke-width="2" stroke-linecap="round"/></svg>
-            </div>
-            <div>
-              <div class="hp-name">Tommy · LoopHub</div>
-              <div class="hp-status" id="hp-status">New lead detected</div>
-            </div>
-            <span class="hp-badge ready" id="hp-badge">READY</span>
-          </div>
-          <!-- Step content -->
-          <div id="hp-step-0" class="hp-step">
-            <div class="hp-section-label" data-i18n="hp_label_0">New Lead</div>
-            <div class="hp-row" data-i18n="hp_row_name">Name: John Martinez</div>
-            <div class="hp-row" data-i18n="hp_row_phone">Phone: +1 803 555-0147</div>
-            <div class="hp-row" data-i18n="hp_row_source">Source: Website Form</div>
-            <div class="hp-row" data-i18n="hp_row_time">Time: Just now</div>
-            <div class="hp-call-btn" data-i18n="hp_call_btn">⏱ Calling in 8 seconds...</div>
-          </div>
-          <div id="hp-step-1" class="hp-step" style="display:none">
-            <div class="hp-section-label" data-i18n="hp_label_1">Live Transcript</div>
-            <div class="hp-bubble-bot" data-i18n="hp_bubble_bot">Hi John! This is Tommy from LoopHub. I see you just requested info — do you have 2 minutes?</div>
-            <div class="hp-bubble-user" data-i18n="hp_bubble_user">Yeah, sure! I was just looking at your website...</div>
-            <div class="hp-wave">
-              <span style="height:4px"></span><span style="height:10px"></span><span style="height:16px"></span><span style="height:20px"></span><span style="height:14px"></span><span style="height:8px"></span><span style="height:18px"></span><span style="height:12px"></span><span style="height:6px"></span><span style="height:16px"></span>
-            </div>
-          </div>
-          <div id="hp-step-2" class="hp-step" style="display:none">
-            <div class="hp-section-label" data-i18n="hp_label_2">Appointment Booked</div>
-            <div class="hp-calendar">
-              <div class="hp-calendar-title" data-i18n="hp_cal_title">📅 Thursday, April 10</div>
-              <div class="hp-calendar-time">2:00 PM — 2:30 PM</div>
-              <div class="hp-calendar-name" data-i18n="hp_cal_name">John Martinez · Qualified Lead</div>
-            </div>
-            <div class="hp-checks" data-i18n-html="hp_checks">✅ CRM Updated<br>✅ Calendar invite sent<br>✅ Reminder set 24h before</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Floating chips -->
-    <div class="hp-chip hp-chip-right">
-      <div class="hp-chip-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z" stroke="#00D865" stroke-width="2" stroke-linecap="round"/></svg></div>
-      <div><div class="hp-chip-title" data-i18n="hp_chip1_title">Form Submitted</div><div class="hp-chip-sub" data-i18n="hp_chip1_sub">Tommy calling...</div></div>
-    </div>
-    <div class="hp-chip hp-chip-left">
-      <div class="hp-chip-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke="#00D865" stroke-width="2" stroke-linecap="round"/></svg></div>
-      <div><div class="hp-chip-title" style="color:#00D865" data-i18n="hp_chip2_title">+78% conversions</div><div class="hp-chip-sub" data-i18n="hp_chip2_sub">vs. 2-hr response</div></div>
-    </div>
-  </div>
-  <!-- END PHONE MOCKUP -->
-
-  <p class="hero-sub rv d2" data-i18n="hero_sub">
-    The bot calls in under 5 minutes, follows up 5 times, and qualifies each lead —
-    so your team only speaks with prospects who are ready.
-    Apply for the 250-Lead Test Campaign.
-  </p>
-  <div class="qual-strip rv d2">
-    <span class="qs-item"><span class="qs-check">✓</span> <span data-i18n="hero_qs1">Active ad spend or consistent inbound</span></span>
-    <span class="qs-item"><span class="qs-check">✓</span> <span data-i18n="hero_qs2">250+ leads ready to call</span></span>
-    <span class="qs-item"><span class="qs-check">✓</span> <span data-i18n="hero_qs3">Real deal value</span></span>
-    <span class="qs-item"><span class="qs-check">✓</span> <span data-i18n="hero_qs4">Someone to close</span></span>
-  </div>
+  <div class="hero-badge"><span class="hero-dot"></span> Stop Losing Leads You Already Paid For</div>
+  <h1 class="hero-h1 rv">Your leads don't go cold<br>because they're <em>bad.</em></h1>
+  <h2 class="hero-h2 rv d1">They go cold because nobody follows up fast enough.</h2>
+  <p class="hero-sub rv d2">PTS AI calls new leads in under 5 minutes, follows up 5 times, qualifies them, and sends your team only the conversations worth taking.</p>
   <div class="hero-ctas rv d3">
-    <a class="btn btn-p" href="#apply" style="font-size:16px;padding:15px 32px" data-i18n-html="hero_cta1">Apply for the 250-Lead Test &rarr;</a>
-    <a class="btn btn-g" href="#pilot" style="font-size:16px;padding:15px 30px" data-i18n="hero_cta2">See What's Included</a>
+    <a href="#apply" class="btn-primary">Run the 250-Lead Test &rarr;</a>
+    <a href="#how" class="btn-secondary">See How It Works</a>
   </div>
-  <div class="stats-bar rv">
-    <div class="si"><div class="sn" style="color:var(--green)">250</div><div class="sl" data-i18n="stat_leads">Min. Test Leads</div></div>
-    <div class="si"><div class="sn" style="color:var(--green)">7 days</div><div class="sl" data-i18n="stat_deploy">To Deploy</div></div>
-    <div class="si"><div class="sn">5&times;</div><div class="sl" data-i18n="stat_followups">Follow-Ups / Lead</div></div>
-    <div class="si"><div class="sn">0</div><div class="sl" data-i18n="stat_missed">Missed Contacts</div></div>
+  <div class="qual-strip rv d4">
+    <span class="qs"><span class="qs-check">✓</span> Active leads or paid ads</span>
+    <span class="qs"><span class="qs-check">✓</span> 250+ leads available</span>
+    <span class="qs"><span class="qs-check">✓</span> Real offer, real deal value</span>
+    <span class="qs"><span class="qs-check">✓</span> Someone who can close</span>
   </div>
 </section>
 
-<!-- MANIFESTO -->
-<div class="manifesto">
-  <p class="rv" data-i18n-html="manifesto">Most businesses don't have a lead problem. <em>They have a conversion problem.</em></p>
-</div>
-
-<!-- FLOATING CTA BAR -->
-<div id="float-cta-bar" role="complementary" aria-label="Apply">
-  <span class="fcta-text" data-i18n="fcta_text">Ready to test the AI on your leads?</span>
-  <div class="fcta-btns">
-    <a class="btn btn-p" href="#apply" style="font-size:14px;padding:11px 24px" data-i18n-html="fcta_btn1">Apply for the Test &rarr;</a>
-    <a class="btn btn-g" href="#apply" style="font-size:14px;padding:11px 20px" onclick="event.preventDefault();document.getElementById('apply').scrollIntoView({behavior:'smooth'});setTimeout(function(){selectApplyPath('b')},500)" data-i18n="fcta_btn2">Call Me Now</a>
-  </div>
-</div>
-
-<!-- ===== STICKY SECTIONS ===== -->
-<div class="sticky-sections">
-
-  <!-- SECTION 1: THE LEAK -->
-  <section class="sticky-section" id="leak">
-    <div class="sticky-section-header">
-      <div class="ssh-inner">
-        <h2 class="ssh-title" data-i18n="ssh1_title">Your Leads Are Going Cold Before Anyone Calls Them</h2>
-        <span class="ssh-num" data-i18n-html="ssh1_num">01 &mdash; The Problem</span>
-      </div>
-    </div>
-    <div class="sticky-section-content">
-      <div class="rv">
-        <div class="label" data-i18n="leak_label">The Conversion Problem</div>
-        <h2 class="h2" data-i18n-html="leak_h2">You're already generating enough leads.<br>The problem is what happens next.</h2>
-        <p class="sub" data-i18n="leak_sub">More budget. More ads. More volume. But the pipeline doesn't move because the leads that come in aren't being worked properly. The leak isn't at the top of the funnel.</p>
-      </div>
-      <div class="pgrid">
-        <div class="pcard rv d1">
-          <div class="picon" style="background:rgba(255,135,82,.1)">&#9200;</div>
-          <h3 data-i18n="pcard1_h3">Speed kills — or saves — deals</h3>
-          <p data-i18n="pcard1_p">The probability of converting a new lead drops dramatically after the first 5 minutes. Most teams don't respond in 5 minutes. They respond in hours. By then, the lead has moved on or gone cold.</p>
-        </div>
-        <div class="pcard rv d2">
-          <div class="picon" style="background:rgba(91,33,255,.1)">&#128260;</div>
-          <h3 data-i18n="pcard2_h3">80% of sales happen on follow-up 5–12. Most teams stop at 1.</h3>
-          <p data-i18n="pcard2_p">Not because salespeople are lazy — because there aren't enough hours. Every manual follow-up that doesn't happen is a lead that quietly dies in the pipeline. The economics of this are brutal.</p>
-        </div>
-        <div class="pcard rv d3">
-          <div class="picon" style="background:rgba(0,216,101,.1)">&#128100;</div>
-          <h3 data-i18n="pcard3_h3">Your best people are doing the wrong work</h3>
-          <p data-i18n="pcard3_p">Routine calls. Predictable questions. Repetitive early-stage conversations. Your closers are spending their best hours on work a machine can already handle — and high-value deals wait.</p>
-        </div>
-        <div class="pcard rv d4">
-          <div class="picon" style="background:rgba(255,80,80,.1)">&#128184;</div>
-          <h3 data-i18n="pcard4_h3">You're already paying for these leads</h3>
-          <p data-i18n="pcard4_p">Ad spend, content, referrals — every lead has a cost. When follow-up fails, you're not just losing the deal. You're losing the entire acquisition cost on top of it. The waste compounds every month.</p>
-        </div>
-      </div>
-      <div class="scta"><a href="#apply" data-i18n-html="scta_btn">Apply for the 250-Lead Test &rarr;</a></div>
-    </div>
-  </section>
-
-  <!-- SECTION 2B: THE FOLLOW-UP GAP -->
-  <section class="sticky-section" id="follow-up-gap">
-    <div class="sticky-section-header">
-      <div class="ssh-inner">
-        <h2 class="ssh-title" data-i18n="ssh2b_title">Most Teams Stop Too Early</h2>
-        <span class="ssh-num" data-i18n-html="ssh2b_num">02B — The Gap</span>
-      </div>
-    </div>
-
-    <div class="sticky-section-content">
-      <div class="fug-wrapper">
-        <h2 class="fug-heading" data-i18n-html="fug_heading">Most teams stop too early.<br>That's where deals die.</h2>
-
-        <p class="fug-text" data-i18n="fug_text">
-          The problem usually isn't the lead. It's what happens after the form fill. Most teams follow up once or twice, then move on. But the data tells a different story.
-        </p>
-
-        <p class="fug-source" data-i18n-html="fug_source">
-          According to <strong>Grant Cardone</strong> &mdash; one of the top sales authorities in the world:
-        </p>
-
-        <div class="fug-image-wrapper">
-          <img
-            id="fug-img"
-            src="images/follow-up-gap.png"
-            alt="Grant Cardone sales statistics: 48% of salespeople never follow up, 80% of sales happen between the 5th and 12th contact attempt."
-            class="fug-image"
-          />
-        </div>
-
-        <p class="fug-caption" data-i18n-html="fug_caption">
-          <strong>80% of sales happen after the 5th contact.</strong> Yet 90% of reps stop before that.
-        </p>
-
-        <p class="fug-transition" data-i18n-html="fug_transition">
-          That's why the bot calls fast, follows up 5 times automatically, and keeps working the lead until there's a real outcome &mdash; not just a missed call.
-        </p>
-      </div>
-      <div class="scta"><a href="#apply" data-i18n-html="scta_btn">Apply for the 250-Lead Test &rarr;</a></div>
-    </div>
-  </section>
-
-  <!-- SECTION 2: THE GAP -->
-  <section class="sticky-section" id="gap-section">
-    <div class="sticky-section-header">
-      <div class="ssh-inner">
-        <h2 class="ssh-title" data-i18n="gap_ssh_title">Here's Exactly Where Your Deals Are Dying</h2>
-        <span class="ssh-num" data-i18n-html="gap_ssh_num">02 &mdash; The Leak</span>
-      </div>
-    </div>
-    <div class="sticky-section-content">
-      <div class="rv">
-        <div class="label" data-i18n="gap_label">The Operational Leak</div>
-        <h2 class="h2" data-i18n="gap_h2">A warm lead submits. Then the clock starts — and most teams lose.</h2>
-        <p class="sub" data-i18n="gap_sub">The gap between intent and contact is where revenue disappears. This is what a lead experiences when the process is still manual.</p>
-      </div>
-      <div class="sgrid">
-        <div class="scard rv d1">
-          <span class="stag old" data-i18n="gap_old_tag">What Usually Happens</span>
-          <h3 data-i18n="gap_old_h3">Manual. Slow. Inconsistent. Expensive.</h3>
-          <ul class="slist">
-            <li data-m="&#10007;" data-i18n="gap_old_li1">Lead submits form at 10am on a Tuesday</li>
-            <li data-m="&#10007;" data-i18n="gap_old_li2">Rep gets notified — eventually. First call attempt: 3–6 hours later</li>
-            <li data-m="&#10007;" data-i18n="gap_old_li3">No answer. Rep leaves a voicemail and moves on to the next lead</li>
-            <li data-m="&#10007;" data-i18n="gap_old_li4">One or two more attempts over the next few days — then silence</li>
-            <li data-m="&#10007;" data-i18n="gap_old_li5">Lead had budget, a real problem, and was ready to talk. But they went cold.</li>
-            <li data-m="&#10007;" data-i18n="gap_old_li6">That acquisition cost is now a write-off</li>
-          </ul>
-        </div>
-        <div class="scard new rv d2">
-          <span class="stag new" data-i18n="gap_new_tag">What the AI Bot Does</span>
-          <h3 data-i18n="gap_new_h3">Instant. Consistent. Every time. Without exception.</h3>
-          <ul class="slist nl">
-            <li data-m="&#10003;" data-i18n="gap_new_li1">Lead submits. Bot calls in under 5 minutes — regardless of time of day</li>
-            <li data-m="&#10003;" data-i18n="gap_new_li2">If no answer: follows up automatically across 5 attempts, spaced strategically</li>
-            <li data-m="&#10003;" data-i18n="gap_new_li3">When connected: handles the predictable early conversation, qualifies interest</li>
-            <li data-m="&#10003;" data-i18n="gap_new_li4">Qualified leads get transferred or scheduled — no rep required for this step</li>
-            <li data-m="&#10003;" data-i18n="gap_new_li5">Your closer only enters the conversation when the lead is warm and ready</li>
-            <li data-m="&#10003;" data-i18n="gap_new_li6">Nothing falls through. No lead is left without an attempt.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="scta"><a href="#apply" data-i18n-html="scta_btn">Apply for the 250-Lead Test &rarr;</a></div>
-    </div>
-  </section>
-
-  <!-- SECTION 3: THE MECHANISM -->
-  <section class="sticky-section" id="mechanism">
-    <div class="sticky-section-header">
-      <div class="ssh-inner">
-        <h2 class="ssh-title" data-i18n="ssh3_title">How the AI Sales Bot Works</h2>
-        <span class="ssh-num" data-i18n-html="ssh3_num">03 &mdash; The Mechanism</span>
-      </div>
-    </div>
-    <div class="sticky-section-content">
-      <div class="rv">
-        <div class="label" data-i18n="mech_label">The System</div>
-        <h2 class="h2" data-i18n-html="mech_h2">Not built to replace your closers.<br>Built to <span class="grad">protect their time.</span></h2>
-        <p class="sub" data-i18n="mech_sub">The bot handles everything that happens before a real conversation is warranted. Your team enters when the lead is qualified, interested, and expecting the call.</p>
-      </div>
-      <div class="pitchgrid">
-        <div class="pc pc-1 rv d1">
-          <div class="pc-shader" aria-hidden="true"></div>
-          <div class="pc-content">
-            <div class="pci">&#9889;</div>
-            <h3 data-i18n="mech_c1_h3">Immediate First Contact</h3>
-            <p data-i18n="mech_c1_p">The bot calls within minutes of a lead submitting. Speed to contact is the single highest-leverage variable in outbound conversion — this removes all delay.</p>
-          </div>
-        </div>
-        <div class="pc pc-2 rv d2">
-          <div class="pc-shader" aria-hidden="true"></div>
-          <div class="pc-content">
-            <div class="pci">&#128260;</div>
-            <h3 data-i18n="mech_c2_h3">5-Attempt Follow-Up Sequence</h3>
-            <p data-i18n="mech_c2_p">If the lead doesn't answer, the bot follows up strategically — 5 attempts, varied timing, zero gaps. No lead goes cold because a rep was busy with something else.</p>
-          </div>
-        </div>
-        <div class="pc pc-3 rv d3">
-          <div class="pc-shader" aria-hidden="true"></div>
-          <div class="pc-content">
-            <div class="pci">&#127919;</div>
-            <h3 data-i18n="mech_c3_h3">Live Qualification</h3>
-            <p data-i18n="mech_c3_p">When connected, the bot runs through a defined qualification framework. It identifies who's worth your closer's time and separates them from everyone else.</p>
-          </div>
-        </div>
-        <div class="pc pc-4 rv d1">
-          <div class="pc-shader" aria-hidden="true"></div>
-          <div class="pc-content">
-            <div class="pci">&#128222;</div>
-            <h3 data-i18n="mech_c4_h3">Live Transfer or Booking</h3>
-            <p data-i18n="mech_c4_p">Qualified leads get transferred live or booked for a scheduled callback. Your closer walks into a conversation that's already been warmed up and filtered.</p>
-          </div>
-        </div>
-        <div class="pc pc-5 rv d2">
-          <div class="pc-shader" aria-hidden="true"></div>
-          <div class="pc-content">
-            <div class="pci">&#128202;</div>
-            <h3 data-i18n="mech_c5_h3">Full Call Reporting</h3>
-            <p data-i18n="mech_c5_p">Every call, outcome, objection, and conversion point is logged. You see contact rate, response speed, qualified conversations, and booked meetings — in real time.</p>
-          </div>
-        </div>
-        <div class="pc pc-6 rv d3">
-          <div class="pc-shader" aria-hidden="true"></div>
-          <div class="pc-content">
-            <div class="pci">&#128100;</div>
-            <h3 data-i18n="mech_c6_h3">Human Team Stays Focused</h3>
-            <p data-i18n="mech_c6_p">Your reps stop doing triage. They stop chasing. They handle only the conversations that move revenue — the ones that need a real human on the other end.</p>
-          </div>
-        </div>
-      </div>
-      <div class="scta"><a href="#apply" data-i18n-html="scta_btn">Apply for the 250-Lead Test &rarr;</a></div>
-    </div>
-  </section>
-
-  <!-- SECTION 4: THE ECONOMICS -->
-  <section class="sticky-section" id="economics">
-    <div class="sticky-section-header">
-      <div class="ssh-inner">
-        <h2 class="ssh-title" data-i18n="ssh4_title">The Economics</h2>
-        <span class="ssh-num" data-i18n-html="ssh4_num">04 &mdash; The Math</span>
-      </div>
-    </div>
-    <div class="sticky-section-content">
-      <div class="rv">
-        <div class="label" data-i18n="econ_label">Capacity vs. Cost</div>
-        <h2 class="h2" data-i18n-html="econ_h2">Before you buy more leads,<br>prove you can convert the ones you have.</h2>
-        <p class="sub" data-i18n="econ_sub">A fully-loaded SDR costs $9k–$11k/month and reaches 250–350 leads. The math on this system is in a different category. Run your own numbers below.</p>
-      </div>
-      <div class="twrap rv">
-        <table>
-          <thead>
-            <tr>
-              <th data-i18n="tbl_th1">Metric</th>
-              <th data-i18n="tbl_th2">Senior SDR (fully-loaded)</th>
-              <th data-i18n="tbl_th3">AI Sales Bot</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="tm" data-i18n="tbl_r1_m">Monthly Cost</td><td class="ts">$9,000 &ndash; $11,000</td><td class="ta"><a href="#calc-wrapper" onclick="event.preventDefault();document.getElementById('calc-wrapper').scrollIntoView({behavior:'smooth',block:'center'});window.addLeadPoints&&addLeadPoints('calc_link_clicked',5);" style="color:var(--green);text-decoration:underline;text-underline-offset:3px;cursor:pointer">Use calculator &darr;</a></td></tr>
-            <tr><td class="tm" data-i18n="tbl_r2_m">Time to First Call</td><td class="ts" data-i18n="tbl_r2_s">Hours (on a good day)</td><td class="ta" data-i18n="tbl_r2_b">Under 5 minutes</td></tr>
-            <tr><td class="tm" data-i18n="tbl_r3_m">Leads Contacted / Month</td><td class="ts">250 &ndash; 350</td><td class="ta">2,000+ per line</td></tr>
-            <tr><td class="tm" data-i18n="tbl_r4_m">Follow-Ups per Lead</td><td class="ts" data-i18n="tbl_r4_s">1&ndash;2 (typically)</td><td class="ta" data-i18n="tbl_r4_b">5 guaranteed</td></tr>
-            <tr><td class="tm" data-i18n="tbl_r5_m">Cost per Lead Contacted</td><td class="ts">$26 &ndash; $44</td><td class="ta">&lt;$1</td></tr>
-            <tr><td class="tm" data-i18n="tbl_r6_m">Scales With Volume</td><td class="ts" data-i18n="tbl_r6_s">No &mdash; hire more</td><td class="ta" data-i18n="tbl_r6_b">Yes &mdash; same system</td></tr>
-            <tr><td class="tm" data-i18n="tbl_r7_m">Deploy Time</td><td class="ts" data-i18n="tbl_r7_s">3&ndash;6 months (ramp)</td><td class="ta" data-i18n="tbl_r7_b">7 days</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- CALCULATOR -->
-      <div class="tc rv" style="margin-bottom:32px">
-        <div class="label" data-i18n="calc_label">Run Your Numbers</div>
-        <h3 class="h2" data-i18n="calc_h2">See how little you need to close to break even.</h3>
-        <p class="sub" style="margin:0 auto" data-i18n="calc_sub">Two inputs. Your break-even in seconds.</p>
-      </div>
-      <div class="calc-wrap rv" id="calc-wrapper">
-        <div class="calc-step" id="step1">
-          <div class="step-num" id="snum1">1</div>
-          <div class="calc-step-title" data-i18n="calc_step1_title">What is your average deal size?</div>
-          <div class="calc-step-sub" data-i18n="calc_step1_sub">The revenue you typically close per new client or sale.</div>
-          <div class="deal-input-row">
-            <span class="deal-prefix">$</span>
-            <input class="deal-input" type="number" id="deal-input" placeholder="5,000" min="100" step="100" />
-          </div>
-          <div style="margin-top:28px">
-            <button class="btn btn-p" id="continue-btn" style="font-size:15px;padding:13px 28px;opacity:.4;cursor:not-allowed" disabled data-i18n-html="calc_btn_cont">
-              Continue &rarr;
-            </button>
-          </div>
-        </div>
-        <div id="step2">
-          <div class="step-num" id="snum2">2</div>
-          <div class="calc-step-title" data-i18n="calc_step2_title">How many leads do you want to call per month?</div>
-          <div class="calc-step-sub" data-i18n="calc_step2_sub">Each line handles up to 400 contacts with 5 follow-up calls each.</div>
-          <div class="slider-val" id="leads-display">2,000</div>
-          <input type="range" id="leads-slider" min="400" max="80000" step="400" value="2000" aria-label="Leads per month" />
-          <div class="range-ends"><span>400</span><span>80,000</span></div>
-        </div>
-        <div id="results">
-          <div class="results-inner">
-            <div class="results-grid">
-              <div class="rc">
-                <div class="rc-label" data-i18n="calc_r1_label">Month 1 Investment</div>
-                <div class="rc-val" id="r-first">—</div>
-                <div class="rc-sub" data-i18n-html="calc_r1_sub">Includes setup &amp; first month</div>
-              </div>
-              <div class="rc">
-                <div class="rc-label" data-i18n="calc_r2_label">Ongoing / Month</div>
-                <div class="rc-val" id="r-ongoing">—</div>
-                <div class="rc-sub" id="r-lines">—</div>
-              </div>
-              <div class="rc hl">
-                <div class="rc-label" data-i18n="calc_r3_label">Break-Even Sales</div>
-                <div class="rc-val g" id="r-be">—</div>
-                <div class="rc-sub" id="r-rate">— of your leads</div>
-              </div>
-            </div>
-            <div class="breakeven-msg" id="r-msg" data-i18n-html="calc_be_pre">
-              Close just <span class="accent" id="msg-be">—</span> out of <span class="accent" id="msg-leads">— leads</span> and the system pays for itself every month. That is a <span class="accent" id="msg-rate">—</span> to break even.
-            </div>
-            <div class="results-cta">
-              <a class="btn btn-green" href="#apply" style="font-size:16px;padding:15px 36px" data-i18n-html="calc_results_btn">
-                Apply for the 250-Lead Test &rarr;
-              </a>
-              <div class="results-note" data-i18n="calc_results_note">Free to apply — takes under 90 seconds.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 5: THE PILOT -->
-  <section class="sticky-section" id="pilot">
-    <div class="sticky-section-header">
-      <div class="ssh-inner">
-        <h2 class="ssh-title" data-i18n="ssh5_title">The 250-Lead Test Campaign</h2>
-        <span class="ssh-num" data-i18n-html="ssh5_num">05 &mdash; The Offer</span>
-      </div>
-    </div>
-    <div class="sticky-section-content">
-      <div class="rv">
-        <div class="label" data-i18n="pilot_label">The Pilot Campaign</div>
-        <h2 class="h2" data-i18n-html="pilot_h2">A controlled test with your actual leads.<br>Not a demo. <span class="grad">Real results.</span></h2>
-        <p class="sub" data-i18n="pilot_sub">We run the AI Sales Bot against 250 of your leads to measure contact rate, qualified conversations, and booked meetings — before you commit to anything larger.</p>
-      </div>
-
-      <div class="ogrid">
-        <div class="oc get rv d1">
-          <div class="oct" data-i18n-html="pilot_inc_label">&#10003;&ensp;What's Included</div>
-          <ul class="olist">
-            <li data-i="&rarr;" data-i18n="pilot_inc_1">Lead source review &amp; qualification criteria alignment</li>
-            <li data-i="&rarr;" data-i18n="pilot_inc_2">AI call flow &amp; script setup — built around your offer</li>
-            <li data-i="&rarr;" data-i18n="pilot_inc_3">Follow-up sequence configuration (5 attempts per lead)</li>
-            <li data-i="&rarr;" data-i18n="pilot_inc_4">Outreach to the first 250 leads in your pipeline</li>
-            <li data-i="&rarr;" data-i18n="pilot_inc_5">Live transfer or booking handoff for qualified prospects</li>
-            <li data-i="&rarr;" data-i18n="pilot_inc_6">End-of-test review: results, patterns, and scale assessment</li>
-          </ul>
-        </div>
-        <div class="oc protect rv d2">
-          <div class="oct" data-i18n-html="pilot_mea_label">&#128202;&ensp;What Gets Measured</div>
-          <ul class="olist">
-            <li data-i="&rarr;" data-i18n="pilot_mea_1">Contact rate (how many leads actually picked up)</li>
-            <li data-i="&rarr;" data-i18n="pilot_mea_2">Response speed vs. industry baseline</li>
-            <li data-i="&rarr;" data-i18n="pilot_mea_3">Qualified conversations generated</li>
-            <li data-i="&rarr;" data-i18n="pilot_mea_4">Booked meetings &amp; live transfers</li>
-            <li data-i="&rarr;" data-i18n="pilot_mea_5">Objection patterns and drop-off points</li>
-            <li data-i="&rarr;" data-i18n="pilot_mea_6">Whether the economics support scaling</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="fit-grid rv" style="margin-top:48px">
-        <div class="fit-card good">
-          <div class="fit-card-label" data-i18n-html="pilot_good_label">&#10003;&ensp;Good Fit</div>
-          <ul>
-            <li data-m="&#10003;" data-i18n="pilot_good_1">Running paid ads or generating consistent inbound</li>
-            <li data-m="&#10003;" data-i18n="pilot_good_2">At least 250 leads ready now — or enough monthly volume</li>
-            <li data-m="&#10003;" data-i18n="pilot_good_3">Average deal value that justifies automation economics</li>
-            <li data-m="&#10003;" data-i18n="pilot_good_4">Someone on the team who can close qualified appointments</li>
-            <li data-m="&#10003;" data-i18n="pilot_good_5">Real offer with a defined sales process</li>
-          </ul>
-        </div>
-        <div class="fit-card bad">
-          <div class="fit-card-label" data-i18n-html="pilot_bad_label">&#10007;&ensp;Not a Fit</div>
-          <ul>
-            <li data-m="&#10007;" data-i18n="pilot_bad_1">No active lead flow — you need to generate leads first</li>
-            <li data-m="&#10007;" data-i18n="pilot_bad_2">No one to close after a lead is qualified</li>
-            <li data-m="&#10007;" data-i18n="pilot_bad_3">Very low deal value where automation economics don't work</li>
-            <li data-m="&#10007;" data-i18n="pilot_bad_4">No defined sales offer or unclear qualification criteria</li>
-            <li data-m="&#10007;" data-i18n="pilot_bad_5">Looking for a generic free consultation, not a structured test</li>
-          </ul>
-        </div>
-      </div>
-
-      <div style="text-align:center;margin-top:52px" class="rv">
-        <a class="btn btn-p" href="#apply" style="font-size:16px;padding:16px 36px" data-i18n-html="pilot_cta_btn">Apply for the 250-Lead Test &rarr;</a>
-        <p style="font-size:13px;color:var(--muted);margin-top:16px" data-i18n="pilot_cta_note">We review every application. Not everyone gets in. That's the point.</p>
-      </div>
-    </div>
-  </section>
-
-</div>
-<!-- ===== END STICKY SECTIONS ===== -->
-
-<!-- IMAGE BREAK -->
-<div class="img-break">
-  <img class="img-break-img" src="images/hero-mockup.png" alt="AI Sales Bot — Live Interface" />
-  <div class="img-break-label rv">
-    <span class="img-break-dot"></span>
-    <span data-i18n-html="imgbreak_label">AI Sales Bot &mdash; Live</span>
-  </div>
-</div>
-
-<!-- APPLICATION SECTION -->
-<section id="apply">
-  <div class="container tc">
-    <div class="rv">
-      <div class="label" data-i18n="apply_label">Apply Now</div>
-      <h2 class="h2" data-i18n-html="apply_h2">Let the Bot Call You.<br><span class="grad">Experience the Product Live.</span></h2>
-      <p class="sub" style="margin:0 auto" data-i18n="apply_sub">Enter your number. The same AI Sales Bot we build for clients calls you in under 5 minutes, qualifies your business live, and books the planning call if you're a fit.</p>
-      <p style="font-size:14px;font-weight:600;color:var(--green);margin-top:12px" data-i18n-html="apply_highlight">This is the product &mdash; working on you, in real time.</p>
-    </div>
-  </div>
-
-  <!-- BOT CALL FORM -->
-  <div class="container" style="margin-top:48px">
-    <div class="qual-form-wrap">
-
-      <div id="qfb-state-form">
-        <form id="bot-call-form" novalidate>
-          <div class="qf-fields">
-
-            <div class="qf-field rv d1">
-              <label for="bot-name"><span data-i18n="botf_q1_label">First name</span> <span style="color:var(--muted);font-weight:400;font-size:13px" data-i18n="botf_q1_opt">(optional)</span></label>
-              <input type="text" id="bot-name" name="name" class="qf-input" placeholder="Your first name" autocomplete="given-name" />
-            </div>
-
-            <div class="qf-field rv d2">
-              <label for="bot-email"><span data-i18n="botf_email_label">Email</span> <span style="color:rgba(255,110,110,.9)">*</span></label>
-              <input type="email" id="bot-email" name="email" class="qf-input" placeholder="you@company.com" required autocomplete="email" />
-            </div>
-
-            <div class="qf-field rv d3">
-              <label for="bot-phone"><span data-i18n="botf_q2_label">Phone number</span> <span style="color:rgba(255,110,110,.9)">*</span></label>
-              <input type="tel" id="bot-phone" name="phone" class="qf-input" placeholder="+1 (555) 000-0000" required autocomplete="tel" />
-            </div>
-
-            <div class="qf-field rv d4">
-              <label for="bot-biz" data-i18n="botf_biz_label">Tell us about your business</label>
-              <textarea id="bot-biz" name="business_info" class="qf-input" rows="4" placeholder="What's your main challenge with lead follow-up? What industry are you in? Anything that helps us understand your situation." style="resize:vertical;min-height:110px"></textarea>
-            </div>
-
-          </div>
-          <div class="qf-submit rv">
-            <button type="submit" class="btn btn-green qf-submit-btn" data-i18n-html="botf_submit_btn">Call Me in Under 5 Minutes &rarr;</button>
-            <p class="qf-note" data-i18n="botf_submit_note">The AI Sales Bot will call this number. If you're a fit, it books your planning call on the spot. No rep involved.</p>
-          </div>
-        </form>
-      </div>
-
-      <!-- BOT CALL CONFIRMED -->
-      <div id="qfb-state-confirmed" style="display:none">
-        <div class="qf-result qualified">
-          <div class="qf-result-badge" data-i18n="botf_conf_badge">&#10003; Request Received</div>
-          <h3 data-i18n="botf_conf_h3">The bot is calling you now.</h3>
-          <p data-i18n-html="botf_conf_p1">The same AI Sales Bot we configure for clients is dialing <strong id="bot-phone-display" style="color:var(--white)">your number</strong> right now. It will qualify your business and &mdash; if you're a fit &mdash; offer to book your 250-Lead Test Planning Call on the spot.</p>
-          <p style="color:rgba(255,255,255,.5);font-size:14px" data-i18n="botf_conf_p2">This is the product, working on you, in real time. Pick up.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-</section>
-
-<!-- CLOSE -->
-<section id="close">
+<!-- THE PROBLEM -->
+<section id="problem" class="section section-alt">
   <div class="container">
-    <h2 class="close-h rv" data-i18n-html="close_h">
-      Before you spend more on ads,<br>prove you can convert<br>the leads <span class="grad">you already have.</span>
-    </h2>
-    <p class="close-sub rv" data-i18n="close_sub">
-      The 250-Lead Test is designed to answer one question: does AI calling work for your specific lead source, offer, and deal economics? Run the test. Get the data. Then decide.
-    </p>
-    <div class="close-ctas rv">
-      <a class="btn btn-p" href="#apply" style="font-size:16px;padding:16px 36px" data-i18n-html="close_cta">
-        Apply for the 250-Lead Test &rarr;
-      </a>
-      <a class="btn btn-g" href="tel:+18646148986" style="font-size:16px;padding:16px 36px">
-        &#128222;&ensp;+1 (864) 614 8986
-      </a>
+    <span class="section-label rv">The Problem</span>
+    <h2 class="section-h2 rv d1">Most businesses don't have a lead problem.<br>They have a follow-up problem.</h2>
+    <p class="section-sub rv d2">You pay for ads. Someone fills out a form. Then the lead waits — and by the time your team calls, the moment is gone.</p>
+    <div class="problem-grid rv d3">
+      <div class="prob-card">
+        <div class="prob-num">01</div>
+        <div class="prob-icon">⏱️</div>
+        <h3>Lead comes in</h3>
+        <p>The moment a lead submits, the clock starts. Every minute that passes cuts your chances of a real conversation in half.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-num">02</div>
+        <div class="prob-icon">📋</div>
+        <h3>Rep is busy</h3>
+        <p>Your best people are chasing old leads, handling other tasks, or simply not available. The new lead waits. Nobody follows up enough.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-num">03</div>
+        <div class="prob-icon">❌</div>
+        <h3>Moment is gone</h3>
+        <p>That's not a sales problem. That's an operations leak. You're not losing deals to bad leads — you're losing them to bad timing.</p>
+      </div>
     </div>
-    <div class="ps rv" data-i18n-html="close_ps">
-      <strong>P.S.</strong>&ensp;The AI Sales Bot doesn't replace your closers. It removes everything that happens before a closer should ever be on the phone. The more repetitive work the bot absorbs, the more high-value time your team gets back.
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="section">
+  <div class="container">
+    <span class="section-label rv">What PTS AI Does</span>
+    <h2 class="section-h2 rv d1">The bot does not replace your sales team.<br>It protects their time.</h2>
+    <p class="section-sub rv d2">When a lead comes in, the AI Sales Bot takes over immediately — so your closers only enter when the lead is warm, qualified, and expecting the call.</p>
+    <div class="how-grid">
+      <div class="how-card rv d1">
+        <div class="how-step">1</div>
+        <h3>Calls in under 5 minutes</h3>
+        <p>The bot calls the moment a lead submits — regardless of the time of day. No delays, no missed windows.</p>
+      </div>
+      <div class="how-card rv d2">
+        <div class="how-step">2</div>
+        <h3>Follows up 5 times</h3>
+        <p>No answer? The bot follows up automatically — 5 attempts, spaced strategically. No lead dies because a rep was busy.</p>
+      </div>
+      <div class="how-card rv d3">
+        <div class="how-step">3</div>
+        <h3>Qualifies the lead</h3>
+        <p>When connected, the bot runs through a defined framework. It filters who's worth your closer's time — and who isn't.</p>
+      </div>
+      <div class="how-card rv d4">
+        <div class="how-step">4</div>
+        <h3>Books or transfers</h3>
+        <p>Qualified leads get transferred live or booked for a callback. Your closer walks in already warmed up.</p>
+      </div>
+      <div class="how-card rv d5">
+        <div class="how-step">5</div>
+        <h3>Logs every outcome</h3>
+        <p>Every call, objection, and booking is logged. You see what's working and what to fix — in real time.</p>
+      </div>
+      <div class="how-card rv d6">
+        <div class="how-step">6</div>
+        <h3>Your team stays focused</h3>
+        <p>Your closers stop chasing. They spend their time with people who are actually ready to talk.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORE LINE -->
+<section id="coreline">
+  <div class="container" style="text-align:center">
+    <span class="section-label">Before You Buy More Leads</span>
+    <h2>Stop buying more leads until you know what happens<br>to the ones you <em>already paid for.</em></h2>
+    <a href="#apply" class="btn-primary">Run the 250-Lead Test &rarr;</a>
+  </div>
+</section>
+
+<!-- THE OFFER -->
+<section id="offer" class="section">
+  <div class="container">
+    <span class="section-label rv">The Offer</span>
+    <h2 class="section-h2 rv d1">The 250-Lead Test</h2>
+    <p class="section-sub rv d2">We run PTS AI on 250 of your real leads and measure what actually happens. No hype. No guessing. Just data.</p>
+    <div class="offer-grid rv d3">
+      <div class="offer-box">
+        <div class="offer-box-title">✓ What's Included</div>
+        <ul class="offer-list">
+          <li>Lead source review &amp; qualification criteria setup</li>
+          <li>AI call flow built around your offer</li>
+          <li>5-attempt follow-up sequence per lead</li>
+          <li>Outreach to your first 250 leads</li>
+          <li>Live transfer or booking handoff</li>
+          <li>End-of-test review: results and next steps</li>
+        </ul>
+      </div>
+      <div class="offer-box">
+        <div class="offer-box-title">📊 What Gets Measured</div>
+        <ul class="offer-list">
+          <li>Contact rate — how many leads picked up</li>
+          <li>Qualified conversations generated</li>
+          <li>Booked meetings and live transfers</li>
+          <li>Objection patterns and drop-off points</li>
+          <li>Response speed vs. industry baseline</li>
+          <li>Whether the numbers justify scaling</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FIT CHECK -->
+<section id="fit" class="section section-alt">
+  <div class="container">
+    <span class="section-label rv">Is This For You?</span>
+    <h2 class="section-h2 rv d1">Not for everyone.<br>That's the point.</h2>
+    <div class="fit-grid rv d2">
+      <div class="fit-box fit-good">
+        <div class="fit-label">✓ Good Fit</div>
+        <ul class="fit-list">
+          <li>Paid ads or inbound leads already running</li>
+          <li>250+ leads available to call now</li>
+          <li>A real offer with real deal value</li>
+          <li>Someone who can close</li>
+          <li>You want data, not a pitch</li>
+        </ul>
+      </div>
+      <div class="fit-box fit-bad">
+        <div class="fit-label">✗ Not a Fit</div>
+        <ul class="fit-list">
+          <li>You don't have leads yet</li>
+          <li>You don't have someone to close</li>
+          <li>Your offer is unclear</li>
+          <li>Your deal value is too low</li>
+          <li>You want a free consultation, not a real test</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLY -->
+<section id="apply">
+  <div class="container">
+    <span class="section-label rv">Apply Now</span>
+    <h2 class="section-h2 rv d1">Run the 250-Lead Test.<br>Get the numbers. Then decide.</h2>
+    <p class="section-sub rv d2" style="margin: 0 auto;">We review every application. Not everyone gets in. Fill out the form and we'll be in touch within 24 hours.</p>
+    <div class="apply-card rv d3" id="apply-card">
+      <div id="apply-form-wrap">
+        <label for="af-name">Full Name *</label>
+        <input type="text" id="af-name" placeholder="John Smith" required />
+
+        <label for="af-email">Email *</label>
+        <input type="email" id="af-email" placeholder="you@company.com" required />
+
+        <label for="af-phone">Phone *</label>
+        <input type="tel" id="af-phone" placeholder="+1 555 000 0000" required />
+
+        <label for="af-industry">Industry *</label>
+        <select id="af-industry" required>
+          <option value="">Select your industry...</option>
+          <option>Real Estate</option>
+          <option>Insurance</option>
+          <option>Mortgage / Finance</option>
+          <option>Home Services / Contractors</option>
+          <option>Auto / Dealerships</option>
+          <option>SaaS / Tech</option>
+          <option>B2B Services / Consulting</option>
+          <option>Healthcare / Med Spa</option>
+          <option>Other</option>
+        </select>
+
+        <label for="af-leads">Monthly lead volume *</label>
+        <select id="af-leads" required>
+          <option value="">Select a range...</option>
+          <option>Under 100</option>
+          <option>100 – 250</option>
+          <option>250 – 500</option>
+          <option>500+</option>
+        </select>
+
+        <label for="af-deal">Average deal value *</label>
+        <select id="af-deal" required>
+          <option value="">Select a range...</option>
+          <option>Under $500</option>
+          <option>$500 – $1,000</option>
+          <option>$1,000 – $2,500</option>
+          <option>$2,500 – $5,000</option>
+          <option>$5,000+</option>
+        </select>
+
+        <button type="button" class="apply-submit" id="apply-btn" onclick="submitApplication()">Apply for the 250-Lead Test &rarr;</button>
+        <p class="apply-note">Free to apply &mdash; takes under 2 minutes.</p>
+      </div>
+      <div id="apply-success" class="apply-success" style="display:none">
+        <div style="font-size:48px;margin-bottom:16px">✅</div>
+        <h3>Application received.</h3>
+        <p>We'll review your details and reach out within 24 hours to confirm next steps.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="fi">
-    <a class="flogo" href="#hero">
-      <img src="images/loophub-logo.png" alt="LoopHub" />
-    </a>
-    <div class="flinks">
-      <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a>
-      <a href="tel:+18646148986">+1 (864) 614 8986</a>
-      <a href="https://cal.com/loophub-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener" data-i18n="footer_book">Book a Call</a>
-      <a href="/privacy-policy" data-i18n="footer_privacy">Privacy Policy</a>
-    </div>
-    <span class="fcopy">&copy; 2026 LoopHub Solutions</span>
+  <div class="nav-logo-text">PTS<span style="color:var(--orange)">.</span>AI</div>
+  <div class="footer-links">
+    <a href="mailto:contact@pts.ai">contact@pts.ai</a>
+    <a href="https://cal.com/pts-kickoff-meeting/discoverymeeting" target="_blank" rel="noopener">Book a Call</a>
+    <a href="/privacy-policy">Privacy Policy</a>
   </div>
+  <p class="footer-copy">&copy; 2026 PTS AI. All rights reserved.</p>
 </footer>
 
-<!-- ===== SCRIPTS ===== -->
-
 <script>
-/* ── HERO COUNTDOWN ── */
-(function() {
-  var start = 8;
-  var n = start;
-  function tick() {
-    var el = document.getElementById('hero-countdown');
-    if (!el) return;
-    n--;
-    if (n < 1) n = start;
-    el.textContent = n;
-  }
-  setInterval(tick, 1000);
-})();
-
-/* ── GLOW BORDER ── */
-(function () {
-  const TARGETS = '.pcard, .scard, .fit-card, .sb, .oc, .calc-wrap, .qf-result';
-  document.querySelectorAll(TARGETS).forEach(el => {
-    if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
-    const g = document.createElement('div');
-    g.className = 'glow-effect';
-    g.setAttribute('aria-hidden', 'true');
-    el.prepend(g);
-    el.addEventListener('mousemove', e => {
-      const r = el.getBoundingClientRect();
-      const deg = Math.atan2(e.clientY - r.top - r.height/2, e.clientX - r.left - r.width/2) * (180/Math.PI) + 90;
-      el.style.setProperty('--g-angle', deg.toFixed(1));
-      el.style.setProperty('--glow-opacity', '1');
-    }, { passive: true });
-    el.addEventListener('mouseleave', () => el.style.setProperty('--glow-opacity', '0'));
-  });
-})();
-
-/* ── NAV SCROLL ── */
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => nav.classList.toggle('sc', scrollY > 50), {passive:true});
-
-/* ── SCROLL REVEAL ── */
-const io = new IntersectionObserver(
-  entries => entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } }),
-  {threshold:.1, rootMargin:'0px 0px -40px 0px'}
-);
-document.querySelectorAll('.rv').forEach(el => io.observe(el));
-
-/* ── PRICING CALCULATOR ── */
-function techSetup(lines) {
-  if (lines <= 3)  return 123.53;
-  if (lines <= 6)  return 142.65;
-  if (lines <= 13) return 180.89;
-  if (lines <= 25) return 245.59;
-  if (lines <= 50) return 367.89;
-  if (lines <= 83) return 703.34;
-  return 948.44;
-}
-function firstMonthPrice(lines) { return ((lines * 194.90) + techSetup(lines)) * 1.5; }
-function ongoingPrice(lines)    { return lines === 1 ? 617.36 : 370.30 * lines; }
-const usd = (n) => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
-
-const dealInput   = document.getElementById('deal-input');
-const continueBtn = document.getElementById('continue-btn');
-const step2       = document.getElementById('step2');
-const resultsEl   = document.getElementById('results');
-const snum1       = document.getElementById('snum1');
-
-dealInput.addEventListener('input', () => {
-  const ok = parseFloat(dealInput.value) > 0;
-  continueBtn.disabled = !ok;
-  continueBtn.style.opacity = ok ? '1' : '.4';
-  continueBtn.style.cursor  = ok ? 'pointer' : 'not-allowed';
-});
-
-continueBtn.addEventListener('click', () => {
-  step2.classList.add('open');
-  snum1.textContent = '✓';
-  snum1.classList.add('done');
-  setTimeout(() => step2.scrollIntoView({behavior:'smooth', block:'nearest'}), 100);
-  updateCalc();
-  resultsEl.classList.add('open');
-});
-
-const slider    = document.getElementById('leads-slider');
-const leadsDisp = document.getElementById('leads-display');
-slider.addEventListener('input', () => {
-  leadsDisp.textContent = (+slider.value).toLocaleString('en-US');
-  if (!resultsEl.classList.contains('open')) resultsEl.classList.add('open');
-  updateCalc();
-});
-
-function updateCalc() {
-  var lang = window.__lhLang || 'en';
-  var contacts = +slider.value;
-  var dealSize = parseFloat(dealInput.value) || 5000;
-  var lines    = Math.ceil(contacts / 400);
-  var first    = firstMonthPrice(lines);
-  var ongoing  = ongoingPrice(lines);
-  var beDeals  = Math.ceil(ongoing / dealSize);
-  var beRate   = (beDeals / contacts) * 100;
-  var beRateStr = beRate < 1 ? beRate.toFixed(2) + '%' : beRate.toFixed(1) + '%';
-  var dealsS   = beDeals > 1 ? ' deals' : ' deal';
-  var linesS   = lines > 1 ? (lang === 'es' ? ' l\u00edneas' : ' lines') : (lang === 'es' ? ' l\u00ednea' : ' line');
-  var rateSuffix = lang === 'es' ? ' de tus leads' : ' of your leads';
-  var msgRateSuffix = lang === 'es' ? ' de tasa de cierre' : ' close rate';
-
-  document.getElementById('r-first').textContent   = usd(first);
-  document.getElementById('r-ongoing').textContent = usd(ongoing);
-  document.getElementById('r-lines').textContent   = lines + linesS + ' \u00B7 ' + (lines*2000).toLocaleString() + ' calls/mo';
-  document.getElementById('r-be').textContent      = beDeals + dealsS;
-  document.getElementById('r-rate').textContent    = beRateStr + rateSuffix;
-  document.getElementById('msg-be').textContent    = beDeals + dealsS;
-  document.getElementById('msg-leads').textContent = contacts.toLocaleString('en-US') + ' leads';
-  document.getElementById('msg-rate').textContent  = beRateStr + msgRateSuffix;
-  leadsDisp.textContent = contacts.toLocaleString('en-US');
-}
-window.updateCalc = updateCalc;
-</script>
-
-<script>
-/* ── STICKY HEADERS: HORIZONTAL STORYBRAND PROGRESS BAR ──
-   Single fixed row, always 40px, showing all 6 steps simultaneously.
-   Past = ✓ green, Active = purple underline, Future = dim. */
-
-var BAR_H = 40; // height of the single horizontal progress bar
-
-function updateStickyHeaders() {
-  var navEl    = document.getElementById('nav');
-  var navH     = navEl ? navEl.offsetHeight : 64;
-  var sections = Array.prototype.slice.call(document.querySelectorAll('.sticky-section'));
-  var pills    = Array.prototype.slice.call(document.querySelectorAll('#sticky-past-stack .ssh-pill'));
-  var stack    = document.getElementById('sticky-past-stack');
-  var scrollY  = window.pageYOffset || document.documentElement.scrollTop;
-
-  if (!sections.length) return;
-
-  // Position bar immediately below nav
-  if (stack) stack.style.top = navH + 'px';
-
-  var barOffset  = navH + BAR_H;
-  var anyInRange = false;
-
-  sections.forEach(function(section, i) {
-    var absTop    = section.offsetTop;
-    var absBottom = section.offsetTop + section.offsetHeight;
-
-    // Show the bar once user is within 120px of entering the first sticky section
-    if (absTop <= scrollY + navH + 120) anyInRange = true;
-
-    var isPast   = absBottom < scrollY + barOffset + 2;
-    var isActive = !isPast && absTop <= scrollY + barOffset + 60;
-
-    if (pills[i]) {
-      pills[i].classList.toggle('ssh-pill-past',   isPast);
-      pills[i].classList.toggle('ssh-pill-active',  isActive && !isPast);
-      pills[i].classList.toggle('ssh-pill-future',  !isPast && !isActive);
-    }
-
-    // All section headers sit at the same fixed offset (nav + bar)
-    var header = section.querySelector('.sticky-section-header');
-    if (header) {
-      header.style.top = (barOffset - 1) + 'px';
-      header.classList.toggle('ssh-active', isActive);
-      header.classList.toggle('ssh-past',   isPast);
-    }
+  // Nav scroll effect
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('sc', window.scrollY > 40);
   });
 
-  // Show/hide the bar itself
-  if (stack) stack.classList.toggle('bar-visible', anyInRange);
-}
+  // Reveal on scroll
+  var observers = document.querySelectorAll('.rv');
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  observers.forEach(function(el) { io.observe(el); });
 
-// Click on a pill → scroll back to that section
-document.querySelectorAll('#sticky-past-stack .ssh-pill').forEach(function(pill) {
-  pill.addEventListener('click', function() {
-    var targetId = pill.getAttribute('data-target');
-    var target = document.getElementById(targetId);
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
+  // Application form
+  var WEBHOOK = 'https://n8n.pts-automation.cloud/webhook/1a42eb24-2db5-45c0-a56b-73a2d5a03cfb';
 
-// Click on a past sticky header → scroll back to that section
-document.querySelectorAll('.sticky-section-header').forEach(function(h) {
-  h.addEventListener('click', function() {
-    if (!h.classList.contains('ssh-past')) return;
-    var section = h.closest ? h.closest('.sticky-section') : h.parentElement;
-    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
+  function submitApplication() {
+    var name     = document.getElementById('af-name').value.trim();
+    var email    = document.getElementById('af-email').value.trim();
+    var phone    = document.getElementById('af-phone').value.trim();
+    var industry = document.getElementById('af-industry').value;
+    var leads    = document.getElementById('af-leads').value;
+    var deal     = document.getElementById('af-deal').value;
 
-updateStickyHeaders();
-window.addEventListener('scroll', updateStickyHeaders, { passive: true });
-window.addEventListener('load',   updateStickyHeaders);
-window.addEventListener('resize', updateStickyHeaders);
-
-/* ── APPLY PATH SELECTOR ── */
-// Configure: set your n8n webhook URLs here
-var OPTION_A_WEBHOOK = 'https://n8n.pts-automation.cloud/webhook/1a42eb24-2db5-45c0-a56b-73a2d5a03cfb';
-var OPTION_B_WEBHOOK = 'https://n8n.pts-automation.cloud/webhook/a67e9f28-606d-4440-ae7f-0e0ed3fd32bd';
-
-function selectApplyPath(path) {
-  var formA   = document.getElementById('apply-form-a');
-  var formB   = document.getElementById('apply-form-b');
-  var formBCt = document.getElementById('apply-form-b-container');
-  var cardA   = document.getElementById('path-card-a');
-  var cardB   = document.getElementById('path-card-b');
-
-  // Reset active states
-  cardA.classList.remove('active');
-  cardB.classList.remove('active');
-
-  if (path === 'a') {
-    formA.style.display = 'block';
-    formB.style.display = 'none';
-    if (formBCt) formBCt.style.display = 'none';
-    cardA.classList.add('active');
-    setTimeout(function(){ formA.scrollIntoView({behavior:'smooth', block:'start'}); }, 60);
-    window.addLeadPoints && addLeadPoints('path_a_selected', 5);
-  } else {
-    formA.style.display = 'none';
-    formB.style.display = 'block';
-    if (formBCt) formBCt.style.display = 'block';
-    cardB.classList.add('active');
-    setTimeout(function(){ formB.scrollIntoView({behavior:'smooth', block:'start'}); }, 60);
-    window.addLeadPoints && addLeadPoints('path_b_selected', 10);
-    if (window.gtag) gtag('event', 'bot_call_path_selected');
-  }
-}
-
-/* ── BOT CALL FORM ── */
-var botCallForm = document.getElementById('bot-call-form');
-if (botCallForm) {
-  botCallForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    var phoneEl = document.getElementById('bot-phone');
-    var phone   = phoneEl ? phoneEl.value.trim() : '';
-    var name    = (document.getElementById('bot-name') || {}).value || '';
-    var time    = (document.getElementById('bot-time') || {}).value || 'now';
-
-    if (!phone) {
-      if (phoneEl) phoneEl.style.borderColor = 'rgba(255,100,100,.5)';
+    if (!name || !email || !phone || !industry || !leads || !deal) {
+      alert('Please fill in all fields.');
       return;
     }
 
-    // Show confirmed phone number in success message
-    var displayEl = document.getElementById('bot-phone-display');
-    if (displayEl) displayEl.textContent = phone;
+    var btn = document.getElementById('apply-btn');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
 
-    // Fire webhook to n8n → triggers Atlas call + follow-up sequence
-    if (OPTION_B_WEBHOOK) {
-      fetch(OPTION_B_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          source: 'loophub_option_b_bot_call',
-          name: name,
-          phone: phone,
-          best_time: time,
-          timestamp: new Date().toISOString()
-        })
-      }).catch(function(){});
-    }
-
-    // Track
-    window.addLeadPoints && addLeadPoints('bot_call_requested', 25);
-    if (window.gtag) gtag('event', 'bot_call_requested', { phone_provided: true });
-    if (window.fbq) fbq('track', 'Lead', { content_name: 'bot_call_request' });
-
-    // Swap form → confirmation
-    document.getElementById('qfb-state-form').style.display = 'none';
-    document.getElementById('qfb-state-confirmed').style.display = 'block';
-    document.getElementById('qfb-state-confirmed').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-}
-
-/* ── QUALIFICATION FORM LOGIC ── */
-
-// Thresholds — adjust as needed
-var QUAL_CONFIG = {
-  THRESHOLD: 7,
-  POINTS: {
-    running_ads_yes:      3,
-    monthly_250to500:     2,
-    monthly_500plus:      3,
-    leads_ready_yes:      3,
-    leads_ready_consistent: 1,
-    deal_1000to2500:      1,
-    deal_2500to5000:      2,
-    deal_5000plus:        3,
-    has_closer:           2
-  }
-};
-
-function calcFitScore(fd) {
-  var s = 0;
-  if (fd.get('running_ads') === 'yes') s += QUAL_CONFIG.POINTS.running_ads_yes;
-  var ml = fd.get('monthly_leads');
-  if (ml === '250to500') s += QUAL_CONFIG.POINTS.monthly_250to500;
-  if (ml === '500plus')  s += QUAL_CONFIG.POINTS.monthly_500plus;
-  var lr = fd.get('leads_ready');
-  if (lr === 'yes')        s += QUAL_CONFIG.POINTS.leads_ready_yes;
-  if (lr === 'consistent') s += QUAL_CONFIG.POINTS.leads_ready_consistent;
-  var dv = fd.get('deal_value');
-  if (dv === '1000to2500') s += QUAL_CONFIG.POINTS.deal_1000to2500;
-  if (dv === '2500to5000') s += QUAL_CONFIG.POINTS.deal_2500to5000;
-  if (dv === '5000plus')   s += QUAL_CONFIG.POINTS.deal_5000plus;
-  var hc = fd.get('has_closer');
-  if (hc === 'owner' || hc === 'sales_team' || hc === 'single_rep') s += QUAL_CONFIG.POINTS.has_closer;
-  return s;
-}
-
-document.getElementById('qual-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  // Basic validation: check all selects have a value
-  var selects = this.querySelectorAll('select[required]');
-  var valid = true;
-  selects.forEach(function(sel) {
-    if (!sel.value) { sel.style.borderColor = 'rgba(255,100,100,.5)'; valid = false; }
-    else             { sel.style.borderColor = ''; }
-  });
-  // Check radios
-  ['running_ads','leads_ready'].forEach(function(name) {
-    var checked = document.querySelector('input[name="'+name+'"]:checked');
-    if (!checked) {
-      var grp = document.querySelector('[data-radio="'+name+'"]');
-      if (grp) grp.style.outline = '1px solid rgba(255,100,100,.4)';
-      valid = false;
-    }
-  });
-  if (!valid) return;
-
-  var fd = new FormData(this);
-  var score = calcFitScore(fd);
-  var qualified = score >= QUAL_CONFIG.THRESHOLD;
-
-  // Fire webhook to n8n → saves to Google Sheets + triggers SMS/follow-up sequence
-  if (OPTION_A_WEBHOOK) {
-    fetch(OPTION_A_WEBHOOK, {
+    fetch(WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        source: 'loophub_option_a',
-        industry: fd.get('industry') || '',
-        running_ads: fd.get('running_ads') || '',
-        monthly_leads: fd.get('monthly_leads') || '',
-        leads_ready: fd.get('leads_ready') || '',
-        deal_value: fd.get('deal_value') || '',
-        has_closer: fd.get('has_closer') || '',
-        score: score,
-        qualified: qualified,
-        timestamp: new Date().toISOString()
-      })
-    }).catch(function(){});
-  }
-
-  document.getElementById('qf-state-form').style.display = 'none';
-
-  if (qualified) {
-    document.getElementById('qf-state-qualified').style.display = 'block';
-    window.addLeadPoints && addLeadPoints('form_qualified', 20);
-    if (window.gtag) gtag('event', 'qualification_completed', { qualified: true, fit_score: score });
-    document.getElementById('qf-state-qualified').scrollIntoView({behavior:'smooth', block:'start'});
-  } else {
-    document.getElementById('qf-state-rejected').style.display = 'block';
-    window.addLeadPoints && addLeadPoints('form_not_qualified', 5);
-    if (window.gtag) gtag('event', 'qualification_completed', { qualified: false, fit_score: score });
-    document.getElementById('qf-state-rejected').scrollIntoView({behavior:'smooth', block:'start'});
-  }
-});
-</script>
-
-<!-- =========================================================
-     LEAD SCORING SYSTEM
-     0–9  → Cold | 10–24 → Warm | 25–44 → Hot | 45+ → 🔥
-========================================================= -->
-<script>
-(function () {
-  var score = 0;
-  var tier  = 'cold';
-  var fired = {};
-
-  function calcTier(s) {
-    if (s >= 45) return '🔥 Muy caliente (45+)';
-    if (s >= 25) return '🟠 Hot (25-44)';
-    if (s >= 10) return '🟡 Warm (10-24)';
-    return '🔵 Cold (0-9)';
-  }
-
-  function addPoints(action, pts) {
-    if (fired[action]) return;
-    fired[action] = true;
-    score += pts;
-    tier = calcTier(score);
-    if (window.gtag) {
-      gtag('event', 'lead_score', { 'score_action': action, 'points_added': pts, 'total_score': score, 'lead_tier': tier });
-    }
-    syncTawk();
-    console.log('[LoopHub Score] ' + action + ': +' + pts + 'pts → ' + score + ' | ' + tier);
-  }
-
-  // Expose for external use (qualification form, etc.)
-  window.addLeadPoints = addPoints;
-
-  function syncTawk() {
-    if (window.Tawk_API && window.Tawk_API.setAttributes) {
-      Tawk_API.setAttributes({ 'lead_score': String(score), 'lead_tier': tier }, function(){});
-    }
-  }
-  window.__lhScore = function () { return { score: score, tier: tier }; };
-
-  addPoints('page_loaded', 1);
-
-  // Scroll depth
-  var scrollMilestones = { 25: 2, 50: 3, 75: 4, 90: 5 };
-  window.addEventListener('scroll', function () {
-    var pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-    Object.keys(scrollMilestones).forEach(function (m) {
-      if (pct >= +m) addPoints('scroll_' + m + 'pct', scrollMilestones[m]);
-    });
-  }, { passive: true });
-
-  // Section visibility
-  var sectionPts = { 'leak': 2, 'gap-section': 3, 'mechanism': 3, 'economics': 4, 'pilot': 5, 'apply': 5, 'close': 4 };
-  if (window.IntersectionObserver) {
-    var secObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting && sectionPts[e.target.id]) {
-          addPoints('viewed_' + e.target.id, sectionPts[e.target.id]);
-          secObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.3 });
-    Object.keys(sectionPts).forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) secObs.observe(el);
+      body: JSON.stringify({ name: name, email: email, phone: phone, industry: industry, monthly_leads: leads, deal_value: deal, source: 'pts_ai_landing' })
+    })
+    .then(function() {
+      document.getElementById('apply-form-wrap').style.display = 'none';
+      document.getElementById('apply-success').style.display = 'block';
+      if (typeof fbq !== 'undefined') fbq('track', 'Lead');
+      if (typeof gtag !== 'undefined') gtag('event', 'generate_lead');
+    })
+    .catch(function() {
+      document.getElementById('apply-form-wrap').style.display = 'none';
+      document.getElementById('apply-success').style.display = 'block';
     });
   }
-
-  // Calculator interactions
-  var contBtn = document.getElementById('continue-btn');
-  if (contBtn) contBtn.addEventListener('click', function () { addPoints('calculator_step1_done', 8); });
-  var slider = document.getElementById('leads-slider');
-  if (slider) slider.addEventListener('change', function () { addPoints('calculator_completed', 15); });
-
-  // CTA clicks
-  document.querySelectorAll('a[href*="cal.com"], a[href="#apply"]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      addPoints('cta_clicked', 20);
-      if (window.gtag) gtag('event', 'conversion', { 'event_category': 'engagement', 'event_label': 'apply_cta' });
-    });
-  });
-
-  // Time on page
-  setTimeout(function () { addPoints('time_30s',  3); },  30000);
-  setTimeout(function () { addPoints('time_2min', 5); }, 120000);
-  setTimeout(function () { addPoints('time_5min', 8); }, 300000);
-})();
-</script>
-
-<!-- =========================================================
-     BILINGUAL i18n — EN ↔ ES (nav / shared elements)
-========================================================= -->
-<script>
-var _LH_I18N = {
-  en: {
-    nav_how: 'How It Works',
-    nav_math: 'The Math',
-    nav_campaign: 'The Campaign',
-    nav_apply: 'Apply',
-    nav_cta: 'Apply for the Test \u2192',
-    // Hero
-    hero_badge: 'STOP LOSING LEADS YOU ALREADY PAID FOR',
-    hero_h1: '<span class="hero-line1">Your Leads Go Cold in 5 Minutes.</span><span class="hero-dash">\u2014</span><span class="hero-line2">We Call Them in <span class="grad hero-countdown" id="hero-countdown">8</span> Sec.</span>',
-    hero_sub: 'The bot calls in under 5 minutes, follows up 5 times, and qualifies each lead \u2014 so your team only speaks with prospects who are ready. Apply for the 250-Lead Test Campaign.',
-    // Phone mockup
-    hp_label_0:'New Lead', hp_row_name:'Name: John Martinez', hp_row_phone:'Phone: +1 803 555-0147', hp_row_source:'Source: Website Form', hp_row_time:'Time: Just now', hp_call_btn:'\u23f1 Calling in 8 seconds...',
-    hp_label_1:'Live Transcript', hp_bubble_bot:'Hi John! This is Tommy from LoopHub. I see you just requested info \u2014 do you have 2 minutes?', hp_bubble_user:'Yeah, sure! I was just looking at your website...',
-    hp_label_2:'Appointment Booked', hp_cal_title:'\ud83d\udcc5 Thursday, April 10', hp_cal_name:'John Martinez \u00b7 Qualified Lead', hp_checks:'\u2705 CRM Updated<br>\u2705 Calendar invite sent<br>\u2705 Reminder set 24h before',
-    hp_status_0:'New lead detected', hp_status_1:'Calling now...', hp_status_2:'Call complete',
-    hp_badge_0:'READY', hp_badge_1:'LIVE', hp_badge_2:'DONE',
-    hp_chip1_title:'Form Submitted', hp_chip1_sub:'Tommy calling...', hp_chip2_title:'+78% conversions', hp_chip2_sub:'vs. 2-hr response',
-    hero_qs1: 'Active ad spend or consistent inbound',
-    hero_qs2: '250+ leads ready to call',
-    hero_qs3: 'Real deal value',
-    hero_qs4: 'Someone to close',
-    hero_cta1: 'Apply for the 250-Lead Test \u2192',
-    hero_cta2: 'See What\u2019s Included',
-    stat_leads: 'Min. Test Leads',
-    stat_deploy: 'To Deploy',
-    stat_followups: 'Follow-Ups / Lead',
-    stat_missed: 'Missed Contacts',
-    manifesto: 'Most businesses don\u2019t have a lead problem. <em>They have a conversion problem.</em>',
-    // Sticky pills
-    pill_01: 'The Problem',
-    pill_02: 'The Follow-Up Gap',
-    pill_03: 'Where Deals Die',
-    pill_04: 'How the Bot Works',
-    pill_05: 'The Math',
-    pill_06: 'The 250-Lead Test',
-    // Section 1: Leak
-    ssh1_title: 'Your Leads Are Going Cold Before Anyone Calls Them',
-    ssh1_num: '01 \u2014 The Problem',
-    leak_label: 'The Silent Revenue Killer',
-    leak_h2: 'You\u2019re paying for leads.<br>Most of them never get a real conversation.',
-    leak_sub: 'The average team takes 24\u201372 hours to make the first call. By then, the lead has moved on or gone cold.',
-    // Section 2B: Follow-up Gap
-    ssh2b_title: 'Most Teams Stop Too Early',
-    ssh2b_num: '02B \u2014 The Gap',
-    fug_heading: 'Most teams stop too early.<br>That\u2019s where deals die.',
-    fug_text: 'The problem usually isn\u2019t the lead. It\u2019s what happens after the form fill. Most teams follow up once or twice, then move on. But the data tells a different story.',
-    fug_source: 'According to <strong>Grant Cardone</strong> \u2014 one of the top sales authorities in the world:',
-    fug_caption: '<strong>80% of sales happen after the 5th contact.</strong> Yet 90% of reps stop before that.',
-    fug_transition: 'That\u2019s why the bot calls fast, follows up 5 times automatically, and keeps working the lead until there\u2019s a real outcome \u2014 not just a missed call.',
-    // Section 3: Mechanism
-    ssh3_title: 'How the AI Sales Bot Works',
-    ssh3_num: '03 \u2014 The Mechanism',
-    // Section 4: Economics
-    ssh4_title: 'The Economics',
-    ssh4_num: '04 \u2014 The Math',
-    econ_label: 'Capacity vs. Cost',
-    econ_h2: 'Before you buy more leads,<br>prove you can convert the ones you have.',
-    econ_sub: 'A fully-loaded SDR costs $9k\u2013$11k/month and reaches 250\u2013350 leads.',
-    calc_label: 'Run Your Numbers',
-    calc_h2: 'See how little you need to close to break even.',
-    calc_sub: 'Two inputs. Your break-even in seconds.',
-    // Section 5: Pilot
-    ssh5_title: 'The 250-Lead Test Campaign',
-    ssh5_num: '05 \u2014 The Offer',
-    pilot_label: 'The Pilot Campaign',
-    pilot_h2: 'A controlled test with your actual leads.<br>Not a demo. <span class="grad">Real results.</span>',
-    // Apply section
-    apply_label: 'Apply Now',
-    apply_h2: 'Two Ways to Find Out<br>If You Qualify',
-    apply_sub: 'Qualify yourself in 90 seconds with the form \u2014 or let the bot call you and experience the product live before you spend a dollar.',
-    apply_optA_badge: 'Option A',
-    apply_optA_title: 'Qualify Yourself',
-    apply_optA_desc: 'Answer 6 questions. Takes under 90 seconds. See your result instantly \u2014 and access the planning call link if you qualify.',
-    apply_optA_btn: 'Answer the Questions \u2192',
-    apply_optB_badge: 'Option B \u2014 Recommended',
-    apply_optB_title: 'Let the Bot Call You',
-    apply_optB_desc: 'Enter your number. The same AI Sales Bot we build for clients calls you in under 5 minutes, qualifies your business live, and books the planning call if you\u2019re a fit.',
-    apply_optB_highlight: 'This is the product \u2014 working on you, in real time.',
-    apply_optB_btn: 'Call Me Now \u2192',
-    // Close
-    close_h: 'Your leads are already coming in.<br>Make sure someone answers.',
-    close_sub: 'The 250-Lead Test Campaign is live. Apply now and deploy in 7 days.',
-    close_cta: 'Apply for the 250-Lead Test \u2192',
-    // Exit popup
-    exit_label: '\ud83d\udea8 WAIT!',
-    exit_title: 'Get the AI Sales Bot on a Call',
-    exit_sub: 'Don\u2019t leave empty-handed. Let Emma call you in the next 5 minutes.',
-    exit_name: 'Name *',
-    exit_email: 'Email *',
-    exit_phone: 'Phone *',
-    exit_btn: 'Call Me Right Now \u2192',
-    exit_guarantee: '\u2713 We\u2019ll call you in under 5 minutes',
-    exit_success_title: 'Perfect!',
-    exit_success_text: 'We\u2019re calling you in the next 5 minutes.',
-    exit_success_sub: 'Emma will walk you through a live demo of the AI Sales Bot.',
-    // Section 1: Leak cards
-    pcard1_h3: 'Speed kills \u2014 or saves \u2014 deals',
-    pcard1_p: 'The probability of converting a new lead drops dramatically after the first 5 minutes. Most teams don\u2019t respond in 5 minutes. They respond in hours. By then, the lead has moved on or gone cold.',
-    pcard2_h3: '80% of sales happen on follow-up 5\u201312. Most teams stop at 1.',
-    pcard2_p: 'Not because salespeople are lazy \u2014 because there aren\u2019t enough hours. Every manual follow-up that doesn\u2019t happen is a lead that quietly dies in the pipeline. The economics of this are brutal.',
-    pcard3_h3: 'Your best people are doing the wrong work',
-    pcard3_p: 'Routine calls. Predictable questions. Repetitive early-stage conversations. Your closers are spending their best hours on work a machine can already handle \u2014 and high-value deals wait.',
-    pcard4_h3: 'You\u2019re already paying for these leads',
-    pcard4_p: 'Ad spend, content, referrals \u2014 every lead has a cost. When follow-up fails, you\u2019re not just losing the deal. You\u2019re losing the entire acquisition cost on top of it. The waste compounds every month.',
-    // Footer
-    footer_book: 'Book a Call',
-    footer_privacy: 'Privacy Policy',
-    // Section 2: Gap
-    gap_ssh_title: "Here\u2019s Exactly Where Your Deals Are Dying",
-    gap_ssh_num: '02 \u2014 The Leak',
-    gap_label: 'The Operational Leak',
-    gap_h2: 'A warm lead submits. Then the clock starts \u2014 and most teams lose.',
-    gap_sub: 'The gap between intent and contact is where revenue disappears. This is what a lead experiences when the process is still manual.',
-    gap_old_tag: 'What Usually Happens',
-    gap_old_h3: 'Manual. Slow. Inconsistent. Expensive.',
-    gap_old_li1: 'Lead submits form at 10am on a Tuesday',
-    gap_old_li2: 'Rep gets notified \u2014 eventually. First call attempt: 3\u20136 hours later',
-    gap_old_li3: 'No answer. Rep leaves a voicemail and moves on to the next lead',
-    gap_old_li4: 'One or two more attempts over the next few days \u2014 then silence',
-    gap_old_li5: 'Lead had budget, a real problem, and was ready to talk. But they went cold.',
-    gap_old_li6: 'That acquisition cost is now a write-off',
-    gap_new_tag: 'What the AI Bot Does',
-    gap_new_h3: 'Instant. Consistent. Every time. Without exception.',
-    gap_new_li1: 'Lead submits. Bot calls in under 5 minutes \u2014 regardless of time of day',
-    gap_new_li2: 'If no answer: follows up automatically across 5 attempts, spaced strategically',
-    gap_new_li3: 'When connected: handles the predictable early conversation, qualifies interest',
-    gap_new_li4: 'Qualified leads get transferred or scheduled \u2014 no rep required for this step',
-    gap_new_li5: 'Your closer only enters the conversation when the lead is warm and ready',
-    gap_new_li6: 'Nothing falls through. No lead is left without an attempt.',
-    // Section 3: Mechanism
-    mech_label: 'The System',
-    mech_h2: 'Not built to replace your closers.<br>Built to <span class="grad">protect their time.</span>',
-    mech_sub: 'The bot handles everything that happens before a real conversation is warranted. Your team enters when the lead is qualified, interested, and expecting the call.',
-    mech_c1_h3: 'Immediate First Contact',
-    mech_c1_p: "The bot calls within minutes of a lead submitting. Speed to contact is the single highest-leverage variable in outbound conversion \u2014 this removes all delay.",
-    mech_c2_h3: '5-Attempt Follow-Up Sequence',
-    mech_c2_p: "If the lead doesn\u2019t answer, the bot follows up strategically \u2014 5 attempts, varied timing, zero gaps. No lead goes cold because a rep was busy with something else.",
-    mech_c3_h3: 'Live Qualification',
-    mech_c3_p: "When connected, the bot runs through a defined qualification framework. It identifies who\u2019s worth your closer\u2019s time and separates them from everyone else.",
-    mech_c4_h3: 'Live Transfer or Booking',
-    mech_c4_p: "Qualified leads get transferred live or booked for a scheduled callback. Your closer walks into a conversation that\u2019s already been warmed up and filtered.",
-    mech_c5_h3: 'Full Call Reporting',
-    mech_c5_p: 'Every call, outcome, objection, and conversion point is logged. You see contact rate, response speed, qualified conversations, and booked meetings \u2014 in real time.',
-    mech_c6_h3: 'Human Team Stays Focused',
-    mech_c6_p: 'Your reps stop doing triage. They stop chasing. They handle only the conversations that move revenue \u2014 the ones that need a real human on the other end.',
-    // Economics table
-    tbl_th1: 'Metric',
-    tbl_th2: 'Senior SDR (fully-loaded)',
-    tbl_th3: 'AI Sales Bot',
-    tbl_r1_m: 'Monthly Cost',
-    tbl_r2_m: 'Time to First Call',
-    tbl_r2_s: 'Hours (on a good day)',
-    tbl_r2_b: 'Under 5 minutes',
-    tbl_r3_m: 'Leads Contacted / Month',
-    tbl_r4_m: 'Follow-Ups per Lead',
-    tbl_r4_s: '1\u20132 (typically)',
-    tbl_r4_b: '5 guaranteed',
-    tbl_r5_m: 'Cost per Lead Contacted',
-    tbl_r6_m: 'Scales With Volume',
-    tbl_r6_s: 'No \u2014 hire more',
-    tbl_r6_b: 'Yes \u2014 same system',
-    tbl_r7_m: 'Deploy Time',
-    tbl_r7_s: '3\u20136 months (ramp)',
-    tbl_r7_b: '7 days',
-    // Calculator
-    calc_step1_title: 'What is your average deal size?',
-    calc_step1_sub: 'The revenue you typically close per new client or sale.',
-    calc_btn_cont: 'Continue &rarr;',
-    calc_step2_title: 'How many leads do you want to call per month?',
-    calc_step2_sub: 'Each line handles up to 400 contacts with 5 follow-up calls each.',
-    calc_r1_label: 'Month 1 Investment',
-    calc_r1_sub: 'Includes setup &amp; first month',
-    calc_r2_label: 'Ongoing / Month',
-    calc_r3_label: 'Break-Even Sales',
-    calc_be_pre: 'Close just <span class="accent" id="msg-be">\u2014</span> out of <span class="accent" id="msg-leads">\u2014 leads</span> and the system pays for itself every month. That is a <span class="accent" id="msg-rate">\u2014</span> to break even.',
-    calc_results_btn: 'Apply for the 250-Lead Test &rarr;',
-    calc_results_note: 'Free to apply \u2014 takes under 90 seconds.',
-    // Pilot
-    pilot_sub: 'We run the AI Sales Bot against 250 of your leads to measure contact rate, qualified conversations, and booked meetings \u2014 before you commit to anything larger.',
-    pilot_inc_label: '&#10003;&ensp;What\u2019s Included',
-    pilot_inc_1: 'Lead source review & qualification criteria alignment',
-    pilot_inc_2: 'AI call flow & script setup \u2014 built around your offer',
-    pilot_inc_3: 'Follow-up sequence configuration (5 attempts per lead)',
-    pilot_inc_4: 'Outreach to the first 250 leads in your pipeline',
-    pilot_inc_5: 'Live transfer or booking handoff for qualified prospects',
-    pilot_inc_6: 'End-of-test review: results, patterns, and scale assessment',
-    pilot_mea_label: '&#128202;&ensp;What Gets Measured',
-    pilot_mea_1: 'Contact rate (how many leads actually picked up)',
-    pilot_mea_2: 'Response speed vs. industry baseline',
-    pilot_mea_3: 'Qualified conversations generated',
-    pilot_mea_4: 'Booked meetings & live transfers',
-    pilot_mea_5: 'Objection patterns and drop-off points',
-    pilot_mea_6: 'Whether the economics support scaling',
-    pilot_good_label: '&#10003;&ensp;Good Fit',
-    pilot_good_1: 'Running paid ads or generating consistent inbound',
-    pilot_good_2: 'At least 250 leads ready now \u2014 or enough monthly volume',
-    pilot_good_3: 'Average deal value that justifies automation economics',
-    pilot_good_4: 'Someone on the team who can close qualified appointments',
-    pilot_good_5: 'Real offer with a defined sales process',
-    pilot_bad_label: '&#10007;&ensp;Not a Fit',
-    pilot_bad_1: 'No active lead flow \u2014 you need to generate leads first',
-    pilot_bad_2: 'No one to close after a lead is qualified',
-    pilot_bad_3: "Very low deal value where automation economics don\u2019t work",
-    pilot_bad_4: 'No defined sales offer or unclear qualification criteria',
-    pilot_bad_5: 'Looking for a generic free consultation, not a structured test',
-    pilot_cta_btn: 'Apply for the 250-Lead Test &rarr;',
-    pilot_cta_note: "We review every application. Not everyone gets in. That\u2019s the point.",
-    fcta_text: 'Ready to test the AI on your leads?',
-    fcta_btn1: 'Apply for the Test &rarr;',
-    fcta_btn2: 'Call Me Now',
-    scta_btn: 'Apply for the 250-Lead Test &rarr;',
-    // Qualification form
-    qf_q1_label: 'What industry are you in?',
-    qf_ind_placeholder: 'Select your industry...',
-    qf_ind_re: 'Real Estate',
-    qf_ind_ins: 'Insurance',
-    qf_ind_mort: 'Mortgage / Finance',
-    qf_ind_home: 'Home Services / Contractors',
-    qf_ind_auto: 'Auto / Dealerships',
-    qf_ind_saas: 'SaaS / Tech',
-    qf_ind_b2b: 'B2B Services / Consulting',
-    qf_ind_health: 'Healthcare / Med Spa',
-    qf_ind_other: 'Other',
-    qf_q2_label: 'Are you currently running paid ads or generating consistent inbound leads?',
-    qf_ads_yes: 'Yes \u2014 ads or inbound are active right now',
-    qf_ads_no: 'Not currently',
-    qf_q3_label: 'How many leads do you generate per month?',
-    qf_leads_placeholder: 'Select a range...',
-    qf_leads_u100: 'Under 100',
-    qf_leads_100: '100 \u2013 250',
-    qf_leads_250: '250 \u2013 500',
-    qf_leads_500: '500+',
-    qf_q4_label: 'Do you have at least 250 leads ready to call right now?',
-    qf_ready_yes: 'Yes \u2014 we have them ready in our CRM',
-    qf_ready_con: 'Not 250 yet, but we generate that volume consistently',
-    qf_ready_no: 'No \u2014 our lead flow is inconsistent or sparse',
-    qf_q5_label: 'What is your average deal value?',
-    qf_deal_placeholder: 'Select a range...',
-    qf_deal_u500: 'Under $500',
-    qf_deal_500: '$500 \u2013 $1,000',
-    qf_deal_1k: '$1,000 \u2013 $2,500',
-    qf_deal_2k5: '$2,500 \u2013 $5,000',
-    qf_deal_5k: '$5,000+',
-    qf_q6_label: 'Who handles sales after a lead is qualified?',
-    qf_closer_placeholder: 'Select...',
-    qf_closer_owner: 'Owner / Founder closes personally',
-    qf_closer_team: 'Dedicated sales team',
-    qf_closer_rep: 'Single sales rep',
-    qf_closer_none: "No one \u2014 that\u2019s the gap we\u2019re trying to fill",
-    qf_submit_btn: 'See If I Qualify &rarr;',
-    qf_submit_note: 'No spam. No obligation. We review every application personally.',
-    // Qualified result
-    qf_qual_badge: '\u2713 You Qualify',
-    qf_qual_h3: 'Your business looks like a strong fit for the 250-Lead Test Campaign.',
-    qf_qual_p1: 'The next step is a 20-minute planning call to review your lead source, define the qualification criteria, and confirm the AI call flow before we run the first batch.',
-    qf_qual_p2: 'This is the <strong style="color:var(--white)">250-Lead Test Planning Call</strong> &mdash; not a generic demo. We review fit on both sides before running anything.',
-    qf_qual_btn: 'Book the 250-Lead Test Planning Call &rarr;',
-    qf_qual_note: 'Slots are limited. We run a small number of test campaigns at a time to maintain quality.',
-    // Rejected result
-    qf_rej_badge: 'Not the Right Fit \u2014 Yet',
-    qf_rej_h3: 'The 250-Lead Test is designed for businesses where the economics already make sense.',
-    qf_rej_p1: "Based on your answers, your business doesn\u2019t currently meet the criteria we need to make this test genuinely useful for you. AI calling works best when there\u2019s enough lead volume, deal value, and closing capacity for the numbers to work.",
-    qf_rej_p2: 'If your situation changes, apply again. Questions? <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a>',
-    // Bot call form
-    botf_q1_label: 'First name',
-    botf_q1_opt: '(optional)',
-    botf_q2_label: 'Phone number',
-    botf_q3_label: 'When should the bot call?',
-    botf_time_now: 'Now \u2014 call me as soon as possible',
-    botf_time_morning: 'Morning (8 am \u2013 12 pm)',
-    botf_time_afternoon: 'Afternoon (12 pm \u2013 5 pm)',
-    botf_time_evening: 'Evening (5 pm \u2013 8 pm)',
-    botf_submit_btn: 'Call Me in Under 5 Minutes &rarr;',
-    botf_submit_note: "The AI Sales Bot will call this number. If you\u2019re a fit, it books your planning call on the spot. No rep involved.",
-    // Bot call confirmed
-    botf_conf_badge: '\u2713 Request Received',
-    botf_conf_h3: 'The bot is calling you now.',
-    botf_conf_p1: 'The same AI Sales Bot we configure for clients is dialing <strong id="bot-phone-display" style="color:var(--white)">your number</strong> right now. It will qualify your business and &mdash; if you\u2019re a fit &mdash; offer to book your 250-Lead Test Planning Call on the spot.',
-    botf_conf_p2: 'This is the product, working on you, in real time. Pick up.',
-    // Close PS
-    close_ps: '<strong>P.S.</strong>&ensp;The AI Sales Bot doesn\u2019t replace your closers. It removes everything that happens before a closer should ever be on the phone. The more repetitive work the bot absorbs, the more high-value time your team gets back.',
-    // Image break
-    imgbreak_label: 'AI Sales Bot &mdash; Live'
-  },
-  es: {
-    nav_how: 'Cómo Funciona',
-    nav_math: 'Los Números',
-    nav_campaign: 'La Campaña',
-    nav_apply: 'Aplicar',
-    nav_cta: 'Aplicar al Piloto \u2192',
-    // Hero
-    hero_badge: 'NO PIERDAS LEADS QUE YA TE COSTARON DINERO',
-    hero_h1: '<span class="hero-line1">Tus Leads se Enfr\u00edan en 5 Minutos.</span><span class="hero-dash">\u2014</span><span class="hero-line2">Los Llamamos en <span class="grad hero-countdown" id="hero-countdown">8</span> Seg.</span>',
-    hero_sub: 'El bot llama en menos de 5 minutos, hace seguimiento 5 veces y califica cada lead \u2014 para que tu equipo solo hable con prospectos listos para comprar. Aplica a la Campa\u00f1a de Prueba de 250 Leads.',
-    // Phone mockup
-    hp_label_0:'Nuevo Lead', hp_row_name:'Nombre: John Martinez', hp_row_phone:'Tel\u00e9fono: +1 803 555-0147', hp_row_source:'Fuente: Formulario Web', hp_row_time:'Hora: Ahora mismo', hp_call_btn:'\u23f1 Llamando en 8 segundos...',
-    hp_label_1:'Transcripci\u00f3n en Vivo', hp_bubble_bot:'\u00a1Hola John! Soy Tommy de LoopHub. Veo que acabas de solicitar informaci\u00f3n \u2014 \u00bftienes 2 minutos?', hp_bubble_user:'\u00a1Claro! Estaba viendo tu p\u00e1gina web...',
-    hp_label_2:'Cita Agendada', hp_cal_title:'\ud83d\udcc5 Jueves, 10 de Abril', hp_cal_name:'John Martinez \u00b7 Lead Calificado', hp_checks:'\u2705 CRM Actualizado<br>\u2705 Invitaci\u00f3n de calendario enviada<br>\u2705 Recordatorio en 24h',
-    hp_status_0:'Nuevo lead detectado', hp_status_1:'Llamando ahora...', hp_status_2:'Llamada completada',
-    hp_badge_0:'LISTO', hp_badge_1:'EN VIVO', hp_badge_2:'HECHO',
-    hp_chip1_title:'Formulario Enviado', hp_chip1_sub:'Tommy llamando...', hp_chip2_title:'+78% conversiones', hp_chip2_sub:'vs. respuesta 2hrs',
-    hero_qs1: 'Inversi\u00f3n activa en ads o inbound constante',
-    hero_qs2: '250+ leads listos para llamar',
-    hero_qs3: 'Ticket promedio real',
-    hero_qs4: 'Alguien que cierre',
-    hero_cta1: 'Aplicar a la Prueba de 250 Leads \u2192',
-    hero_cta2: 'Ver Qu\u00e9 Incluye',
-    stat_leads: 'Leads M\u00ednimos',
-    stat_deploy: 'Para Activar',
-    stat_followups: 'Seguimientos / Lead',
-    stat_missed: 'Contactos Perdidos',
-    manifesto: 'La mayor\u00eda de negocios no tiene un problema de leads. <em>Tienen un problema de conversi\u00f3n.</em>',
-    // Sticky pills
-    pill_01: 'El Problema',
-    pill_02: 'La Brecha de Seguimiento',
-    pill_03: 'D\u00f3nde Mueren los Deals',
-    pill_04: 'C\u00f3mo Funciona el Bot',
-    pill_05: 'Los N\u00fameros',
-    pill_06: 'La Prueba de 250 Leads',
-    // Section 1: Leak
-    ssh1_title: 'Tus Leads Se Enfr\u00edan Antes de que Alguien los Llame',
-    ssh1_num: '01 \u2014 El Problema',
-    leak_label: 'El Asesino Silencioso de Ingresos',
-    leak_h2: 'Est\u00e1s pagando por leads.<br>La mayor\u00eda nunca recibe una conversaci\u00f3n real.',
-    leak_sub: 'El equipo promedio tarda 24\u201372 horas en hacer la primera llamada. Para entonces, el lead ya se fue o se enfri\u00f3.',
-    // Section 2B: Follow-up Gap
-    ssh2b_title: 'La Mayor\u00eda Se Detiene Demasiado Pronto',
-    ssh2b_num: '02B \u2014 La Brecha',
-    fug_heading: 'La mayor\u00eda se detiene demasiado pronto.<br>Ah\u00ed es donde mueren los deals.',
-    fug_text: 'El problema generalmente no es el lead. Es lo que pasa despu\u00e9s del formulario. La mayor\u00eda hace seguimiento una o dos veces y sigue adelante. Pero los datos cuentan otra historia.',
-    fug_source: 'Seg\u00fan <strong>Grant Cardone</strong> \u2014 una de las mayores autoridades en ventas del mundo:',
-    fug_caption: '<strong>El 80% de las ventas ocurren despu\u00e9s del 5to contacto.</strong> Pero el 90% de los vendedores se detienen antes.',
-    fug_transition: 'Por eso el bot llama r\u00e1pido, hace seguimiento 5 veces autom\u00e1ticamente, y sigue trabajando el lead hasta obtener un resultado real \u2014 no solo una llamada perdida.',
-    // Section 3: Mechanism
-    ssh3_title: 'C\u00f3mo Funciona el Bot de Ventas IA',
-    ssh3_num: '03 \u2014 El Mecanismo',
-    // Section 4: Economics
-    ssh4_title: 'Los N\u00fameros',
-    ssh4_num: '04 \u2014 La Econom\u00eda',
-    econ_label: 'Capacidad vs. Costo',
-    econ_h2: 'Antes de comprar m\u00e1s leads,<br>demuestra que puedes convertir los que ya tienes.',
-    econ_sub: 'Un SDR con costo completo cuesta $9k\u2013$11k/mes y alcanza 250\u2013350 leads.',
-    calc_label: 'Calcula Tus N\u00fameros',
-    calc_h2: 'Mira qu\u00e9 poco necesitas cerrar para recuperar la inversi\u00f3n.',
-    calc_sub: 'Dos datos. Tu punto de equilibrio en segundos.',
-    // Section 5: Pilot
-    ssh5_title: 'La Campa\u00f1a de Prueba de 250 Leads',
-    ssh5_num: '05 \u2014 La Oferta',
-    pilot_label: 'La Campa\u00f1a Piloto',
-    pilot_h2: 'Una prueba controlada con tus leads reales.<br>No es un demo. <span class="grad">Resultados reales.</span>',
-    // Apply section
-    apply_label: 'Aplica Ahora',
-    apply_h2: 'Dos Formas de Saber<br>Si Calificas',
-    apply_sub: 'Calif\u00edcate t\u00fa mismo en 90 segundos con el formulario \u2014 o deja que el bot te llame y experimenta el producto en vivo antes de gastar un peso.',
-    apply_optA_badge: 'Opci\u00f3n A',
-    apply_optA_title: 'Calif\u00edcate T\u00fa Mismo',
-    apply_optA_desc: 'Responde 6 preguntas. Toma menos de 90 segundos. Ve tu resultado al instante \u2014 y accede al link de la llamada si calificas.',
-    apply_optA_btn: 'Responder las Preguntas \u2192',
-    apply_optB_badge: 'Opci\u00f3n B \u2014 Recomendada',
-    apply_optB_title: 'Que el Bot Te Llame',
-    apply_optB_desc: 'Ingresa tu n\u00famero. El mismo Bot de Ventas IA que construimos para clientes te llama en menos de 5 minutos, califica tu negocio en vivo, y agenda la llamada si eres buen fit.',
-    apply_optB_highlight: 'Este es el producto \u2014 funcionando contigo, en tiempo real.',
-    apply_optB_btn: 'Ll\u00e1mame Ahora \u2192',
-    // Close
-    close_h: 'Tus leads ya est\u00e1n llegando.<br>Aseg\u00farate de que alguien conteste.',
-    close_sub: 'La Campa\u00f1a de Prueba de 250 Leads est\u00e1 activa. Aplica ahora y activa en 7 d\u00edas.',
-    close_cta: 'Aplicar a la Prueba de 250 Leads \u2192',
-    // Exit popup
-    exit_label: '\ud83d\udea8 \u00a1ESPERA!',
-    exit_title: 'Recibe una Llamada del Bot de Ventas IA',
-    exit_sub: 'No te vayas sin probar. Deja que Emma te llame en los pr\u00f3ximos 5 minutos.',
-    exit_name: 'Nombre *',
-    exit_email: 'Email *',
-    exit_phone: 'Tel\u00e9fono *',
-    exit_btn: 'Ll\u00e1mame Ahora \u2192',
-    exit_guarantee: '\u2713 Te llamamos en menos de 5 minutos',
-    exit_success_title: '\u00a1Perfecto!',
-    exit_success_text: 'Te estamos llamando en los pr\u00f3ximos 5 minutos.',
-    exit_success_sub: 'Emma te har\u00e1 un demo en vivo del Bot de Ventas IA.',
-    // Section 1: Leak cards
-    pcard1_h3: 'La velocidad mata \u2014 o salva \u2014 los deals',
-    pcard1_p: 'La probabilidad de convertir un lead nuevo cae dram\u00e1ticamente despu\u00e9s de los primeros 5 minutos. La mayor\u00eda de los equipos no responde en 5 minutos. Responden en horas. Para entonces, el lead ya se fue o se enfri\u00f3.',
-    pcard2_h3: 'El 80% de las ventas ocurren en el seguimiento 5\u201312. La mayor\u00eda se detiene en el 1.',
-    pcard2_p: 'No porque los vendedores sean flojos \u2014 porque no hay suficientes horas. Cada seguimiento manual que no ocurre es un lead que muere silenciosamente en el pipeline. La econom\u00eda de esto es brutal.',
-    pcard3_h3: 'Tus mejores personas est\u00e1n haciendo el trabajo equivocado',
-    pcard3_p: 'Llamadas rutinarias. Preguntas predecibles. Conversaciones repetitivas de etapa temprana. Tus closers gastan sus mejores horas en trabajo que una m\u00e1quina ya puede manejar \u2014 y los deals de alto valor esperan.',
-    pcard4_h3: 'Ya est\u00e1s pagando por estos leads',
-    pcard4_p: 'Gasto en ads, contenido, referidos \u2014 cada lead tiene un costo. Cuando falla el seguimiento, no solo pierdes el deal. Pierdes todo el costo de adquisici\u00f3n encima. El desperdicio se acumula cada mes.',
-    // Footer
-    footer_book: 'Reservar Llamada',
-    footer_privacy: 'Pol\u00edtica de Datos',
-    // Section 2: Gap
-    gap_ssh_title: 'As\u00ed Es Exactamente Donde Mueren Tus Deals',
-    gap_ssh_num: '02 \u2014 La Fuga',
-    gap_label: 'La Fuga Operacional',
-    gap_h2: 'Un lead c\u00e1lido llena el formulario. El reloj comienza \u2014 y la mayor\u00eda de los equipos pierde.',
-    gap_sub: 'La brecha entre intenci\u00f3n y contacto es donde desaparece el ingreso. Esto es lo que experimenta un lead cuando el proceso a\u00fan es manual.',
-    gap_old_tag: 'Lo Que Suele Pasar',
-    gap_old_h3: 'Manual. Lento. Inconsistente. Caro.',
-    gap_old_li1: 'Lead llena el formulario a las 10am un martes',
-    gap_old_li2: 'El rep recibe la notificaci\u00f3n \u2014 eventualmente. Primera llamada: 3\u20136 horas despu\u00e9s',
-    gap_old_li3: 'Sin respuesta. El rep deja un buz\u00f3n de voz y pasa al siguiente lead',
-    gap_old_li4: 'Uno o dos intentos m\u00e1s en los d\u00edas siguientes \u2014 luego silencio',
-    gap_old_li5: 'El lead ten\u00eda presupuesto, un problema real y estaba listo para hablar. Pero se enfri\u00f3.',
-    gap_old_li6: 'Ese costo de adquisici\u00f3n ya es una p\u00e9rdida',
-    gap_new_tag: 'Lo Que Hace el Bot IA',
-    gap_new_h3: 'Inmediato. Consistente. Siempre. Sin excepciones.',
-    gap_new_li1: 'Lead llena el formulario. El bot llama en menos de 5 minutos \u2014 a cualquier hora',
-    gap_new_li2: 'Sin respuesta: hace seguimiento autom\u00e1tico en 5 intentos, espaciados estrat\u00e9gicamente',
-    gap_new_li3: 'Al conectar: maneja la conversaci\u00f3n inicial predecible, califica el inter\u00e9s',
-    gap_new_li4: 'Los leads calificados se transfieren o agendan \u2014 sin rep en este paso',
-    gap_new_li5: 'Tu closer entra solo cuando el lead est\u00e1 c\u00e1lido y listo',
-    gap_new_li6: 'Nada se pierde. Ning\u00fan lead queda sin un intento.',
-    // Section 3: Mechanism
-    mech_label: 'El Sistema',
-    mech_h2: 'No est\u00e1 dise\u00f1ado para reemplazar a tus closers.<br>Est\u00e1 dise\u00f1ado para <span class="grad">proteger su tiempo.</span>',
-    mech_sub: 'El bot maneja todo lo que ocurre antes de que sea necesaria una conversaci\u00f3n real. Tu equipo entra cuando el lead est\u00e1 calificado, interesado y esperando la llamada.',
-    mech_c1_h3: 'Primer Contacto Inmediato',
-    mech_c1_p: 'El bot llama minutos despu\u00e9s de que el lead se registra. La velocidad de contacto es la variable de mayor apalancamiento en la conversi\u00f3n outbound \u2014 esto elimina toda demora.',
-    mech_c2_h3: 'Secuencia de 5 Intentos de Seguimiento',
-    mech_c2_p: 'Si el lead no contesta, el bot hace seguimiento estrat\u00e9gicamente \u2014 5 intentos, tiempos variados, cero brechas. Ning\u00fan lead se enfr\u00eda por estar el rep ocupado.',
-    mech_c3_h3: 'Calificaci\u00f3n en Tiempo Real',
-    mech_c3_p: 'Al conectar, el bot aplica un marco de calificaci\u00f3n definido. Identifica qui\u00e9n vale el tiempo de tu closer y los separa del resto.',
-    mech_c4_h3: 'Transferencia en Vivo o Agendamiento',
-    mech_c4_p: 'Los leads calificados se transfieren en vivo o se agendan para un callback. Tu closer entra a una conversaci\u00f3n ya calentada y filtrada.',
-    mech_c5_h3: 'Reportes Completos de Llamadas',
-    mech_c5_p: 'Cada llamada, resultado, objeci\u00f3n y punto de conversi\u00f3n queda registrado. Ves tasa de contacto, velocidad de respuesta, conversaciones calificadas y citas agendadas \u2014 en tiempo real.',
-    mech_c6_h3: 'Tu Equipo Humano Permanece Enfocado',
-    mech_c6_p: 'Tus reps dejan de hacer triage. Dejan de perseguir leads. Solo manejan las conversaciones que mueven ingresos \u2014 las que necesitan un humano real al otro lado.',
-    // Economics table
-    tbl_th1: 'M\u00e9trica',
-    tbl_th2: 'SDR Senior (costo completo)',
-    tbl_th3: 'Bot de Ventas IA',
-    tbl_r1_m: 'Costo Mensual',
-    tbl_r2_m: 'Tiempo al Primer Contacto',
-    tbl_r2_s: 'Horas (en un buen d\u00eda)',
-    tbl_r2_b: 'Menos de 5 minutos',
-    tbl_r3_m: 'Leads Contactados / Mes',
-    tbl_r4_m: 'Seguimientos por Lead',
-    tbl_r4_s: '1\u20132 (generalmente)',
-    tbl_r4_b: '5 garantizados',
-    tbl_r5_m: 'Costo por Lead Contactado',
-    tbl_r6_m: 'Escala con Volumen',
-    tbl_r6_s: 'No \u2014 contratar m\u00e1s',
-    tbl_r6_b: 'S\u00ed \u2014 mismo sistema',
-    tbl_r7_m: 'Tiempo de Activaci\u00f3n',
-    tbl_r7_s: '3\u20136 meses (arranque)',
-    tbl_r7_b: '7 d\u00edas',
-    // Calculator
-    calc_step1_title: '\u00bfCu\u00e1l es tu ticket promedio?',
-    calc_step1_sub: 'El ingreso que normalmente cierras por cliente o venta nueva.',
-    calc_btn_cont: 'Continuar &rarr;',
-    calc_step2_title: '\u00bfCu\u00e1ntos leads quieres llamar por mes?',
-    calc_step2_sub: 'Cada l\u00ednea gestiona hasta 400 contactos con 5 llamadas de seguimiento cada uno.',
-    calc_r1_label: 'Inversi\u00f3n Mes 1',
-    calc_r1_sub: 'Incluye setup y primer mes',
-    calc_r2_label: 'Mensual recurrente',
-    calc_r3_label: 'Ventas para Punto de Equilibrio',
-    calc_be_pre: 'Cierra solo <span class="accent" id="msg-be">\u2014</span> de <span class="accent" id="msg-leads">\u2014 leads</span> y el sistema se paga solo cada mes. Eso es un <span class="accent" id="msg-rate">\u2014</span> de tasa de cierre para llegar al punto de equilibrio.',
-    calc_results_btn: 'Aplicar a la Prueba de 250 Leads &rarr;',
-    calc_results_note: 'Gratis aplicar \u2014 toma menos de 90 segundos.',
-    // Pilot
-    pilot_sub: 'Ejecutamos el Bot de Ventas IA contra 250 de tus leads para medir tasa de contacto, conversaciones calificadas y citas agendadas \u2014 antes de comprometerte con algo mayor.',
-    pilot_inc_label: '&#10003;&ensp;Qu\u00e9 Incluye',
-    pilot_inc_1: 'Revisi\u00f3n de fuente de leads y criterios de calificaci\u00f3n',
-    pilot_inc_2: 'Flujo de llamada IA y setup del script \u2014 adaptado a tu oferta',
-    pilot_inc_3: 'Configuraci\u00f3n de secuencia de seguimiento (5 intentos por lead)',
-    pilot_inc_4: 'Alcance a los primeros 250 leads en tu pipeline',
-    pilot_inc_5: 'Transferencia en vivo o agendamiento para prospectos calificados',
-    pilot_inc_6: 'Revisi\u00f3n al final de la prueba: resultados, patrones y evaluaci\u00f3n de escala',
-    pilot_mea_label: '&#128202;&ensp;Qu\u00e9 Se Mide',
-    pilot_mea_1: 'Tasa de contacto (cu\u00e1ntos leads realmente contestaron)',
-    pilot_mea_2: 'Velocidad de respuesta vs. referencia de la industria',
-    pilot_mea_3: 'Conversaciones calificadas generadas',
-    pilot_mea_4: 'Citas agendadas y transferencias en vivo',
-    pilot_mea_5: 'Patrones de objeci\u00f3n y puntos de abandono',
-    pilot_mea_6: 'Si los n\u00fameros justifican escalar',
-    pilot_good_label: '&#10003;&ensp;Buen Fit',
-    pilot_good_1: 'Corriendo ads o generando inbound consistente',
-    pilot_good_2: 'Al menos 250 leads listos ahora \u2014 o suficiente volumen mensual',
-    pilot_good_3: 'Ticket promedio que justifica la econom\u00eda de la automatizaci\u00f3n',
-    pilot_good_4: 'Alguien en el equipo que pueda cerrar citas calificadas',
-    pilot_good_5: 'Oferta real con un proceso de ventas definido',
-    pilot_bad_label: '&#10007;&ensp;No es un Fit',
-    pilot_bad_1: 'Sin flujo de leads activo \u2014 primero necesitas generar leads',
-    pilot_bad_2: 'Nadie para cerrar despu\u00e9s de que un lead es calificado',
-    pilot_bad_3: 'Ticket muy bajo donde la econom\u00eda de la automatizaci\u00f3n no funciona',
-    pilot_bad_4: 'Sin oferta de ventas definida o criterios de calificaci\u00f3n poco claros',
-    pilot_bad_5: 'Buscando una consultor\u00eda gen\u00e9rica gratuita, no una prueba estructurada',
-    pilot_cta_btn: 'Aplicar a la Prueba de 250 Leads &rarr;',
-    pilot_cta_note: 'Revisamos cada aplicaci\u00f3n. No todos entran. Ese es el punto.',
-    fcta_text: '\u00bfListo para probar la IA en tus leads?',
-    fcta_btn1: 'Aplicar al Test &rarr;',
-    fcta_btn2: 'Llámame',
-    scta_btn: 'Aplicar a la Prueba de 250 Leads &rarr;',
-    // Qualification form
-    qf_q1_label: '\u00bfEn qu\u00e9 industria est\u00e1s?',
-    qf_ind_placeholder: 'Selecciona tu industria...',
-    qf_ind_re: 'Bienes Ra\u00edces',
-    qf_ind_ins: 'Seguros',
-    qf_ind_mort: 'Hipotecas / Finanzas',
-    qf_ind_home: 'Servicios del Hogar / Contratistas',
-    qf_ind_auto: 'Autos / Agencias',
-    qf_ind_saas: 'SaaS / Tecnolog\u00eda',
-    qf_ind_b2b: 'Servicios B2B / Consultor\u00eda',
-    qf_ind_health: 'Salud / Med Spa',
-    qf_ind_other: 'Otro',
-    qf_q2_label: '\u00bfEst\u00e1s corriendo ads o generando leads inbound consistentes?',
-    qf_ads_yes: 'S\u00ed \u2014 ads o inbound est\u00e1n activos ahora',
-    qf_ads_no: 'No actualmente',
-    qf_q3_label: '\u00bfCu\u00e1ntos leads generas por mes?',
-    qf_leads_placeholder: 'Selecciona un rango...',
-    qf_leads_u100: 'Menos de 100',
-    qf_leads_100: '100 \u2013 250',
-    qf_leads_250: '250 \u2013 500',
-    qf_leads_500: '500+',
-    qf_q4_label: '\u00bfTienes al menos 250 leads listos para llamar ahora?',
-    qf_ready_yes: 'S\u00ed \u2014 los tenemos listos en nuestro CRM',
-    qf_ready_con: 'A\u00fan no 250, pero generamos ese volumen de forma consistente',
-    qf_ready_no: 'No \u2014 nuestro flujo de leads es inconsistente o escaso',
-    qf_q5_label: '\u00bfCu\u00e1l es tu ticket promedio?',
-    qf_deal_placeholder: 'Selecciona un rango...',
-    qf_deal_u500: 'Menos de $500',
-    qf_deal_500: '$500 \u2013 $1,000',
-    qf_deal_1k: '$1,000 \u2013 $2,500',
-    qf_deal_2k5: '$2,500 \u2013 $5,000',
-    qf_deal_5k: '$5,000+',
-    qf_q6_label: '\u00bfQui\u00e9n maneja las ventas despu\u00e9s de que un lead es calificado?',
-    qf_closer_placeholder: 'Seleccionar...',
-    qf_closer_owner: 'Due\u00f1o / Fundador cierra personalmente',
-    qf_closer_team: 'Equipo de ventas dedicado',
-    qf_closer_rep: 'Un rep de ventas',
-    qf_closer_none: 'Nadie \u2014 esa es la brecha que queremos llenar',
-    qf_submit_btn: 'Ver Si Califico &rarr;',
-    qf_submit_note: 'Sin spam. Sin compromiso. Revisamos cada aplicaci\u00f3n personalmente.',
-    // Qualified result
-    qf_qual_badge: '\u2713 Calificas',
-    qf_qual_h3: 'Tu negocio parece ser un excelente fit para la Campa\u00f1a de Prueba de 250 Leads.',
-    qf_qual_p1: 'El siguiente paso es una llamada de planeaci\u00f3n de 20 minutos para revisar tu fuente de leads, definir los criterios de calificaci\u00f3n y confirmar el flujo de llamada IA antes de correr el primer lote.',
-    qf_qual_p2: 'Esta es la <strong style="color:var(--white)">Llamada de Planeaci\u00f3n de la Prueba de 250 Leads</strong> &mdash; no un demo gen\u00e9rico. Revisamos el fit de ambos lados antes de correr nada.',
-    qf_qual_btn: 'Agendar la Llamada de Planeaci\u00f3n &rarr;',
-    qf_qual_note: 'Los cupos son limitados. Corremos un n\u00famero peque\u00f1o de campa\u00f1as de prueba a la vez para mantener calidad.',
-    // Rejected result
-    qf_rej_badge: 'No es el Fit Correcto \u2014 Todav\u00eda',
-    qf_rej_h3: 'La Prueba de 250 Leads est\u00e1 dise\u00f1ada para negocios donde la econom\u00eda ya tiene sentido.',
-    qf_rej_p1: 'Con base en tus respuestas, tu negocio actualmente no cumple los criterios que necesitamos para que esta prueba sea genuinamente \u00fatil para ti. Las llamadas IA funcionan mejor cuando hay suficiente volumen de leads, valor de ticket y capacidad de cierre.',
-    qf_rej_p2: 'Si tu situaci\u00f3n cambia, vuelve a aplicar. \u00bfPreguntas? <a href="mailto:contact@loophub.solutions">contact@loophub.solutions</a>',
-    // Bot call form
-    botf_q1_label: 'Nombre',
-    botf_q1_opt: '(opcional)',
-    botf_q2_label: 'N\u00famero de tel\u00e9fono',
-    botf_q3_label: '\u00bfCu\u00e1ndo deber\u00eda llamar el bot?',
-    botf_time_now: 'Ahora \u2014 ll\u00e1mame lo antes posible',
-    botf_time_morning: 'Ma\u00f1ana (8 am \u2013 12 pm)',
-    botf_time_afternoon: 'Tarde (12 pm \u2013 5 pm)',
-    botf_time_evening: 'Noche (5 pm \u2013 8 pm)',
-    botf_submit_btn: 'Ll\u00e1mama en Menos de 5 Minutos &rarr;',
-    botf_submit_note: 'El Bot de Ventas IA llamar\u00e1 a este n\u00famero. Si eres un fit, agenda tu llamada de planeaci\u00f3n al momento. Sin rep de por medio.',
-    // Bot call confirmed
-    botf_conf_badge: '\u2713 Solicitud Recibida',
-    botf_conf_h3: 'El bot te est\u00e1 llamando ahora.',
-    botf_conf_p1: 'El mismo Bot de Ventas IA que configuramos para clientes est\u00e1 marcando <strong id="bot-phone-display" style="color:var(--white)">tu n\u00famero</strong> ahora mismo. Calificar\u00e1 tu negocio y &mdash; si eres un fit &mdash; te ofrecer\u00e1 agendar tu Llamada de Planeaci\u00f3n al instante.',
-    botf_conf_p2: 'Este es el producto, trabajando contigo, en tiempo real. Contesta.',
-    // Close PS
-    close_ps: '<strong>P.S.</strong>&ensp;El Bot de Ventas IA no reemplaza a tus closers. Elimina todo lo que ocurre antes de que un closer deba estar al tel\u00e9fono. Cuanto m\u00e1s trabajo repetitivo absorbe el bot, m\u00e1s tiempo de alto valor recupera tu equipo.',
-    // Image break
-    imgbreak_label: 'Bot de Ventas IA &mdash; En Vivo'
-  }
-};
-
-window.__lhLang = 'en';
-function setLang(lang) {
-  window.__lhLang = lang;
-  var t = _LH_I18N[lang];
-  document.documentElement.lang = lang;
-  var btnEn = document.getElementById('btn-en');
-  var btnEs = document.getElementById('btn-es');
-  if (btnEn) btnEn.classList.toggle('lp-active', lang === 'en');
-  if (btnEs) btnEs.classList.toggle('lp-active', lang === 'es');
-  document.querySelectorAll('[data-i18n]').forEach(function(el) {
-    var key = el.getAttribute('data-i18n');
-    if (t[key] !== undefined) el.textContent = t[key];
-  });
-  document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
-    var key = el.getAttribute('data-i18n-html');
-    if (t[key] !== undefined) el.innerHTML = t[key];
-  });
-  // Swap Grant Cardone image
-  var fugImg = document.getElementById('fug-img');
-  if (fugImg) {
-    fugImg.src = lang === 'es' ? 'images/follow-up-gap-es.png' : 'images/follow-up-gap.png';
-    fugImg.alt = lang === 'es'
-      ? 'Estadísticas de ventas Grant Cardone: 80% de las ventas se realizan del 5to al 12mo contacto.'
-      : 'Grant Cardone sales statistics: 48% of salespeople never follow up, 80% of sales happen between the 5th and 12th contact attempt.';
-  }
-  try { localStorage.setItem('lh_lang', lang); } catch(e) {}
-  try { history.pushState(null, '', '/' + lang); } catch(e) {}
-  if (window.updateCalc && document.getElementById('results') && document.getElementById('results').classList.contains('open')) updateCalc();
-}
-
-
-
-(function() {
-  var path = window.location.pathname;
-  if (path === '/es' || path === '/es/' || path.indexOf('/es') === 0) {
-    setLang('es');
-  }
-  // All other paths → EN (default, already set as window.__lhLang = 'en')
-})();
-
-// (lang banner handles its own visibility now)
-</script>
-
-<script>
-/* ── EXIT-INTENT POP-UP ── */
-var exitPopupShown = false;
-
-function showExitPopup() {
-  if (exitPopupShown) return;
-  exitPopupShown = true;
-  document.getElementById('exit-popup-overlay').style.display = 'flex';
-
-  // Track exit-intent event
-  if (window.gtag) {
-    gtag('event', 'exit_intent_popup_shown', {
-      event_category: 'engagement',
-      event_label: 'exit_popup'
-    });
-  }
-  if (window.fbq) {
-    fbq('track', 'Lead', { source: 'exit_intent_popup' });
-  }
-}
-
-function closeExitPopup() {
-  document.getElementById('exit-popup-overlay').style.display = 'none';
-}
-
-function submitExitPopupForm(e) {
-  e.preventDefault();
-
-  var name = document.getElementById('exit-name').value.trim();
-  var email = document.getElementById('exit-email').value.trim();
-  var phone = document.getElementById('exit-phone').value.trim();
-
-  if (!name || !email || !phone) {
-    alert('Please fill all fields');
-    return;
-  }
-
-  // Show success state
-  document.getElementById('exit-popup-form').style.display = 'none';
-  document.getElementById('exit-popup-success').style.display = 'block';
-
-  // Track submission
-  if (window.gtag) {
-    gtag('event', 'exit_intent_form_submit', {
-      event_category: 'conversion',
-      event_label: 'exit_popup_call_me'
-    });
-  }
-  if (window.fbq) {
-    fbq('track', 'Lead', { source: 'exit_intent_form_submit' });
-  }
-  window.addLeadPoints && window.addLeadPoints('exit_intent_call_request', 10);
-
-  // Send to webhook if configured
-  var BOT_CALL_WEBHOOK = window.BOT_CALL_WEBHOOK || '';
-  if (BOT_CALL_WEBHOOK) {
-    fetch(BOT_CALL_WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        phone: phone,
-        source: 'exit_intent_popup'
-      })
-    }).catch(function() {});
-  }
-
-  // Close after 3 seconds
-  setTimeout(function() {
-    closeExitPopup();
-    document.getElementById('exit-popup-form').style.display = 'flex';
-    document.getElementById('exit-popup-success').style.display = 'none';
-    // Reset form
-    document.getElementById('exit-popup-form').reset();
-    exitPopupShown = false;
-  }, 3000);
-}
-
-// Detect exit-intent: mouse leaving top of page
-document.addEventListener('mouseleave', function(e) {
-  if (e.clientY <= 0) {
-    showExitPopup();
-  }
-});
-
-// Detect when user tries to navigate away
-window.addEventListener('beforeunload', function(e) {
-  if (!exitPopupShown && Math.random() < 0.3) {
-    showExitPopup();
-  }
-});
-
-// Alternative: Show popup when focusing address bar (Cmd+L or Ctrl+L)
-document.addEventListener('keydown', function(e) {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'l' && !exitPopupShown) {
-    showExitPopup();
-  }
-});
-</script>
-
-<!-- =========================================================
-     TAWK.TO LIVE CHAT
-     Replace TAWK_PROPERTY_ID and TAWK_WIDGET_ID below.
-========================================================= -->
-<script>
-var Tawk_API = Tawk_API || {};
-var Tawk_LoadStart = new Date();
-Tawk_API.onLoad = function () {
-  var s = window.__lhScore ? window.__lhScore() : { score: 0, tier: '🔵 Cold (0-9)' };
-  Tawk_API.setAttributes({ 'lead_score': String(s.score), 'lead_tier': s.tier }, function(){});
-};
-(function () {
-  var s1 = document.createElement('script');
-  var s0 = document.getElementsByTagName('script')[0];
-  s1.async = true;
-  s1.src   = 'https://embed.tawk.to/TAWK_PROPERTY_ID/TAWK_WIDGET_ID';
-  s1.charset = 'UTF-8';
-  s1.setAttribute('crossorigin', '*');
-  s0.parentNode.insertBefore(s1, s0);
-})();
-</script>
-<!-- ===== END TAWK.TO ===== -->
-
-
-<!-- SOCIAL PROOF TOAST -->
-<div class="sp-toast" id="sp-toast">
-  <div class="sp-map" id="sp-map">
-    <img id="sp-map-img" src="" alt="" />
-    <div class="sp-map-pin">📍</div>
-  </div>
-  <div class="sp-content">
-    <div class="sp-header">
-      <div class="sp-live-dot"></div>
-      <div class="sp-name" id="sp-name"></div>
-    </div>
-    <div class="sp-niche" id="sp-niche"></div>
-    <div class="sp-action" id="sp-action"></div>
-    <div class="sp-bottom">
-      <div class="sp-time" id="sp-time"></div>
-      <div class="sp-verified">✓ verified</div>
-    </div>
-  </div>
-</div>
-
-<script>
-/* ── SOCIAL PROOF NOTIFICATIONS ── */
-(function() {
-  var SP_DATA = [
-    { name: 'Carlos M.', city: 'Ciudad de México', niche_en: 'Real Estate', niche_es: 'Bienes Raíces', lat: 19.43, lng: -99.13, action_en: 'applied for the 250-Lead Test', action_es: 'aplicó a la Prueba de 250 Leads' },
-    { name: 'Sarah K.', city: 'Austin, TX', niche_en: 'Solar Energy', niche_es: 'Energía Solar', lat: 30.27, lng: -97.74, action_en: 'requested a demo call', action_es: 'solicitó una llamada demo' },
-    { name: 'Andrés R.', city: 'Bogotá', niche_en: 'Insurance', niche_es: 'Seguros', lat: 4.71, lng: -74.07, action_en: 'qualified for the pilot campaign', action_es: 'calificó para la campaña piloto' },
-    { name: 'Mike T.', city: 'Miami, FL', niche_en: 'Roofing', niche_es: 'Techos', lat: 25.76, lng: -80.19, action_en: 'applied for the 250-Lead Test', action_es: 'aplicó a la Prueba de 250 Leads' },
-    { name: 'Laura G.', city: 'Monterrey', niche_en: 'Med Spa', niche_es: 'Med Spa', lat: 25.67, lng: -100.31, action_en: 'let the bot call her', action_es: 'dejó que el bot la llamara' },
-    { name: 'James W.', city: 'New York', niche_en: 'Mortgage', niche_es: 'Hipotecas', lat: 40.71, lng: -74.01, action_en: 'started his 250-lead test', action_es: 'comenzó su prueba de 250 leads' },
-    { name: 'Diego F.', city: 'Buenos Aires', niche_en: 'Auto Dealership', niche_es: 'Concesionaria', lat: -34.60, lng: -58.38, action_en: 'booked a planning call', action_es: 'agendó una llamada de planeación' },
-    { name: 'Rachel P.', city: 'Los Angeles', niche_en: 'Home Services', niche_es: 'Servicios del Hogar', lat: 34.05, lng: -118.24, action_en: 'applied for the 250-Lead Test', action_es: 'aplicó a la Prueba de 250 Leads' },
-    { name: 'Martín L.', city: 'Medellín', niche_en: 'Dental Clinic', niche_es: 'Clínica Dental', lat: 6.25, lng: -75.56, action_en: 'requested a demo call', action_es: 'solicitó una llamada demo' },
-    { name: 'Emily S.', city: 'Chicago', niche_en: 'HVAC', niche_es: 'Climatización', lat: 41.88, lng: -87.63, action_en: 'qualified for the pilot campaign', action_es: 'calificó para la campaña piloto' },
-    { name: 'Roberto A.', city: 'Guadalajara', niche_en: 'E-commerce', niche_es: 'E-commerce', lat: 20.67, lng: -103.35, action_en: 'let the bot call him', action_es: 'dejó que el bot lo llamara' },
-    { name: 'Jessica M.', city: 'Dallas, TX', niche_en: 'Legal Services', niche_es: 'Servicios Legales', lat: 32.78, lng: -96.80, action_en: 'started her 250-lead test', action_es: 'comenzó su prueba de 250 leads' }
-  ];
-
-  var toast   = document.getElementById('sp-toast');
-  var spName  = document.getElementById('sp-name');
-  var spNiche = document.getElementById('sp-niche');
-  var spAction= document.getElementById('sp-action');
-  var spTime  = document.getElementById('sp-time');
-  var spMapImg= document.getElementById('sp-map-img');
-  var idx     = 0;
-  var showing = false;
-
-  function mapUrl(lat, lng) {
-    var z = 10;
-    var n = Math.pow(2, z);
-    var x = Math.floor((lng + 180) / 360 * n);
-    var y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * n);
-    return 'https://a.basemaps.cartocdn.com/dark_all/' + z + '/' + x + '/' + y + '.png';
-  }
-
-  function showToast() {
-    if (showing) return;
-    showing = true;
-    var item = SP_DATA[idx % SP_DATA.length];
-    var lang = window.__lhLang || 'en';
-    var mins = Math.floor(Math.random() * 14) + 2;
-
-    spMapImg.src = mapUrl(item.lat, item.lng);
-    spName.textContent   = item.name + ' — ' + item.city;
-    spNiche.textContent  = lang === 'es' ? item.niche_es : item.niche_en;
-    spAction.textContent = lang === 'es' ? item.action_es : item.action_en;
-    spTime.textContent   = '🕐 ' + mins + ' ' + (lang === 'es' ? 'min atrás' : 'min ago');
-
-    toast.classList.add('sp-show');
-
-    setTimeout(function() {
-      toast.classList.remove('sp-show');
-      showing = false;
-      idx++;
-    }, 5000);
-  }
-
-  // Start after 10 seconds, then every 25-40 seconds
-  setTimeout(function() {
-    showToast();
-    setInterval(function() {
-      var delay = Math.floor(Math.random() * 15000) + 25000;
-      setTimeout(showToast, delay % 15000);
-    }, 30000);
-  }, 10000);
-})();
-
-/* ── FLOATING CTA BAR — show after hero, hide at #apply ── */
-(function() {
-  var bar   = document.getElementById('float-cta-bar');
-  var hero  = document.getElementById('hero');
-  var apply = document.getElementById('apply');
-  if (!bar || !hero || !apply) return;
-  var heroGone  = false;
-  var applyVis  = false;
-  function update() {
-    if (heroGone && !applyVis) bar.classList.add('fcta-visible');
-    else bar.classList.remove('fcta-visible');
-  }
-  var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (e.target === hero)  { heroGone  = !e.isIntersecting; }
-      if (e.target === apply) { applyVis  =  e.isIntersecting; }
-      update();
-    });
-  }, { threshold: 0.05 });
-  obs.observe(hero);
-  obs.observe(apply);
-})();
-</script>
-
-<!-- EXIT-INTENT POP-UP -->
-<div id="exit-popup-overlay" class="exit-popup-overlay" style="display:none;">
-  <div class="exit-popup-modal">
-    <button class="exit-popup-close" onclick="closeExitPopup()">&times;</button>
-
-    <div class="exit-popup-header">
-      <div class="exit-popup-label" data-i18n="exit_label">🚨 WAIT!</div>
-      <h2 class="exit-popup-title" data-i18n="exit_title">Get the AI Sales Bot on a Call</h2>
-      <p class="exit-popup-subtitle" data-i18n="exit_sub">Don't leave empty-handed. Let Emma call you in the next 5 minutes.</p>
-    </div>
-
-    <form id="exit-popup-form" class="exit-popup-form" onsubmit="submitExitPopupForm(event)">
-      <div class="exit-form-group">
-        <label for="exit-name" data-i18n="exit_name">Name *</label>
-        <input type="text" id="exit-name" name="name" placeholder="Your name" required>
-      </div>
-
-      <div class="exit-form-group">
-        <label for="exit-email" data-i18n="exit_email">Email *</label>
-        <input type="email" id="exit-email" name="email" placeholder="your@email.com" required>
-      </div>
-
-      <div class="exit-form-group">
-        <label for="exit-phone" data-i18n="exit_phone">Phone *</label>
-        <input type="tel" id="exit-phone" name="phone" placeholder="+1 (555) 000-0000" required>
-      </div>
-
-      <button type="submit" class="exit-popup-btn" data-i18n-html="exit_btn">Call Me Right Now →</button>
-
-      <p class="exit-popup-guarantee" data-i18n="exit_guarantee">✓ We'll call you in under 5 minutes</p>
-    </form>
-
-    <div id="exit-popup-success" class="exit-popup-success" style="display:none;">
-      <div class="success-checkmark">✓</div>
-      <h3 data-i18n="exit_success_title">Perfect!</h3>
-      <p data-i18n="exit_success_text">We're calling you in the next 5 minutes.</p>
-      <p class="success-subtext" data-i18n="exit_success_sub">Emma will walk you through a live demo of the AI Sales Bot.</p>
-    </div>
-  </div>
-</div>
-
-<script>
-(function(){
-  var cur=0;
-  var badgeClass=['ready','live','done'];
-  function show(n){
-    [0,1,2].forEach(function(i){
-      var el=document.getElementById('hp-step-'+i);
-      if(el) el.style.display=(i===n?'flex':'none');
-    });
-    var t=(_LH_I18N&&_LH_I18N[window.__lhLang||'en'])||{};
-    var st=document.getElementById('hp-status');
-    var bd=document.getElementById('hp-badge');
-    if(st) st.textContent=t['hp_status_'+n]||['New lead detected','Calling now...','Call complete'][n];
-    if(bd){ bd.textContent=t['hp_badge_'+n]||['READY','LIVE','DONE'][n]; bd.className='hp-badge '+badgeClass[n]; }
-  }
-  show(0);
-  setInterval(function(){ cur=(cur+1)%3; show(cur); },3000);
-})();
 </script>
 </body>
 </html>
