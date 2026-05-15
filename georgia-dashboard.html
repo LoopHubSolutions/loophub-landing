@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Georgia Strategic Revenue — PTS Tax</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+    @keyframes bounce { 0%,100%{transform:translateY(-25%);animation-timing-function:cubic-bezier(.8,0,1,1)} 50%{transform:none;animation-timing-function:cubic-bezier(0,0,.2,1)} }
+    .animate-pulse { animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite; }
+    .animate-bounce { animation: bounce 1s infinite; }
+  </style>
+</head>
+<body class="bg-white text-slate-900">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const Icon = ({ d, size = 14, className = "" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+        className={className}>
+        <path d={d} />
+      </svg>
+    );
+
+    const Icons = {
+      Layers:          "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
+      FileCheck:       "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 15l2 2 4-4",
+      Users:           "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+      MousePointer2:   "M4 4l7.07 17 2.51-7.39L21 11.07z",
+      PhoneIncoming:   "M16 2v6h6M22 8L14.5 15.5M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.09 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z",
+      Mail:            "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6",
+      AlertTriangle:   "M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01",
+      UserMinus:       "M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zM2 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M23 11h-6",
+      ArrowRightCircle:"M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10zM12 8l4 4-4 4M8 12h8",
+      ShieldCheck:     "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4",
+      FileSignature:   "M20 19.5v.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8.5L18 5.5M20 19.5l-4-4m0 0L14 17m2-1.5V22",
+      CheckCircle2:    "M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4L12 14.01l-3-3",
+    };
+
+    const IC = ({ name, size = 14, className = "" }) => (
+      <Icon d={Icons[name] || ""} size={size} className={className} />
+    );
+
+    const realScoring = [
+      { event: 'Signed Contract',        points: '+10', color: 'text-emerald-600', bg: 'bg-emerald-50', icon: 'FileCheck' },
+      { event: 'Attended Meeting',        points: '+5',  color: 'text-blue-600',   bg: 'bg-blue-50',    icon: 'Users' },
+      { event: 'Clicked "Talk to AI"',   points: '+3',  color: 'text-orange-600', bg: 'bg-orange-50',  icon: 'MousePointer2' },
+      { event: 'Called Back (Missed)',    points: '+2',  color: 'text-blue-500',   bg: 'bg-blue-50',    icon: 'PhoneIncoming' },
+      { event: 'Email Replied',           points: '+1',  color: 'text-slate-800',  bg: 'bg-slate-50',   icon: 'Mail' },
+      { event: 'Email Bounce',            points: '-2',  color: 'text-red-400',    bg: 'bg-red-50',     icon: 'AlertTriangle' },
+      { event: 'Unsubscribed',            points: '-6',  color: 'text-red-700',    bg: 'bg-red-100',    icon: 'UserMinus' },
+    ];
+
+    const App = () => (
+      <div className="min-h-screen bg-white text-slate-900">
+
+        {/* HEADER */}
+        <header className="border-b border-slate-200 bg-white sticky top-0 z-50 shadow-sm">
+          <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-4">
+              <div className="bg-slate-900 p-2.5 rounded-xl shadow-lg">
+                <IC name="Layers" size={24} className="text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-black uppercase tracking-tight text-slate-900 leading-none">
+                  Georgia Strategic <span className="text-blue-700">Revenue</span>
+                </h1>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1 italic">
+                  Unified Operational Directives — PTS Tax 2026
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-8">
+              <div className="text-right">
+                <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">Lista original</p>
+                <p className="text-lg font-black text-slate-800 tracking-tighter">21,391</p>
+              </div>
+              <div className="text-right border-l border-slate-200 pl-8">
+                <p className="text-xs font-black text-blue-700 uppercase tracking-tighter">Contactables</p>
+                <p className="text-lg font-black text-slate-800 tracking-tighter">7,531</p>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main className="max-w-5xl mx-auto p-6 space-y-24 mt-12 pb-32">
+
+          {/* NÚMEROS BASE */}
+          <section className="space-y-8">
+            <div className="text-center space-y-2">
+              <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900">
+                Los números <span className="text-blue-700">reales</span>
+              </h2>
+              <p className="text-slate-500 text-base max-w-2xl mx-auto">
+                De 21,391 preparadores de impuestos en Georgia sacados del IRS, solo 7,531 tienen teléfono o email para contactarlos. Los demás se descartan.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: "Lista original",           value: "21,391", color: "border-slate-300" },
+                { label: "Sin contacto (descarte)",  value: "13,860", color: "border-red-300"   },
+                { label: "Con email verificado",     value: "921",    color: "border-blue-400"  },
+                { label: "Solo teléfono (Connie)",   value: "6,610",  color: "border-orange-400"},
+              ].map((s, i) => (
+                <div key={i} className={`p-6 rounded-3xl border-2 ${s.color} bg-white text-center shadow-sm`}>
+                  <p className="text-3xl font-black text-slate-900">{s.value}</p>
+                  <p className="text-xs text-slate-500 mt-2 font-semibold uppercase tracking-tight">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* JOURNEY */}
+          <section className="space-y-10">
+            <div className="text-center space-y-2">
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">
+                Cómo se construyó la lista
+              </h2>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { id: '01', title: 'Lista FOIA nacional', desc: 'Todos los preparadores registrados en el IRS en EE.UU.', bg: 'bg-slate-900', text: 'text-white' },
+                { id: '02', title: 'Filtro Georgia',       desc: '21,391 preparadores solo en Georgia.',                bg: 'bg-blue-700',  text: 'text-white' },
+                { id: '03', title: 'Enriquecimiento',      desc: '7,531 con teléfono o email válido.',                  bg: 'bg-slate-100', text: 'text-slate-900' },
+                { id: '04', title: '4 oleadas de ataque',  desc: 'Clasificados por prioridad y canal.',                 bg: 'bg-orange-600',text: 'text-white' },
+              ].map((step, i) => (
+                <div key={i} className="p-6 rounded-3xl border border-slate-100 bg-white text-center space-y-4 shadow-sm">
+                  <div className={`w-10 h-10 ${step.bg} ${step.text} rounded-xl mx-auto flex items-center justify-center font-black text-sm`}>{step.id}</div>
+                  <div>
+                    <h4 className="font-black text-xs uppercase tracking-tight text-slate-800">{step.title}</h4>
+                    <p className="text-xs text-slate-400 mt-1">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* LAS 4 OLEADAS */}
+          <section className="space-y-10">
+            <div>
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Las 4 oleadas de ataque</h2>
+              <p className="text-slate-500 text-sm mt-2">En qué orden se contacta cada grupo y por qué.</p>
+            </div>
+            <div className="space-y-6">
+
+              {/* Oleada 1 */}
+              <div className="p-8 bg-white rounded-3xl border-2 border-blue-700 shadow-sm">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                  <div className="space-y-3 flex-1">
+                    <p className="text-xs font-black text-blue-700 uppercase tracking-widest">OLEADA 1 — Esta semana</p>
+                    <h4 className="font-black text-lg text-slate-900 uppercase">Certificados activos</h4>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Preparadores que el IRS certificó voluntariamente (credencial AFSP) y cuyo negocio se llama "tax algo".
+                      Son los más serios. Si sacaron una certificación voluntaria del IRS es porque tienen clientes reales y quieren crecer.
+                    </p>
+                    <p className="text-xs font-mono bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 inline-block">
+                      AFSP = Y + "tax" en nombre del negocio + tiene teléfono o email
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 md:min-w-56">
+                    {[
+                      { label: "Total",            value: "465"  },
+                      { label: "Email + Connie",   value: "83"   },
+                      { label: "Solo Connie",      value: "382"  },
+                      { label: "Con Instagram",    value: "219"  },
+                    ].map((s, i) => (
+                      <div key={i} className="bg-blue-50 rounded-2xl p-3 text-center">
+                        <p className="text-xl font-black text-blue-700">{s.value}</p>
+                        <p className="text-xs text-slate-500 mt-1">{s.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Oleada 2 */}
+              <div className="p-8 bg-white rounded-3xl border-2 border-orange-500 shadow-sm">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                  <div className="space-y-3 flex-1">
+                    <p className="text-xs font-black text-orange-500 uppercase tracking-widest">OLEADA 2 — Semana siguiente</p>
+                    <h4 className="font-black text-lg text-slate-900 uppercase">Zonas de alta demanda</h4>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Preparadores de tax sin certificación AFSP que están en ciudades donde la gente gana poco y el reembolso del IRS es la entrada de dinero más grande del año.
+                      Sus clientes piden anticipos de efectivo constantemente. Si no ofrecen bank products, pierden clientes.
+                    </p>
+                    <p className="text-xs text-slate-500 italic">
+                      Ciudades: Jonesboro, Macon, Albany, Decatur, Columbus, Savannah, Douglasville, Conyers, McDonough, Lithonia, Forest Park, Riverdale, Valdosta, Smyrna y otras.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 md:min-w-56">
+                    {[
+                      { label: "Total",          value: "1,341" },
+                      { label: "Email + Connie", value: "126"   },
+                      { label: "Solo Connie",    value: "1,215" },
+                      { label: "Canal SMS",      value: "Pronto"},
+                    ].map((s, i) => (
+                      <div key={i} className="bg-orange-50 rounded-2xl p-3 text-center">
+                        <p className="text-xl font-black text-orange-600">{s.value}</p>
+                        <p className="text-xs text-slate-500 mt-1">{s.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Oleada 3 */}
+              <div className="p-8 bg-white rounded-3xl border-2 border-slate-300 shadow-sm">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                  <div className="space-y-3 flex-1">
+                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest">OLEADA 3 — Después</p>
+                    <h4 className="font-black text-lg text-slate-900 uppercase">Resto de Georgia</h4>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Preparadores de tax en ciudades que no están en la lista de alta demanda.
+                      El copy es educativo — mostrarles el math de cuánto están dejando de ganar por cada cliente sin bank product.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 md:min-w-56">
+                    {[
+                      { label: "Total",          value: "4,237" },
+                      { label: "Email + Connie", value: "453"   },
+                      { label: "Solo Connie",    value: "3,784" },
+                      { label: "Canal SMS",      value: "Pronto"},
+                    ].map((s, i) => (
+                      <div key={i} className="bg-slate-50 rounded-2xl p-3 text-center">
+                        <p className="text-xl font-black text-slate-700">{s.value}</p>
+                        <p className="text-xs text-slate-500 mt-1">{s.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Oleada 4 */}
+              <div className="p-8 bg-white rounded-3xl border-2 border-slate-200 shadow-sm opacity-75">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                  <div className="space-y-3 flex-1">
+                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">OLEADA 4 — Cuando las 3 anteriores conviertan bien</p>
+                    <h4 className="font-black text-lg text-slate-900 uppercase">Servicios adyacentes</h4>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Contadores, firmas de nómina, bookkeepers — no son preparadores de tax puros pero podrían estar interesados.
+                      Requieren más educación. Solo email por ahora.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 md:min-w-56">
+                    {[
+                      { label: "Total",    value: "1,488" },
+                      { label: "Canal",    value: "Email" },
+                    ].map((s, i) => (
+                      <div key={i} className="bg-slate-50 rounded-2xl p-3 text-center">
+                        <p className="text-xl font-black text-slate-500">{s.value}</p>
+                        <p className="text-xs text-slate-400 mt-1">{s.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          {/* PIPELINE CLAY → SMARTLEAD */}
+          <section className="bg-slate-50 p-12 rounded-[48px] border border-slate-200">
+            <h3 className="text-2xl font-black italic uppercase mb-10 text-center text-slate-800 tracking-tighter">
+              Flujo operativo — Clay → Smartlead
+            </h3>
+            <div className="flex flex-col md:flex-row justify-center items-center gap-10 md:gap-16 mb-8">
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-40 h-40 bg-white rounded-3xl shadow-xl border border-slate-100 flex flex-col items-center justify-center p-6">
+                  <img src="https://clay.com/images/clay-logo.png" alt="Clay" className="w-20 h-20 object-contain"
+                    onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
+                  <span className="text-2xl font-black" style={{display:'none'}}>Clay</span>
+                  <span className="font-black text-xs uppercase tracking-widest text-slate-400 mt-2">Enriquecimiento</span>
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <div className="bg-blue-700 p-4 rounded-full shadow-xl animate-pulse">
+                  <IC name="ArrowRightCircle" size={40} className="text-white" />
+                </div>
+                <span className="text-xs font-black text-blue-700 uppercase tracking-widest">Mapeo automático</span>
+              </div>
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-40 h-40 bg-white rounded-3xl shadow-xl border border-slate-100 flex flex-col items-center justify-center p-6">
+                  <img src="https://smartlead.ai/wp-content/uploads/2023/09/smartlead-logo.png" alt="Smartlead" className="w-20 h-20 object-contain"
+                    onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
+                  <span className="text-2xl font-black text-blue-700" style={{display:'none'}}>Smartlead</span>
+                  <span className="font-black text-xs uppercase tracking-widest text-slate-400 mt-2">Envío de emails</span>
+                </div>
+              </div>
+            </div>
+            <div className="text-center p-5 bg-white rounded-2xl border border-slate-200 max-w-xl mx-auto">
+              <p className="text-xs text-slate-600 font-bold uppercase tracking-widest">
+                Yeison: Oleada 1 → campaña GA_CERTIFIED · Oleada 2 → GA_HIGHDEMAND · Oleada 3 → GA_REST
+              </p>
+            </div>
+          </section>
+
+          {/* SCORING */}
+          <section className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+            <div className="space-y-6">
+              <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+                Sistema de puntuación de leads
+              </h2>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                Cada acción que hace el lead suma o resta puntos. El CRM ordena automáticamente quién recibe atención primero.
+              </p>
+              <div className="p-8 bg-blue-700 rounded-3xl text-white shadow-xl">
+                <p className="text-xs font-bold uppercase tracking-widest mb-2 opacity-80">Para pasar a ventas</p>
+                <p className="text-5xl font-black tracking-tighter leading-none">100+ pts</p>
+              </div>
+            </div>
+            <div className="lg:col-span-2 bg-white p-10 border border-slate-200 rounded-3xl shadow-sm">
+              <h4 className="font-black text-xs uppercase mb-8 text-slate-400 tracking-widest border-b border-slate-100 pb-4 text-center">
+                Tabla de puntajes
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {realScoring.map((rule, idx) => (
+                  <div key={idx} className={`flex items-center justify-between p-4 rounded-2xl ${rule.bg} border border-transparent`}>
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-xl bg-white ${rule.color}`}>
+                        <IC name={rule.icon} size={14} />
+                      </div>
+                      <span className="font-bold text-xs tracking-tight text-slate-700 uppercase">{rule.event}</span>
+                    </div>
+                    <span className={`font-black text-sm ${rule.color}`}>{rule.points}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* CONNIE */}
+          <section className="bg-orange-600 text-white rounded-[48px] p-12 shadow-2xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="space-y-8">
+                <h2 className="text-4xl font-black uppercase tracking-tighter leading-none italic">
+                  Connie — el bot que llama
+                </h2>
+                <p className="text-orange-100 text-lg leading-relaxed">
+                  Cuando un lead llega con puntaje alto o pide que lo llamen, Connie contesta en menos de 1 segundo,
+                  verifica cuántos bank products hace la oficina, y agenda la demo con el equipo de PTS.
+                </p>
+                <div className="space-y-4">
+                  {[
+                    { n: "01", title: "Respuesta inmediata", desc: "El lead llega a 100 puntos → Connie llama en ese momento." },
+                    { n: "02", title: "Calificación",        desc: "Connie pregunta cuántos reembolsos procesaron la última temporada. Si dicen más de 50 → pasa a ventas." },
+                  ].map((item, i) => (
+                    <div key={i} className="flex gap-4 items-start bg-white/10 p-4 rounded-2xl border border-white/20">
+                      <div className="w-10 h-10 bg-white text-orange-600 rounded-xl flex-shrink-0 flex items-center justify-center font-black text-sm">{item.n}</div>
+                      <div>
+                        <p className="font-black uppercase text-xs">{item.title}</p>
+                        <p className="text-xs text-orange-100 mt-1">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="bg-white p-10 rounded-3xl text-slate-900 border-4 border-orange-400 relative">
+                <div className="absolute -top-4 -right-4 bg-orange-600 p-3 rounded-2xl shadow-xl animate-bounce">
+                  <IC name="PhoneIncoming" size={24} className="text-white" />
+                </div>
+                <h4 className="font-black text-xs uppercase text-orange-600 mb-6 tracking-widest border-b border-slate-100 pb-4">
+                  Guión estándar de Connie
+                </h4>
+                <p className="text-sm italic leading-relaxed text-slate-700">
+                  "Thank you for calling PTS. I'm Connie. I saw you were reviewing our regional analysis.
+                  To determine if you qualify for our volume-based rebate incentives, please tell me:
+                  <strong> How many refunds did your office e-file last season?</strong>"
+                </p>
+                <div className="mt-8 flex gap-10 pt-6 border-t border-slate-100 text-center justify-center">
+                  <div>
+                    <p className="text-xs font-bold text-slate-400 uppercase">Latencia</p>
+                    <p className="text-3xl font-black text-blue-700">0s</p>
+                  </div>
+                  <div className="border-l border-slate-100 pl-10">
+                    <p className="text-xs font-bold text-slate-400 uppercase">Disponibilidad</p>
+                    <p className="text-3xl font-black text-emerald-600">24/7</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* AVISO LEGAL */}
+          <section className="bg-red-50 border-4 border-dashed border-red-200 rounded-3xl p-12">
+            <div className="max-w-3xl space-y-8">
+              <div className="flex items-center gap-4">
+                <IC name="AlertTriangle" size={32} className="text-red-600" />
+                <h3 className="text-2xl font-black text-red-700 uppercase italic tracking-tighter leading-none">
+                  Aviso operativo — llamadas en frío con IA
+                </h3>
+              </div>
+              <p className="text-red-900 text-lg leading-relaxed font-bold">
+                Tony: La decisión de activar a Connie para llamadas en frío (sin que el contacto haya dado permiso previo) es tuya y solo tuya.
+              </p>
+              <div className="space-y-4">
+                {[
+                  { icon: "ShieldCheck",     text: "PTS Tax advierte sobre los riesgos regulatorios asociados a llamadas automatizadas sin consentimiento (TCPA)." },
+                  { icon: "FileSignature",   text: "Para activar este modo se requiere firma digital reconociendo que la responsabilidad legal no recae sobre el proveedor de tecnología." },
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-4 p-5 bg-white/60 rounded-2xl border border-red-100">
+                    <IC name={item.icon} size={20} className="text-red-700 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-red-800 font-medium">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-4 pt-4">
+                <button className="bg-red-600 text-white px-8 py-3 rounded-2xl text-xs font-black uppercase shadow-lg hover:bg-red-700 transition-colors">
+                  Acepto el riesgo — activar llamadas en frío
+                </button>
+                <button className="bg-white border-2 border-red-200 text-red-600 px-8 py-3 rounded-2xl text-xs font-black uppercase hover:bg-red-50 transition-colors">
+                  Solo trabajar leads con permiso previo
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* ROLES */}
+          <section className="border-t border-slate-200 pt-16">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {[
+                {
+                  name: "Yeison", color: "text-blue-700", border: "border-blue-100",
+                  items: [
+                    "Mantener el mapeo entre Clay y Smartlead activo.",
+                    "Clasificar por credencial AFSP y ciudad de alta demanda.",
+                    "Oleada 1 primero. No empezar oleada 2 hasta que 1 esté corriendo.",
+                  ]
+                },
+                {
+                  name: "Equipo de ventas", color: "text-slate-800", border: "border-slate-200",
+                  items: [
+                    "Solo atender leads con más de 80 puntos.",
+                    "Ejecutar demos para los leads que calificó Connie.",
+                  ]
+                },
+                {
+                  name: "Connie (IA)", color: "text-orange-600", border: "border-orange-100",
+                  items: [
+                    "Responder sin latencia cuando un lead llega a 100 puntos.",
+                    "Calificar: ¿más o menos de 50 bank products la temporada pasada?",
+                  ]
+                },
+              ].map((role, i) => (
+                <div key={i} className="space-y-4">
+                  <h4 className={`font-black text-xs uppercase ${role.color} italic border-b-2 ${role.border} pb-2`}>{role.name}</h4>
+                  <ul className="text-xs text-slate-500 space-y-3 font-medium">
+                    {role.items.map((item, j) => (
+                      <li key={j} className="flex gap-2 items-start">
+                        <IC name="CheckCircle2" size={12} className={`${role.color} flex-shrink-0 mt-0.5`} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+
+        </main>
+
+        <footer className="py-16 bg-white border-t border-slate-200 text-center text-slate-400">
+          <p className="text-xs font-black uppercase tracking-widest opacity-40 italic">
+            PTS Tax · Protocolo Operativo Georgia 2026
+          </p>
+        </footer>
+      </div>
+    );
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
