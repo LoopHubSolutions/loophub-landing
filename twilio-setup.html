@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Twilio — Infraestructura de Voz y SMS · PTS AI</title>
+  <title>Twilio — Voice & SMS Infrastructure · PTS AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -22,10 +22,10 @@
 
     const StatusDot = ({ status }) => {
       const map = {
-        done:    { bg: 'bg-emerald-500',              label: 'Hecho',       text: 'text-emerald-700', light: 'bg-emerald-50 border-emerald-200' },
-        active:  { bg: 'bg-blue-500 animate-pulse',   label: 'En proceso',  text: 'text-blue-700',    light: 'bg-blue-50 border-blue-200' },
-        pending: { bg: 'bg-amber-400',                label: 'Pendiente',   text: 'text-amber-700',   light: 'bg-amber-50 border-amber-200' },
-        blocked: { bg: 'bg-red-500',                  label: 'Bloqueado',   text: 'text-red-700',     light: 'bg-red-50 border-red-200' },
+        done:    { bg: 'bg-emerald-500',              label: 'Done',        text: 'text-emerald-700', light: 'bg-emerald-50 border-emerald-200' },
+        active:  { bg: 'bg-blue-500 animate-pulse',   label: 'In progress', text: 'text-blue-700',    light: 'bg-blue-50 border-blue-200' },
+        pending: { bg: 'bg-amber-400',                label: 'Pending',     text: 'text-amber-700',   light: 'bg-amber-50 border-amber-200' },
+        blocked: { bg: 'bg-red-500',                  label: 'Blocked',     text: 'text-red-700',     light: 'bg-red-50 border-red-200' },
       };
       const s = map[status] || map.pending;
       return (
@@ -80,17 +80,17 @@
                 <img src="/images/twilio-logo.png" alt="Twilio" className="h-7 object-contain" />
                 <div className="border-l border-slate-200 pl-3">
                   <p className="text-sm font-black uppercase tracking-tight text-slate-900 leading-none">PTS AI</p>
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-widest italic">Plataforma Operacional · 2026</p>
+                  <p className="text-xs text-slate-400 font-bold uppercase tracking-widest italic">Operational Platform · 2026</p>
                 </div>
               </div>
               <div className="flex gap-5">
                 <div className="text-right">
                   <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">PTS Tax</p>
-                  <p className="text-sm font-black text-amber-600">A2P en proceso</p>
+                  <p className="text-sm font-black text-amber-600">A2P in progress</p>
                 </div>
                 <div className="text-right border-l border-slate-200 pl-5">
                   <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">Sunset Finance</p>
-                  <p className="text-sm font-black text-red-600">Sin iniciar</p>
+                  <p className="text-sm font-black text-red-600">Not started</p>
                 </div>
               </div>
             </div>
@@ -98,11 +98,11 @@
             <div className="flex gap-1 py-2">
               <a href="/georgia-dashboard" className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition-colors">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
-                Campaña Georgia FOIA
+                Georgia FOIA Campaign
               </a>
               <a href="/twilio-setup" className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest bg-red-600 text-white">
                 <span className="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0" />
-                Twilio — Voz y SMS
+                Twilio — Voice & SMS
               </a>
             </div>
           </div>
@@ -110,28 +110,28 @@
 
         <main className="max-w-5xl mx-auto px-6 py-16 space-y-24 pb-32">
 
-          {/* ESTA SEMANA */}
+          {/* THIS WEEK */}
           <section className="bg-slate-950 rounded-[40px] p-10 text-white space-y-8">
             <div>
-              <p className="text-xs font-black text-red-400 uppercase tracking-widest mb-2">Acción requerida ahora</p>
+              <p className="text-xs font-black text-red-400 uppercase tracking-widest mb-2">Action required now</p>
               <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
-                Esta semana —<br />
-                <span className="text-red-400">qué debe pasar</span>
+                This week —<br />
+                <span className="text-red-400">what needs to happen</span>
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                { owner: 'Mauricio', action: 'Confirmar estado del A2P Campaign con Twilio Support', note: 'El ticket ya está abierto — necesitamos ETA de aprobación', urgent: true },
-                { owner: 'Mauricio', action: 'Emergency Call Registration en todos los números de PTS Tax', note: 'Penalidad $75/número si se omite — hacerlo antes de escalar volumen', urgent: true },
-                { owner: 'Yeison', action: 'STOP → Zoho Do Not Contact en N8N', note: 'Twilio bloquea el número, pero el CRM también debe actualizarse', urgent: false },
-                { owner: 'Jason', action: 'Preparar plan de pruebas para Connie SMS', note: 'Probar AT&T, T-Mobile, Xfinity una vez que A2P sea aprobado', urgent: false },
+                { owner: 'Mauricio', action: 'Confirm A2P Campaign status with Twilio Support', note: 'Ticket is already open — we need an ETA on approval', urgent: true },
+                { owner: 'Mauricio', action: 'Emergency Call Registration on all PTS Tax numbers', note: '$75/number penalty if skipped — do this before scaling volume', urgent: true },
+                { owner: 'Yeison', action: 'STOP → Zoho Do Not Contact in N8N', note: 'Twilio blocks the number, but the CRM also needs to be updated', urgent: false },
+                { owner: 'Jason', action: 'Prepare test plan for Connie SMS', note: 'Test AT&T, T-Mobile, Xfinity once A2P is approved', urgent: false },
               ].map((item, i) => (
                 <div key={i} className={`rounded-2xl p-5 flex items-start gap-4 ${item.urgent ? 'bg-red-950 border border-red-800' : 'bg-slate-900 border border-slate-800'}`}>
                   <div className={`w-2 h-2 rounded-full flex-shrink-0 mt-1.5 ${item.urgent ? 'bg-red-500' : 'bg-slate-600'}`} />
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{item.owner}</span>
-                      {item.urgent && <span className="bg-red-500 text-white text-xs font-black px-2 py-0.5 rounded-full uppercase tracking-widest">Urgente</span>}
+                      {item.urgent && <span className="bg-red-500 text-white text-xs font-black px-2 py-0.5 rounded-full uppercase tracking-widest">Urgent</span>}
                     </div>
                     <p className="text-sm font-bold text-white leading-snug">{item.action}</p>
                     <p className="text-xs text-slate-400 mt-1">{item.note}</p>
@@ -141,25 +141,25 @@
             </div>
           </section>
 
-          {/* YA LO LOGRAMOS */}
+          {/* ALREADY DONE */}
           <section className="space-y-8">
             <div>
-              <p className="text-xs font-black text-emerald-600 uppercase tracking-widest mb-2">Progreso real</p>
+              <p className="text-xs font-black text-emerald-600 uppercase tracking-widest mb-2">Real progress</p>
               <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                Ya lo <span className="text-emerald-600">logramos</span>
+                Already <span className="text-emerald-600">done</span>
               </h2>
-              <p className="text-slate-400 text-sm mt-2">Esto ya está hecho. No retrocedemos de aquí.</p>
+              <p className="text-slate-400 text-sm mt-2">This is complete. We don't go back from here.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                { label: 'Cuenta Twilio activa', sub: 'Ambos clientes — PTS Tax y Sunset Finance tienen acceso al console' },
-                { label: 'Business Profile PTS Tax', sub: 'EIN registrado, dirección confirmada — paso 1 de 4 completado' },
-                { label: 'Brand TCR enviado', sub: 'PTS Tax — en revisión con TCR, aprobación en 24–72h' },
-                { label: 'A2P Campaign enviado a carriers', sub: 'PTS Tax — en revisión · Tony aprobó el upgrade del soporte de Twilio el 15 de Mayo — eso desbloqueó el proceso' },
-                { label: 'Branded Calling — Sunset Finance', sub: '10 sucursales activas — el nombre de la empresa aparece en la pantalla del receptor' },
-                { label: 'Números Twilio comprados', sub: 'Números asignados por cliente — listos para asignar a Campaign una vez aprobada' },
-                { label: 'Reglas SHAFT documentadas', sub: 'El equipo conoce qué contenido está prohibido y por qué' },
-                { label: 'Connie conectada a Twilio', sub: 'La integración de voz funciona — las llamadas salen y entran correctamente' },
+                { label: 'Twilio account active', sub: 'Both clients — PTS Tax and Sunset Finance have console access' },
+                { label: 'Business Profile — PTS Tax', sub: 'EIN registered, address confirmed — step 1 of 4 complete' },
+                { label: 'Brand (TCR) submitted', sub: 'PTS Tax — under review with TCR, approval in 24–72h' },
+                { label: 'A2P Campaign submitted to carriers', sub: 'PTS Tax — under review · Tony approved the Twilio support upgrade on May 15 — that unlocked the process' },
+                { label: 'Branded Calling — Sunset Finance', sub: '10 branches active — company name shows on the recipient\'s screen' },
+                { label: 'Twilio numbers purchased', sub: 'Numbers assigned per client — ready to attach to Campaign once approved' },
+                { label: 'SHAFT rules documented', sub: 'Team knows what content is prohibited and why' },
+                { label: 'Connie connected to Twilio', sub: 'Voice integration working — calls go out and in correctly' },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-4 bg-emerald-50 border border-emerald-200 rounded-2xl p-5">
                   <span className="text-emerald-600 font-black text-lg flex-shrink-0 mt-0.5">✓</span>
@@ -172,21 +172,21 @@
             </div>
           </section>
 
-          {/* PRÓXIMOS HITOS */}
+          {/* UPCOMING MILESTONES */}
           <section className="space-y-8">
             <div>
-              <p className="text-xs font-black text-blue-600 uppercase tracking-widest mb-2">Lo que sigue</p>
+              <p className="text-xs font-black text-blue-600 uppercase tracking-widest mb-2">What's next</p>
               <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                Próximos <span className="text-blue-600">hitos</span>
+                Upcoming <span className="text-blue-600">milestones</span>
               </h2>
             </div>
             <div className="space-y-3">
               {[
-                { dot: 'bg-amber-400', when: 'Esta semana', label: 'A2P Campaign aprobado por carriers — PTS Tax', trigger: 'Desbloqueado por el upgrade de soporte de Twilio aprobado el 15 de Mayo' },
-                { dot: 'bg-amber-400', when: 'Esta semana', label: 'Emergency Call Registration completado — todos los números', trigger: 'Mauricio hace esto en console antes de escalar volumen de SMS' },
-                { dot: 'bg-blue-500', when: 'Próximas 2 semanas', label: 'Connie SMS en vivo — PTS Tax · pruebas AT&T, T-Mobile, Xfinity', trigger: 'Jason corre las pruebas una vez A2P aprobado' },
-                { dot: 'bg-blue-500', when: 'Semana 3', label: 'Business Profile + Brand Sunset Finance iniciados', trigger: 'Empieza después de que PTS Tax esté 100% operacional' },
-                { dot: 'bg-slate-400', when: '1 Junio 2026', label: 'SMS en vivo — Sunset Finance', trigger: 'Objetivo: A2P completado antes del 1 de junio' },
+                { dot: 'bg-amber-400', when: 'This week', label: 'A2P Campaign approved by carriers — PTS Tax', trigger: 'Unlocked by the Twilio support upgrade approved May 15' },
+                { dot: 'bg-amber-400', when: 'This week', label: 'Emergency Call Registration complete — all numbers', trigger: 'Mauricio does this in console before scaling SMS volume' },
+                { dot: 'bg-blue-500', when: 'Next 2 weeks', label: 'Connie SMS live — PTS Tax · AT&T, T-Mobile, Xfinity tests', trigger: 'Jason runs tests once A2P approved' },
+                { dot: 'bg-blue-500', when: 'Week 3', label: 'Business Profile + Brand for Sunset Finance initiated', trigger: 'Starts after PTS Tax is 100% operational' },
+                { dot: 'bg-slate-400', when: 'June 1, 2026', label: 'SMS live — Sunset Finance', trigger: 'Goal: A2P complete before June 1' },
               ].map((m, i) => (
                 <div key={i} className="flex items-start gap-4 p-5 rounded-2xl border border-slate-100 bg-white hover:bg-slate-50 transition-colors">
                   <span className={`w-3 h-3 rounded-full ${m.dot} flex-shrink-0 mt-1`} />
@@ -200,35 +200,35 @@
             </div>
           </section>
 
-          {/* POR QUÉ REGISTRARSE */}
+          {/* WHY REGISTER */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-5">
-              <p className="text-xs font-black text-red-600 uppercase tracking-widest">Antes de tocar cualquier cosa</p>
+              <p className="text-xs font-black text-red-600 uppercase tracking-widest">Before touching anything</p>
               <h2 className="text-4xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                Sin registro.<br />
-                <span className="text-red-600">Sin mensajes.</span>
+                No registration.<br />
+                <span className="text-red-600">No messages.</span>
               </h2>
               <p className="text-slate-500 text-base leading-relaxed">
-                Twilio es solo el tubo. AT&T, T-Mobile y Verizon son la red real. Bloquean cualquier volumen de SMS o llamadas que no esté pre-registrado — automáticamente, algorítmicamente, sin aviso.
+                Twilio is just the pipe. AT&T, T-Mobile, and Verizon are the real network. They block any SMS or call volume that isn't pre-registered — automatically, algorithmically, without notice.
               </p>
               <p className="text-slate-500 text-base leading-relaxed">
-                Esta página es la secuencia exacta para salir en vivo. Un paso fuera de orden y toda la campaña se bloquea.
+                This page is the exact sequence to go live. One step out of order and the entire campaign gets blocked.
               </p>
             </div>
             <div className="bg-slate-900 rounded-[32px] p-8 text-white space-y-4">
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest">La regla del carrier</p>
+              <p className="text-xs font-black text-slate-400 uppercase tracking-widest">The carrier rule</p>
               <p className="text-2xl font-black italic leading-snug text-white">
-                "Si parece mensajería automatizada masiva y no está registrada — la bloqueamos."
+                "If it looks like automated bulk messaging and it's not registered — we block it."
               </p>
-              <p className="text-xs text-slate-500 font-bold">— AT&T, T-Mobile, Verizon (colectivamente)</p>
+              <p className="text-xs text-slate-500 font-bold">— AT&T, T-Mobile, Verizon (collectively)</p>
             </div>
           </section>
 
-          {/* LAS 3 REGLAS — Penalty first */}
+          {/* 3 RULES */}
           <section className="space-y-8">
             <div>
-              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">3 Reglas que no se pueden romper</h2>
-              <p className="text-slate-500 text-sm mt-2">No son recomendaciones. Violar cualquiera puede suspender la cuenta completa.</p>
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">3 Rules that cannot be broken</h2>
+              <p className="text-slate-500 text-sm mt-2">These aren't recommendations. Violating any one of them can suspend the entire account.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
@@ -238,26 +238,26 @@
                   color: 'border-blue-300 bg-blue-50',
                   headColor: 'text-blue-700',
                   penalty: '$500–$1,500',
-                  penaltySub: 'por mensaje / llamada · riesgo de demanda colectiva',
-                  body: 'Antes de que Connie envíe un SMS o haga una llamada automatizada, el prospecto debe haber dado consentimiento. Para la lista FOIA: consentimiento = responder el email. Sin respuesta = sin llamada (o Tony firma la autorización de riesgo por escrito).',
+                  penaltySub: 'per message / call · class action lawsuit risk',
+                  body: 'Before Connie sends an SMS or makes an automated call, the prospect must have given consent. For the FOIA list: consent = replying to the SmartLead email. No reply = no call (or Tony signs a written risk authorization for TCPA exposure).',
                 },
                 {
                   n: '02',
-                  title: 'STOP = Pare total',
+                  title: 'STOP = Full stop',
                   color: 'border-red-300 bg-red-50',
                   headColor: 'text-red-700',
                   penalty: '$500–$1,500',
-                  penaltySub: 'por mensaje enviado después del STOP · sin período de gracia',
-                  body: 'Si un prospecto responde STOP a cualquier SMS, debe ser removido de todo outreach automatizado inmediatamente. Twilio bloquea el número, pero N8N debe sincronizarlo en Zoho como Do Not Contact. Cada mensaje enviado después de un STOP es una violación TCPA separada.',
+                  penaltySub: 'per message sent after STOP · no grace period',
+                  body: 'If a prospect replies STOP to any SMS, they must be removed from all automated outreach immediately. Twilio blocks the number, but N8N must sync it to Zoho as Do Not Contact. Every message sent after a STOP is a separate TCPA violation.',
                 },
                 {
                   n: '03',
-                  title: 'Warmup de volumen',
+                  title: 'Volume Warmup',
                   color: 'border-emerald-300 bg-emerald-50',
                   headColor: 'text-emerald-700',
-                  penalty: 'Número bloqueado',
-                  penaltySub: 'por carrier · recuperación = número nuevo + reiniciar warmup',
-                  body: 'Números nuevos empiezan despacio. Semana 1: máx 200 SMS/día por número. Semana 2: máx 500. Semana 3+: hasta ~2,000. Enviar 5,000 mensajes el día uno desde un número nuevo se ve exactamente como una botnet — el carrier lo bloquea automáticamente.',
+                  penalty: 'Number blocked',
+                  penaltySub: 'by carrier · recovery = new number + restart warmup',
+                  body: 'New numbers start slow. Week 1: max 200 SMS/day per number. Week 2: max 500. Week 3+: up to ~2,000. Sending 5,000 messages on day one from a new number looks exactly like a botnet — the carrier blocks it automatically.',
                 },
               ].map((rule, i) => (
                 <div key={i} className={`rounded-3xl border-2 ${rule.color} p-8 space-y-4`}>
@@ -267,7 +267,7 @@
                   </div>
                   <p className="text-sm text-slate-700 leading-relaxed">{rule.body}</p>
                   <div className="bg-white/80 rounded-xl p-4 border border-white space-y-1">
-                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest">Si se rompe</p>
+                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest">If broken</p>
                     <p className="text-2xl font-black text-red-600 leading-none">{rule.penalty}</p>
                     <p className="text-xs text-slate-500">{rule.penaltySub}</p>
                   </div>
@@ -276,13 +276,13 @@
             </div>
           </section>
 
-          {/* LOS 4 PASOS */}
+          {/* THE 4 STEPS */}
           <section className="space-y-10">
             <div className="space-y-2">
               <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">
-                Los 4 pasos de registro A2P
+                The 4 A2P registration steps
               </h2>
-              <p className="text-slate-500 text-sm">En orden. Cada paso desbloquea el siguiente. No se pueden saltar.</p>
+              <p className="text-slate-500 text-sm">In order. Each step unlocks the next. None can be skipped.</p>
             </div>
 
             <div className="space-y-4">
@@ -292,10 +292,10 @@
                   title: 'Business Profile',
                   headerBg: 'bg-slate-800',
                   color: 'border-slate-300',
-                  desc: 'Tu identidad legal dentro de Twilio. Le dice a la red de carriers quién está enviando los mensajes.',
-                  fields: ['Nombre legal del negocio (igual al EIN)', 'EIN / Tax ID', 'Dirección del negocio', 'URL del sitio web', 'Tipo de empresa (LLC / Corp / Private)'],
-                  rule: 'Un Business Profile por entidad. PTS Tax y Sunset Finance son entidades separadas → perfiles separados.',
-                  time: '~10 min · aprobación instantánea',
+                  desc: 'Your legal identity inside Twilio. Tells the carrier network who is sending the messages.',
+                  fields: ['Legal business name (must match EIN)', 'EIN / Tax ID', 'Business address', 'Website URL', 'Entity type (LLC / Corp / Private)'],
+                  rule: 'One Business Profile per entity. PTS Tax and Sunset Finance are separate entities → separate profiles.',
+                  time: '~10 min · instant approval',
                   status: 'done',
                 },
                 {
@@ -303,44 +303,44 @@
                   title: 'Brand (TCR)',
                   headerBg: 'bg-blue-700',
                   color: 'border-blue-300',
-                  desc: 'El Brand conecta tu Business Profile con The Campaign Registry (TCR) — la base de datos central que todos los carriers verifican antes de permitir tráfico SMS.',
-                  fields: ['Nombre del brand (lo que ven los carriers)', 'Sitio web (debe coincidir con el Business Profile)', 'Vertical / industria (Financial Services)', 'Símbolo bursátil si es pública (N/A para privadas)'],
-                  rule: 'TCR cruza tu información con D&B (Dun & Bradstreet). Inconsistencias = rechazo. El nombre del brand en Twilio debe coincidir con lo que aparece en el sitio web.',
-                  time: '~15 min · aprobación TCR: 24–72 horas',
+                  desc: 'The Brand connects your Business Profile to The Campaign Registry (TCR) — the central database all carriers check before allowing SMS traffic.',
+                  fields: ['Brand name (what carriers see)', 'Website (must match Business Profile)', 'Vertical / industry (Financial Services)', 'Stock ticker if public (N/A for private companies)'],
+                  rule: 'TCR cross-references your info with D&B (Dun & Bradstreet). Inconsistencies = rejection. The brand name in Twilio must match what appears on your website.',
+                  time: '~15 min · TCR approval: 24–72 hours',
                   status: 'active',
                 },
                 {
                   n: '03',
-                  title: 'Campaign (Caso de uso)',
+                  title: 'Campaign (Use case)',
                   headerBg: 'bg-orange-600',
                   color: 'border-orange-300',
-                  desc: 'La Campaign declara exactamente qué envías y a quién. Los carriers evalúan esto para determinar si tu tráfico es legítimo.',
+                  desc: 'The Campaign declares exactly what you\'re sending and to whom. Carriers evaluate this to determine if your traffic is legitimate.',
                   fields: [
-                    'Tipo de uso: Mixed / Marketing / Conversational',
-                    'Descripción: qué dice Connie, por qué, a quién',
-                    'Mensajes de muestra (2 requeridos — deben coincidir con los mensajes reales)',
-                    'Confirmación de opt-in: ¿cómo dieron consentimiento los prospectos?',
-                    'URL de Privacy Policy (debe mencionar SMS)',
-                    'Respuestas HELP / STOP declaradas',
+                    'Use type: Mixed / Marketing / Conversational',
+                    'Description: what Connie says, why, to whom',
+                    'Sample messages (2 required — must match real messages)',
+                    'Opt-in confirmation: how did prospects consent?',
+                    'Privacy Policy URL (must mention SMS)',
+                    'HELP / STOP responses declared',
                   ],
-                  rule: 'Los mensajes de muestra que envías se comparan contra el tráfico real. Si Connie envía mensajes diferentes, los carriers lo marcan. Escribe las muestras lo más cercanas posible a los scripts reales.',
-                  time: '~20 min · revisión de carriers: 1–3 semanas',
+                  rule: 'The sample messages you submit are compared against real traffic. If Connie sends different messages, carriers flag it. Write the samples as close to the actual scripts as possible.',
+                  time: '~20 min · carrier review: 1–3 weeks',
                   status: 'active',
                 },
                 {
                   n: '04',
-                  title: 'Números → Campaign',
+                  title: 'Numbers → Campaign',
                   headerBg: 'bg-emerald-700',
                   color: 'border-emerald-300',
-                  desc: 'Cada número de teléfono físico debe ser asignado a una Campaign. Un número sin asignación de Campaign está bloqueado para tráfico A2P.',
+                  desc: 'Each physical phone number must be assigned to a Campaign. A number without a Campaign assignment is blocked for A2P traffic.',
                   fields: [
-                    'Asignar cada número de Connie a la Campaign aprobada',
-                    'Una Campaign por caso de uso (outreach ≠ confirmaciones)',
-                    'Números PTS Tax → Campaign PTS Tax',
-                    'Números Sunset Finance → Campaign Sunset Finance (separada)',
+                    'Assign each Connie number to the approved Campaign',
+                    'One Campaign per use case (outreach ≠ confirmations)',
+                    'PTS Tax numbers → PTS Tax Campaign',
+                    'Sunset Finance numbers → Sunset Finance Campaign (separate)',
                   ],
-                  rule: 'No uses el mismo número para diferentes casos de uso. Si Connie llama para PTS Tax y Sunset Finance, se necesitan números diferentes asignados a Campaigns diferentes.',
-                  time: 'Instantáneo — se hace dentro de Twilio una vez aprobada la Campaign',
+                  rule: 'Don\'t use the same number for different use cases. If Connie calls for PTS Tax and Sunset Finance, you need different numbers assigned to different Campaigns.',
+                  time: 'Instant — done inside Twilio once Campaign is approved',
                   status: 'pending',
                 },
               ].map((step, i) => (
@@ -359,7 +359,7 @@
                     <div className="space-y-4">
                       <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
                       <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                        <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Campos requeridos</p>
+                        <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Required fields</p>
                         <ul className="space-y-2">
                           {step.fields.map((f, j) => (
                             <li key={j} className="flex items-start gap-2 text-xs text-slate-600">
@@ -371,7 +371,7 @@
                       </div>
                     </div>
                     <div className="bg-amber-50 rounded-2xl p-4 border border-amber-200 self-start">
-                      <p className="text-xs font-black text-amber-700 uppercase tracking-widest mb-2">Regla crítica</p>
+                      <p className="text-xs font-black text-amber-700 uppercase tracking-widest mb-2">Critical rule</p>
                       <p className="text-xs text-slate-700 leading-relaxed">{step.rule}</p>
                     </div>
                   </div>
@@ -381,25 +381,25 @@
 
             {/* Emergency Call */}
             <div className="bg-red-50 border-2 border-dashed border-red-300 rounded-3xl p-8 flex flex-col md:flex-row gap-6 items-start">
-              <div className="bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-xl uppercase tracking-widest flex-shrink-0 self-start">Paso separado</div>
+              <div className="bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-xl uppercase tracking-widest flex-shrink-0 self-start">Separate step</div>
               <div className="space-y-3 flex-1">
                 <p className="font-black text-red-800 uppercase tracking-tight">Emergency Call Registration</p>
                 <p className="text-sm text-slate-700 leading-relaxed">
-                  Cada número necesita Emergency Call Registration de forma independiente al A2P Campaign. Esto es un requerimiento de Twilio — si falta, cobran <strong className="text-red-700">$75 por número</strong>. Es un registro rápido, una sola vez, por número, en el console de Twilio bajo "Phone Numbers → Manage → Emergency Calling."
+                  Each number needs Emergency Call Registration independently from the A2P Campaign. This is a Twilio requirement — if skipped, they charge <strong className="text-red-700">$75 per number</strong>. It's a quick, one-time registration per number, done in the Twilio console under "Phone Numbers → Manage → Emergency Calling."
                 </p>
-                <p className="text-xs font-bold text-red-700">Estado: Pendiente · Mauricio · Hacer antes de escalar volumen de SMS</p>
+                <p className="text-xs font-bold text-red-700">Status: Pending · Mauricio · Do before scaling SMS volume</p>
               </div>
               <div className="flex-shrink-0 text-center">
                 <p className="text-5xl font-black text-red-600">$75</p>
-                <p className="text-xs text-red-500 font-black uppercase tracking-widest">por número<br/>si se omite</p>
+                <p className="text-xs text-red-500 font-black uppercase tracking-widest">per number<br/>if skipped</p>
               </div>
             </div>
           </section>
 
-          {/* ESTADO POR CLIENTE */}
+          {/* STATUS BY CLIENT */}
           <section className="space-y-8">
             <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">
-              Estado actual — por cliente
+              Current status — by client
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* PTS Tax */}
@@ -409,13 +409,13 @@
                   <StatusDot status="active" />
                 </div>
                 <div className="p-6 bg-white space-y-1">
-                  <CheckRow label="Business Profile" status="done" note="EIN registrado, dirección confirmada" />
-                  <CheckRow label="Brand (TCR)" status="active" note="Enviado — esperando aprobación TCR (24–72h)" />
-                  <CheckRow label="A2P Campaign" status="active" note="En proceso con soporte de Twilio" />
-                  <CheckRow label="Números → Campaign" status="pending" note="Bloqueado hasta que Campaign sea aprobada" />
-                  <CheckRow label="Emergency Call Registration" status="pending" note="Penalidad $75/número si se omite" />
-                  <CheckRow label="Pruebas SMS Connie (AT&T, T-Mobile, Xfinity)" status="pending" note="Jason corre las pruebas post aprobación A2P" />
-                  <CheckRow label="STOP → N8N → Zoho Do Not Contact" status="pending" note="Yeison conecta el opt-out al CRM" />
+                  <CheckRow label="Business Profile" status="done" note="EIN registered, address confirmed" />
+                  <CheckRow label="Brand (TCR)" status="active" note="Submitted — awaiting TCR approval (24–72h)" />
+                  <CheckRow label="A2P Campaign" status="active" note="In progress with Twilio support" />
+                  <CheckRow label="Numbers → Campaign" status="pending" note="Blocked until Campaign is approved" />
+                  <CheckRow label="Emergency Call Registration" status="pending" note="$75/number penalty if skipped" />
+                  <CheckRow label="Connie SMS tests (AT&T, T-Mobile, Xfinity)" status="pending" note="Jason runs tests post A2P approval" />
+                  <CheckRow label="STOP → N8N → Zoho Do Not Contact" status="pending" note="Yeison connects opt-out to CRM" />
                 </div>
               </div>
 
@@ -426,30 +426,30 @@
                   <StatusDot status="pending" />
                 </div>
                 <div className="p-6 bg-white space-y-1">
-                  <CheckRow label="Branded Calling (10 sucursales)" status="done" note="Completado — el nombre de la empresa aparece al recibir la llamada" />
-                  <CheckRow label="Business Profile (entidad Sunset)" status="pending" note="Separado de PTS Tax — necesita su propio perfil con EIN" />
-                  <CheckRow label="Brand (TCR)" status="pending" note="Sin iniciar — empieza después de que PTS Tax complete" />
-                  <CheckRow label="A2P Campaign" status="pending" note="Requerido antes del lanzamiento SMS el 1 de Junio" />
-                  <CheckRow label="Números → Campaign" status="pending" note="Bloqueado hasta que Campaign sea aprobada" />
-                  <CheckRow label="Emergency Call Registration" status="pending" note="Los 10 números de sucursales necesitan esto" />
+                  <CheckRow label="Branded Calling (10 branches)" status="done" note="Complete — company name shows when receiving the call" />
+                  <CheckRow label="Business Profile (Sunset entity)" status="pending" note="Separate from PTS Tax — needs its own profile with EIN" />
+                  <CheckRow label="Brand (TCR)" status="pending" note="Not started — begins after PTS Tax completes" />
+                  <CheckRow label="A2P Campaign" status="pending" note="Required before SMS launch on June 1" />
+                  <CheckRow label="Numbers → Campaign" status="pending" note="Blocked until Campaign is approved" />
+                  <CheckRow label="Emergency Call Registration" status="pending" note="All 10 branch numbers need this" />
                 </div>
               </div>
             </div>
           </section>
 
-          {/* CONTENIDO PROHIBIDO — SHAFT */}
+          {/* PROHIBITED CONTENT — SHAFT */}
           <section className="space-y-8">
             <div>
-              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Contenido prohibido — SHAFT</h2>
-              <p className="text-slate-500 text-sm mt-2">El filtro del carrier es NLP, no por palabras clave. Los eufemismos no funcionan.</p>
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Prohibited content — SHAFT</h2>
+              <p className="text-slate-500 text-sm mt-2">The carrier filter is NLP-based, not keyword-based. Euphemisms don't work.</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               {[
-                { letter: 'S', word: 'Sex', desc: 'Contenido o servicios sexuales' },
-                { letter: 'H', word: 'Hate', desc: 'Lenguaje discriminatorio' },
-                { letter: 'A', word: 'Alcohol', desc: 'Sin verificación de edad' },
-                { letter: 'F', word: 'Firearms', desc: 'Armas, piezas, munición' },
-                { letter: 'T', word: 'Tobacco / Cannabis', desc: 'Aunque sea legal' },
+                { letter: 'S', word: 'Sex', desc: 'Sexual content or services' },
+                { letter: 'H', word: 'Hate', desc: 'Discriminatory language' },
+                { letter: 'A', word: 'Alcohol', desc: 'Without age verification' },
+                { letter: 'F', word: 'Firearms', desc: 'Weapons, parts, ammunition' },
+                { letter: 'T', word: 'Tobacco / Cannabis', desc: 'Even if legal' },
               ].map((item, i) => (
                 <div key={i} className="bg-slate-900 text-white rounded-3xl p-6 text-center space-y-2">
                   <p className="text-4xl font-black text-red-500">{item.letter}</p>
@@ -460,33 +460,33 @@
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
-                <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">También de alto riesgo</p>
+                <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Also high-risk</p>
                 <ul className="space-y-1.5 text-xs text-slate-600">
-                  {['Préstamos del día de pago / préstamos express', 'Cobro de deudas (reglas FDCPA separadas)', 'Farmacias no verificadas', 'Afirmaciones de salud "milagrosas"', 'Consejos de inversión de alto riesgo'].map((item, i) => (
+                  {['Payday loans / short-term express loans', 'Debt collection (separate FDCPA rules)', 'Unverified pharmacies', '"Miracle" health claims', 'High-risk investment advice'].map((item, i) => (
                     <li key={i} className="flex items-start gap-2"><span className="text-red-400 font-black">·</span>{item}</li>
                   ))}
                 </ul>
               </div>
               <div className="bg-emerald-50 rounded-2xl p-5 border border-emerald-200">
-                <p className="text-xs font-black text-emerald-700 uppercase tracking-widest mb-3">PTS Tax / Sunset Finance — zona segura</p>
-                <p className="text-xs text-slate-600 leading-relaxed">Servicios de preparación de impuestos y productos bancarios (anticipos de reembolso, productos de ingreso ganado) son servicios financieros legítimos. El copy debe ser claro, profesional y no parecerse al lenguaje de préstamos rápidos. "Bank products" = bien. "Consigue efectivo ahora, sin preguntas" = bloqueado.</p>
+                <p className="text-xs font-black text-emerald-700 uppercase tracking-widest mb-3">PTS Tax / Sunset Finance — safe zone</p>
+                <p className="text-xs text-slate-600 leading-relaxed">Tax preparation services and banking products (refund advances, earned income products) are legitimate financial services. Copy must be clear, professional, and not resemble short-term loan language. "Bank products" = fine. "Get cash now, no questions asked" = blocked.</p>
               </div>
             </div>
           </section>
 
-          {/* CUÁNTO TARDA CADA PASO */}
+          {/* HOW LONG EACH STEP TAKES */}
           <section className="bg-slate-50 rounded-[40px] p-12 border border-slate-200 space-y-8">
             <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900 text-center">
-              Cuánto tarda cada paso
+              How long each step takes
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { title: 'Business Profile', time: 'Instantáneo', sub: 'Se llena en ~10 minutos, aprobación inmediata', color: 'text-emerald-600' },
-                { title: 'Brand (TCR)', time: '24–72 hrs', sub: 'TCR revisa los datos del registro empresarial', color: 'text-blue-600' },
-                { title: 'A2P Campaign', time: '1–3 semanas', sub: 'Los carriers revisan manualmente el caso de uso y mensajes de muestra', color: 'text-amber-600' },
-                { title: 'Asignación de números', time: 'Instantáneo', sub: 'Se hace dentro de Twilio una vez aprobada la Campaign', color: 'text-emerald-600' },
-                { title: 'Emergency Call Reg.', time: 'Instantáneo', sub: 'Por número, en el console de Twilio', color: 'text-emerald-600' },
-                { title: 'Branded Calling', time: '1–2 semanas', sub: 'Rollout carrier por carrier — ya hecho para Sunset 10 sucursales', color: 'text-blue-600' },
+                { title: 'Business Profile', time: 'Instant', sub: 'Takes ~10 minutes to fill out, immediate approval', color: 'text-emerald-600' },
+                { title: 'Brand (TCR)', time: '24–72 hrs', sub: 'TCR reviews against business registry data', color: 'text-blue-600' },
+                { title: 'A2P Campaign', time: '1–3 weeks', sub: 'Carriers manually review the use case and sample messages', color: 'text-amber-600' },
+                { title: 'Number assignment', time: 'Instant', sub: 'Done inside Twilio once Campaign is approved', color: 'text-emerald-600' },
+                { title: 'Emergency Call Reg.', time: 'Instant', sub: 'Per number, in the Twilio console', color: 'text-emerald-600' },
+                { title: 'Branded Calling', time: '1–2 weeks', sub: 'Carrier-by-carrier rollout — already done for Sunset 10 branches', color: 'text-blue-600' },
               ].map((item, i) => (
                 <div key={i} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm text-center space-y-2">
                   <p className="text-xs font-black text-slate-500 uppercase tracking-widest">{item.title}</p>
@@ -497,11 +497,11 @@
             </div>
           </section>
 
-          {/* QUIÉN HACE QUÉ — Y QUÉ NO HACE */}
+          {/* WHO DOES WHAT */}
           <section className="space-y-8">
             <div>
-              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Quién hace qué — y qué no hace</h2>
-              <p className="text-slate-400 text-sm mt-1">Sin ambigüedad. Si no está en tu columna de ✓, no lo toques.</p>
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Who does what — and what they don't</h2>
+              <p className="text-slate-400 text-sm mt-1">No ambiguity. If it's not in your ✓ column, don't touch it.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
@@ -510,16 +510,16 @@
                   color: 'text-slate-900', border: 'border-slate-900',
                   headerBg: 'bg-slate-900',
                   does: [
-                    'Maneja la cuenta Twilio y todos los registros',
-                    'Envía Brand + Campaign para PTS Tax',
-                    'Abre registro para Sunset Finance después de que PTS Tax complete',
-                    'Emergency Call Registration por número',
-                    'Maneja los tickets de soporte con Twilio',
+                    'Owns the Twilio account and all registrations',
+                    'Submits Brand + Campaign for PTS Tax',
+                    'Opens Sunset Finance registration after PTS Tax completes',
+                    'Emergency Call Registration per number',
+                    'Manages support tickets with Twilio',
                   ],
                   doesNot: [
-                    'No corre pruebas de SMS (eso es Jason)',
-                    'No conecta N8N al CRM (eso es Yeison)',
-                    'No escala volumen sin warmup completado',
+                    'Does not run SMS tests (that\'s Jason)',
+                    'Does not connect N8N to CRM (that\'s Yeison)',
+                    'Does not scale volume without warmup complete',
                   ],
                 },
                 {
@@ -527,15 +527,15 @@
                   color: 'text-blue-700', border: 'border-blue-200',
                   headerBg: 'bg-blue-700',
                   does: [
-                    'Conecta STOP responses en N8N → Zoho (Do Not Contact)',
-                    'Asegura que el opt-out se propague a todas las campañas activas',
-                    'Monitorea tasas de entrega en SmartLead',
-                    'Conecta el mapeo de API Clay → SmartLead',
+                    'Connects STOP responses in N8N → Zoho (Do Not Contact)',
+                    'Ensures opt-out propagates to all active campaigns',
+                    'Monitors delivery rates in SmartLead',
+                    'Connects Clay → SmartLead API mapping',
                   ],
                   doesNot: [
-                    'No toca la cuenta Twilio directamente',
-                    'No hace registros A2P',
-                    'No corre pruebas manuales de SMS',
+                    'Does not touch the Twilio account directly',
+                    'Does not do A2P registrations',
+                    'Does not run manual SMS tests',
                   ],
                 },
                 {
@@ -543,15 +543,15 @@
                   color: 'text-orange-600', border: 'border-orange-200',
                   headerBg: 'bg-orange-600',
                   does: [
-                    'Prueba SMS de Connie: AT&T, T-Mobile, Xfinity una vez aprobado A2P',
-                    'Verifica memoria de sesión — Connie no re-pregunta lo ya respondido',
-                    'Valida comportamiento de handoff cuando el prospecto pide humano',
-                    'Confirma que "¿Sigues ahí?" solo se activa después de conversación previa',
+                    'Tests Connie SMS: AT&T, T-Mobile, Xfinity once A2P approved',
+                    'Verifies session memory — Connie doesn\'t re-ask already-answered questions',
+                    'Validates handoff behavior when prospect requests a human',
+                    'Confirms "Are you still there?" only triggers after prior conversation',
                   ],
                   doesNot: [
-                    'No hace cambios en la cuenta Twilio',
-                    'No modifica flujos de N8N',
-                    'No escala Connie sin que las pruebas pasen',
+                    'Does not make changes to the Twilio account',
+                    'Does not modify N8N flows',
+                    'Does not scale Connie before tests pass',
                   ],
                 },
               ].map((role, i) => (
@@ -561,7 +561,7 @@
                   </div>
                   <div className="p-6 space-y-5 bg-white">
                     <div className="space-y-2">
-                      <p className="text-xs font-black text-emerald-600 uppercase tracking-widest">✓ Hace</p>
+                      <p className="text-xs font-black text-emerald-600 uppercase tracking-widest">✓ Does</p>
                       <ul className="space-y-2">
                         {role.does.map((item, j) => (
                           <li key={j} className="flex items-start gap-2 text-xs text-slate-600">
@@ -572,7 +572,7 @@
                       </ul>
                     </div>
                     <div className="border-t border-slate-100 pt-4 space-y-2">
-                      <p className="text-xs font-black text-red-500 uppercase tracking-widest">✗ No hace</p>
+                      <p className="text-xs font-black text-red-500 uppercase tracking-widest">✗ Does not</p>
                       <ul className="space-y-2">
                         {role.doesNot.map((item, j) => (
                           <li key={j} className="flex items-start gap-2 text-xs text-slate-400">
@@ -588,37 +588,37 @@
             </div>
           </section>
 
-          {/* PREGUNTAS Y RESPUESTAS */}
+          {/* FAQ */}
           <section className="space-y-8">
             <div>
-              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Preguntas & Respuestas</h2>
-              <p className="text-slate-500 text-sm mt-1">Si tu pregunta no está aquí, lee esta página de nuevo antes de agendar una llamada.</p>
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Questions & Answers</h2>
+              <p className="text-slate-500 text-sm mt-1">If your question isn't here, re-read this page before scheduling a call.</p>
             </div>
             <div className="space-y-2">
               {[
                 {
-                  q: "¿Por qué no podemos enviar SMS ahora si la cuenta ya está activa?",
-                  a: "Tener una cuenta Twilio activa no es lo mismo que estar registrado para A2P. La cuenta te permite hacer llamadas y enviar mensajes de prueba. Pero la red de carriers (AT&T, T-Mobile, Verizon) filtra cualquier cuenta que envíe volumen de SMS sin una Campaign A2P aprobada. Los mensajes se descartan silenciosamente — no recibes un error, simplemente no llegan."
+                  q: "Why can't we send SMS now if the account is already active?",
+                  a: "Having an active Twilio account is not the same as being registered for A2P. The account lets you make calls and send test messages. But the carrier network (AT&T, T-Mobile, Verizon) filters any account sending SMS volume without an approved A2P Campaign. Messages are silently discarded — you don't get an error, they just don't arrive."
                 },
                 {
-                  q: "¿Sunset Finance necesita su propio registro separado del de PTS Tax?",
-                  a: "Sí. Son entidades legales diferentes con EINs diferentes. Cada entidad necesita su propio Business Profile, su propio Brand, y su propia Campaign. Mezclarlos bajo el mismo Brand es una violación de registro — los carriers verifican que el contenido del mensaje coincida con la entidad declarada."
+                  q: "Does Sunset Finance need its own separate registration from PTS Tax?",
+                  a: "Yes. They are different legal entities with different EINs. Each entity needs its own Business Profile, its own Brand, and its own Campaign. Mixing them under the same Brand is a registration violation — carriers verify that message content matches the declared entity."
                 },
                 {
-                  q: "¿Qué pasa si el carrier bloquea un número durante una campaña?",
-                  a: "El número deja de entregar mensajes. No hay notificación automática — solo lo sabrás por la caída en las tasas de entrega en los logs de Twilio. Recuperación: retirar el número, conseguir uno nuevo, asignarlo a la Campaign aprobada, y reiniciar el warmup desde cero. Por eso el warmup desde el día uno importa."
+                  q: "What happens if a carrier blocks a number mid-campaign?",
+                  a: "The number stops delivering messages. There's no automatic notification — you'll only know by the drop in delivery rates in Twilio logs. Recovery: retire the number, get a new one, assign it to the approved Campaign, and restart the warmup from zero. That's why warmup from day one matters."
                 },
                 {
-                  q: "¿Puede Connie usar el mismo número para llamadas Y SMS?",
-                  a: "Sí — un número 10DLC puede manejar tanto llamadas de voz como SMS. Pero el registro A2P cubre el tráfico de SMS. Las llamadas de voz van por la infraestructura de voz de Twilio (cubierta por STIR/SHAKEN, no A2P). El número necesita estar registrado para A2P antes de enviar SMS, independientemente de si también hace llamadas."
+                  q: "Can Connie use the same number for both calls AND SMS?",
+                  a: "Yes — a 10DLC number can handle both voice calls and SMS. But A2P registration covers SMS traffic. Voice calls go through Twilio's voice infrastructure (covered by STIR/SHAKEN, not A2P). The number needs to be A2P registered before sending SMS, regardless of whether it also makes calls."
                 },
                 {
-                  q: "¿Qué es exactamente el 'opt-in' para los prospectos de la lista FOIA?",
-                  a: "La lista FOIA es un directorio público del IRS — esos prospectos nunca consintieron ser llamados por Connie. Dos caminos conformes: (A) Connie llama solo si el prospecto respondió primero al email de SmartLead — esa respuesta es consentimiento implícito. (B) Tony firma una autorización escrita aceptando el riesgo TCPA de llamar sin consentimiento. La opción A es siempre el camino más seguro y legalmente más limpio."
+                  q: "What exactly counts as 'opt-in' for FOIA list prospects?",
+                  a: "The FOIA list is a public IRS directory — those prospects never consented to be called by Connie. Two compliant paths: (A) Connie calls only if the prospect replied first to the SmartLead email — that reply is implied consent. (B) Tony signs a written authorization accepting the TCPA risk of calling without consent. Option A is always the safer, legally cleaner path."
                 },
                 {
-                  q: "¿Cuál es la diferencia entre el registro A2P y Branded Calling?",
-                  a: "El registro A2P es para SMS — le dice a la red de carriers que tus textos son comunicaciones empresariales legítimas, no spam. Branded Calling es para voz — muestra el nombre y logo de tu empresa en la pantalla del receptor en lugar de un número desconocido. Ambos son registros separados. El Branded Calling de Sunset Finance ya está hecho. El A2P para SMS todavía está pendiente."
+                  q: "What's the difference between A2P registration and Branded Calling?",
+                  a: "A2P registration is for SMS — it tells the carrier network that your texts are legitimate business communications, not spam. Branded Calling is for voice — it shows your company name and logo on the recipient's screen instead of an unknown number. Both are separate registrations. Sunset Finance's Branded Calling is already done. A2P for SMS is still pending."
                 },
               ].map((item, i) => (
                 <FAQItem key={i} q={item.q} a={item.a} />
@@ -629,23 +629,23 @@
           {/* CTA */}
           <section className="bg-slate-900 text-white rounded-[48px] p-12 text-center space-y-6">
             <div className="space-y-2">
-              <p className="text-xs font-black uppercase tracking-widest text-slate-400">¿Sigues bloqueado?</p>
+              <p className="text-xs font-black uppercase tracking-widest text-slate-400">Still blocked?</p>
               <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
-                Agéndala.<br />
-                <span className="text-red-400">Ven con el error de Twilio.</span>
+                Schedule a call.<br />
+                <span className="text-red-400">Bring the Twilio error.</span>
               </h2>
             </div>
             <p className="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
-              Trae el mensaje de error exacto, el paso en el que estás, y el nombre de la cuenta. "No funciona" toma 10× más tiempo que "Brand registration returned error code 60600."
+              Bring the exact error message, the step you're on, and the account name. "It doesn't work" takes 10× longer than "Brand registration returned error code 60600."
             </p>
             <div className="flex flex-wrap gap-4 justify-center pt-2">
               <a href="https://calendly.com/mauricio-frontdesk" target="_blank" rel="noopener noreferrer"
                 className="bg-red-600 hover:bg-red-700 transition-colors text-white px-10 py-4 rounded-2xl text-sm font-black uppercase tracking-widest shadow-lg">
-                Agendar llamada
+                Schedule a call
               </a>
               <a href="mailto:mauricio.frontdesk@gmail.com"
                 className="bg-white/10 hover:bg-white/20 transition-colors text-white px-10 py-4 rounded-2xl text-sm font-black uppercase tracking-widest border border-white/20">
-                Enviar email
+                Send email
               </a>
             </div>
           </section>
@@ -655,8 +655,8 @@
         <footer className="py-12 bg-white border-t border-slate-200 text-center">
           <div className="flex items-center justify-center gap-6 opacity-40">
             <img src="/images/twilio-logo.png" alt="Twilio" className="h-5 object-contain grayscale" />
-            <span className="text-xs font-black uppercase tracking-widest text-slate-400 italic">PTS AI · Protocolo Operacional Twilio 2026</span>
-            <a href="/georgia-dashboard" className="text-xs font-black uppercase tracking-widest text-slate-400 hover:opacity-100">← Campaña Georgia</a>
+            <span className="text-xs font-black uppercase tracking-widest text-slate-400 italic">PTS AI · Twilio Operational Protocol 2026</span>
+            <a href="/georgia-dashboard" className="text-xs font-black uppercase tracking-widest text-slate-400 hover:opacity-100">← Georgia Campaign</a>
           </div>
         </footer>
 
