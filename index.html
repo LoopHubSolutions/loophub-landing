@@ -469,6 +469,7 @@ body::before{
 }
 .gc-proof-img{
   width:100%;
+  height:auto;
   max-width:800px;
   border-radius:14px;
   box-shadow:0 8px 40px rgba(0,0,0,.14);
@@ -482,6 +483,36 @@ body::before{
   font-style:italic;
   line-height:1.5;
 }
+.proof-estimator-wrap{
+  max-width:620px;
+  margin:52px auto 0;
+  background:#111318;
+  border-radius:20px;
+  padding:28px 28px 24px;
+}
+.proof-estimator-eyebrow{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--or);
+  margin-bottom:16px;
+}
+.proof-estimator-cta{
+  display:block;
+  margin-top:20px;
+  width:100%;
+  background:var(--or);
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
+  text-align:center;
+  padding:14px 0;
+  border-radius:12px;
+  text-decoration:none;
+  transition:opacity .15s;
+}
+.proof-estimator-cta:hover{ opacity:.88; }
 #s-proof{
   width:100%;
   background:#f7f7f5;
@@ -2138,6 +2169,37 @@ footer{
     <p class="gc-proof-caption">80% of sales happen between the 5th and 12th contact — yet most teams stop after one.</p>
   </div>
 
+  <!-- ESTIMATOR — empowerment widget below the data -->
+  <div class="proof-estimator-wrap rv rv-d1">
+    <p class="proof-estimator-eyebrow">Run the numbers for your team</p>
+    <div class="pricing-estimator" style="margin-top:0">
+      <div class="pe-title">Estimate your usage</div>
+      <div class="pe-row">
+        <div class="pe-group">
+          <label class="pe-label">Monthly leads</label>
+          <div class="pe-options" id="pe-vol">
+            <button class="pe-btn active" data-vol="1">100–300</button>
+            <button class="pe-btn" data-vol="2">300–700</button>
+            <button class="pe-btn" data-vol="3">700–1,500</button>
+            <button class="pe-btn" data-vol="4">1,500+</button>
+          </div>
+        </div>
+        <div class="pe-group">
+          <label class="pe-label">Follow-ups per lead</label>
+          <div class="pe-options" id="pe-fu">
+            <button class="pe-btn active" data-fu="1">2–3</button>
+            <button class="pe-btn" data-fu="2">4–5</button>
+            <button class="pe-btn" data-fu="3">6–8</button>
+          </div>
+        </div>
+      </div>
+      <div class="pe-result" id="pe-result">
+        <span class="pe-tier" id="pe-tier">Starter</span>
+        <span class="pe-desc" id="pe-desc">Good fit for growing teams testing the system. Fully included in the 250-lead test.</span>
+      </div>
+    </div>
+    <a class="proof-estimator-cta" href="#s-form">Apply for the 250-Lead Test →</a>
+  </div>
 
 </section>
 
@@ -2173,34 +2235,6 @@ footer{
 
       <div class="pricing-tagline" style="font-size:24px;margin-bottom:10px">Stop losing leads<br>you already paid for.</div>
       <p class="pricing-desc">Calls every lead in under 8 seconds. Follows up automatically. Qualifies, books, or transfers — with every outcome logged.</p>
-
-      <!-- ESTIMATOR -->
-      <div class="pricing-estimator">
-        <div class="pe-title">Estimate your usage</div>
-        <div class="pe-row">
-          <div class="pe-group">
-            <label class="pe-label">Monthly leads</label>
-            <div class="pe-options" id="pe-vol">
-              <button class="pe-btn active" data-vol="1">100–300</button>
-              <button class="pe-btn" data-vol="2">300–700</button>
-              <button class="pe-btn" data-vol="3">700–1,500</button>
-              <button class="pe-btn" data-vol="4">1,500+</button>
-            </div>
-          </div>
-          <div class="pe-group">
-            <label class="pe-label">Follow-ups per lead</label>
-            <div class="pe-options" id="pe-fu">
-              <button class="pe-btn active" data-fu="1">2–3</button>
-              <button class="pe-btn" data-fu="2">4–5</button>
-              <button class="pe-btn" data-fu="3">6–8</button>
-            </div>
-          </div>
-        </div>
-        <div class="pe-result" id="pe-result">
-          <span class="pe-tier" id="pe-tier">Starter</span>
-          <span class="pe-desc" id="pe-desc">Good fit for growing teams testing the system. Fully included in the 250-lead test.</span>
-        </div>
-      </div>
 
       <ul class="pricing-features" style="margin-top:20px">
         <li><span class="pf-check">✓</span>Leads contacted in seconds, not days</li>
