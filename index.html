@@ -1,29 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '749839568208571');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=749839568208571&ev=PageView&noscript=1"/></noscript>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X0TW55L1T1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X0TW55L1T1', { 'send_page_view': true, 'cookie_flags': 'SameSite=None;Secure' });
-</script>
+<!-- Analytics deferred — loaded after page paint to avoid blocking FCP/LCP -->
 
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -2134,7 +2112,7 @@ footer{
   <!-- GRANT CARDONE SOCIAL PROOF -->
   <div class="gc-proof rv rv-d3">
     <div class="gc-proof-label">The data behind it</div>
-    <img src="images/follow-up-gap.png" alt="Grant Cardone — 80% of sales happen between the 5th and 12th contact" class="gc-proof-img" loading="lazy"/>
+    <img src="images/follow-up-gap.png" alt="Grant Cardone — 80% of sales happen between the 5th and 12th contact" class="gc-proof-img" loading="lazy" width="800" height="500"/>
     <p class="gc-proof-caption">80% of sales happen between the 5th and 12th contact — yet most teams stop after one.</p>
   </div>
 
@@ -2806,6 +2784,32 @@ if (applyForm) {
     formSucc.style.display = 'flex';
   });
 }
+</script>
+
+<!-- Analytics: deferred after load event — tracking accuracy maintained, zero render-blocking penalty -->
+<script>
+window.addEventListener('load', function() {
+  // Facebook Pixel
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','749839568208571');
+  fbq('track','PageView');
+
+  // GA4
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  var ga = document.createElement('script');
+  ga.async = true;
+  ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-X0TW55L1T1';
+  ga.onload = function() {
+    gtag('js', new Date());
+    gtag('config', 'G-X0TW55L1T1', { send_page_view: true, cookie_flags: 'SameSite=None;Secure' });
+  };
+  document.head.appendChild(ga);
+});
 </script>
 </body>
 </html>
