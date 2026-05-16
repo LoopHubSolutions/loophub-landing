@@ -3,1486 +3,752 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Twilio — Voice & SMS Complete Reference · PTS AI</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <title>Twilio — Voice & SMS Infrastructure · PTS AI</title>
+  <script src="https://cdn.tailwindcss.com"><\/script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"><\/script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"><\/script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
     body { font-family: 'Inter', sans-serif; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
     .animate-pulse { animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { text-align: left; padding: 10px 14px; }
-    tr:nth-child(even) td { background-color: #f8fafc; }
+    html { scroll-behavior: smooth; }
   </style>
 </head>
 <body class="bg-white text-slate-900">
   <div id="root"></div>
-
   <script type="text/babel">
 
-    const StatusDot = ({ status }) => {
-      const map = {
-        done:    { bg: 'bg-emerald-500',              label: 'Done',        text: 'text-emerald-700', light: 'bg-emerald-50 border-emerald-200' },
-        active:  { bg: 'bg-blue-500 animate-pulse',   label: 'In progress', text: 'text-blue-700',    light: 'bg-blue-50 border-blue-200' },
-        pending: { bg: 'bg-amber-400',                label: 'Pending',     text: 'text-amber-700',   light: 'bg-amber-50 border-amber-200' },
-        blocked: { bg: 'bg-red-500',                  label: 'Blocked',     text: 'text-red-700',     light: 'bg-red-50 border-red-200' },
-      };
-      const s = map[status] || map.pending;
+    /* Primitives */
+    const STATUS = {
+      done:    { dot:'bg-emerald-500',            label:'Done',        text:'text-emerald-700', pill:'bg-emerald-50 border-emerald-200' },
+      active:  { dot:'bg-blue-500 animate-pulse', label:'In progress', text:'text-blue-700',    pill:'bg-blue-50 border-blue-200' },
+      pending: { dot:'bg-amber-400',              label:'Pending',     text:'text-amber-700',   pill:'bg-amber-50 border-amber-200' },
+      blocked: { dot:'bg-red-500',                label:'Blocked',     text:'text-red-700',     pill:'bg-red-50 border-red-200' },
+    };
+    const Badge = ({ status }) => {
+      const s = STATUS[status] || STATUS.pending;
       return (
-        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-widest border ${s.light} ${s.text}`}>
-          <span className={`w-1.5 h-1.5 rounded-full ${s.bg} flex-shrink-0`} />
+        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-widest border ${s.pill} ${s.text}`}>
+          <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${s.dot}`} />
           {s.label}
         </span>
       );
     };
-
     const CheckRow = ({ label, status, note }) => {
-      const icon = status === 'done' ? '✓' : status === 'active' ? '◉' : status === 'blocked' ? '✕' : '○';
-      const color = status === 'done' ? 'text-emerald-600' : status === 'active' ? 'text-blue-600' : status === 'blocked' ? 'text-red-500' : 'text-amber-500';
+      const icons  = { done:'✓', active:'◉', blocked:'✕', pending:'○' };
+      const colors = { done:'text-emerald-500', active:'text-blue-500', blocked:'text-red-500', pending:'text-amber-400' };
       return (
         <div className="flex items-start gap-3 py-3 border-b border-slate-100 last:border-0">
-          <span className={`font-black text-sm mt-0.5 flex-shrink-0 ${color}`}>{icon}</span>
+          <span className={`text-sm font-black mt-0.5 flex-shrink-0 w-4 ${colors[status]||colors.pending}`}>{icons[status]||'○'}</span>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-slate-800">{label}</p>
+            <p className="text-sm font-semibold text-slate-800">{label}</p>
             {note && <p className="text-xs text-slate-400 mt-0.5">{note}</p>}
           </div>
-          <StatusDot status={status} />
+          <Badge status={status} />
         </div>
       );
     };
-
-    const FAQItem = ({ q, a }) => {
-      const [open, setOpen] = React.useState(false);
+    const Accordion = ({ title, subtitle, children, defaultOpen=false }) => {
+      const [open, setOpen] = React.useState(defaultOpen);
       return (
         <div className="border border-slate-200 rounded-2xl overflow-hidden">
-          <button onClick={() => setOpen(!open)} className="w-full flex items-start justify-between gap-4 p-5 text-left hover:bg-slate-50 transition-colors">
-            <span className="text-sm font-bold text-slate-800 leading-snug">{q}</span>
-            <span className={`text-lg font-black flex-shrink-0 mt-0.5 transition-colors ${open ? 'text-red-600' : 'text-slate-300'}`}>{open ? '−' : '+'}</span>
-          </button>
-          {open && (
-            <div className="px-5 pb-5 bg-red-50 border-t border-red-100">
-              <p className="text-sm text-slate-600 leading-relaxed pt-4">{a}</p>
+          <button onClick={() => setOpen(!open)}
+            className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left hover:bg-slate-50 transition-colors">
+            <div>
+              <p className="text-sm font-bold text-slate-900">{title}</p>
+              {subtitle && <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>}
             </div>
-          )}
+            <span className={`text-lg font-black flex-shrink-0 transition-transform ${open?'rotate-45 text-slate-400':'text-slate-300'}`}>+</span>
+          </button>
+          {open && <div className="border-t border-slate-100 bg-slate-50">{children}</div>}
         </div>
       );
     };
-
-    const SectionLabel = ({ color, children }) => (
-      <p className={`text-xs font-black uppercase tracking-widest mb-2 ${color || 'text-slate-400'}`}>{children}</p>
+    const Tabs = ({ tabs, children }) => {
+      const [active, setActive] = React.useState(0);
+      return (
+        <div>
+          <div className="flex gap-1 mb-6 bg-slate-100 p-1 rounded-2xl">
+            {tabs.map((t,i) => (
+              <button key={i} onClick={() => setActive(i)}
+                className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors ${active===i?'bg-white text-slate-900 shadow-sm':'text-slate-400 hover:text-slate-600'}`}>
+                {t}
+              </button>
+            ))}
+          </div>
+          {children[active]}
+        </div>
+      );
+    };
+    const SH = ({ eyebrow, title, sub, ec='text-slate-400' }) => (
+      <div className="mb-8">
+        {eyebrow && <p className={`text-xs font-black uppercase tracking-widest mb-2 ${ec}`}>{eyebrow}</p>}
+        <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">{title}</h2>
+        {sub && <p className="text-sm text-slate-400 mt-1">{sub}</p>}
+      </div>
     );
 
-    const SectionTitle = ({ children, accent }) => (
-      <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">{children}</h2>
+    /* ── This Week ── */
+    const ThisWeek = () => (
+      <section id="now" className="bg-slate-950 rounded-[32px] p-8 text-white">
+        <p className="text-xs font-black text-red-400 uppercase tracking-widest mb-1">Action required</p>
+        <h2 className="text-2xl font-black uppercase tracking-tighter mb-6">This week</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {[
+            { owner:'Mauricio', action:'Confirm A2P Campaign status with Twilio Support', note:'Ticket open — need ETA on approval', urgent:true },
+            { owner:'Mauricio', action:'Emergency Call Registration on all PTS Tax numbers', note:'$75/number penalty if skipped', urgent:true },
+            { owner:'Yeison',   action:'STOP → Zoho Do Not Contact sync in N8N', note:'Twilio blocks the number; CRM also needs to know', urgent:false },
+            { owner:'Jason',    action:'Prepare Connie SMS test plan (AT&T, T-Mobile, Xfinity)', note:'Execute once A2P is approved', urgent:false },
+          ].map((item,i) => (
+            <div key={i} className={`rounded-xl p-4 flex items-start gap-3 ${item.urgent?'bg-red-950 border border-red-800':'bg-slate-900 border border-slate-800'}`}>
+              <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5 ${item.urgent?'bg-red-500':'bg-slate-600'}`} />
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{item.owner}</span>
+                  {item.urgent && <span className="bg-red-600 text-white text-xs font-black px-2 py-0.5 rounded-full uppercase tracking-widest">Urgent</span>}
+                </div>
+                <p className="text-sm font-semibold text-white leading-snug">{item.action}</p>
+                <p className="text-xs text-slate-500 mt-0.5">{item.note}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     );
 
+    /* ── Progress ── */
+    const Progress = () => (
+      <section>
+        <Tabs tabs={['Already done','Upcoming']}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {[
+              { label:'Twilio account active', note:'Both clients have console access' },
+              { label:'Business Profile — PTS Tax', note:'EIN registered, address confirmed' },
+              { label:'Brand (TCR) submitted', note:'PTS Tax — under review, 24–72h' },
+              { label:'A2P Campaign submitted', note:'PTS Tax — Tony approved support upgrade May 15' },
+              { label:'Branded Calling — Sunset Finance', note:'10 branches — company name shows on screen' },
+              { label:'Twilio numbers purchased', note:'Assigned per client, ready to attach' },
+              { label:'SHAFT rules documented', note:'Team knows prohibited content and why' },
+              { label:'Connie connected to Twilio', note:'Voice integration working' },
+            ].map((item,i) => (
+              <div key={i} className="flex items-start gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+                <span className="text-emerald-600 font-black flex-shrink-0 mt-0.5">✓</span>
+                <div>
+                  <p className="text-sm font-bold text-slate-900">{item.label}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">{item.note}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="space-y-2">
+            {[
+              { dot:'bg-amber-400', when:'This week',    label:'A2P Campaign approved — PTS Tax', note:'Triggered by support upgrade May 15' },
+              { dot:'bg-amber-400', when:'This week',    label:'Emergency Call Registration — all numbers', note:'Mauricio in console before scaling SMS' },
+              { dot:'bg-blue-500',  when:'Next 2 weeks', label:'Connie SMS live — PTS Tax carrier tests', note:'Jason runs AT&T, T-Mobile, Xfinity' },
+              { dot:'bg-blue-500',  when:'Week 3',       label:'Sunset Finance Brand + Profile initiated', note:'Starts after PTS Tax fully operational' },
+              { dot:'bg-slate-400', when:'Jun 1, 2026',  label:'SMS live — Sunset Finance', note:'Goal: A2P complete before June 1' },
+            ].map((m,i) => (
+              <div key={i} className="flex items-center gap-4 p-4 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors">
+                <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${m.dot}`} />
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-slate-900">{m.label}</p>
+                  <p className="text-xs text-slate-400 mt-0.5">{m.note}</p>
+                </div>
+                <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full flex-shrink-0 whitespace-nowrap">{m.when}</span>
+              </div>
+            ))}
+          </div>
+        </Tabs>
+      </section>
+    );
+
+    /* ── Anchor Nav ── */
+    const AnchorNav = () => (
+      <div className="sticky top-[73px] z-40 bg-white border-b border-slate-100 -mx-6 px-6">
+        <div className="max-w-5xl mx-auto flex gap-1 overflow-x-auto py-2">
+          {[['#status','Status'],['#how','How it works'],['#glossary','Glossary'],['#steps','The 4 Steps'],['#rules','Rules'],['#checklist','Checklist'],['#team','Team'],['#faq','FAQ']].map(([href,label]) => (
+            <a key={href} href={href} className="flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap">{label}</a>
+          ))}
+        </div>
+      </div>
+    );
+
+    /* ── Status by client ── */
+    const Status = () => (
+      <section id="status">
+        <SH eyebrow="May 2026" title="Status by client" />
+        <Tabs tabs={['PTS Tax','Sunset Finance','FOIA List']}>
+          <div className="rounded-2xl border-2 border-blue-200 overflow-hidden">
+            <div className="bg-blue-700 px-6 py-3 flex items-center justify-between">
+              <span className="text-white font-black uppercase tracking-tight">PTS Tax — Connie SMS</span><Badge status="active" />
+            </div>
+            <div className="p-5 bg-white">
+              <CheckRow label="Business Profile" status="done" note="EIN registered, address confirmed" />
+              <CheckRow label="Brand (TCR)" status="active" note="Submitted — awaiting TCR approval (24–72h)" />
+              <CheckRow label="A2P Campaign" status="active" note="In progress with Twilio support" />
+              <CheckRow label="Numbers → Messaging Service" status="pending" note="Blocked until Campaign approved" />
+              <CheckRow label="Emergency Call Registration" status="pending" note="$75/number if skipped — do before scaling" />
+              <CheckRow label="Connie SMS tests (AT&T, T-Mobile, Xfinity)" status="pending" note="Jason runs tests post A2P approval" />
+              <CheckRow label="STOP → N8N → Zoho Do Not Contact" status="pending" note="Yeison connects opt-out to CRM" />
+              <CheckRow label="Opt-in documented in Campaign" status="pending" note="Leads from Facebook Ads — confirm opt-in flow recorded" />
+            </div>
+          </div>
+          <div className="rounded-2xl border-2 border-orange-200 overflow-hidden">
+            <div className="bg-orange-600 px-6 py-3 flex items-center justify-between">
+              <span className="text-white font-black uppercase tracking-tight">Sunset Finance — Tommy SMS</span><Badge status="pending" />
+            </div>
+            <div className="p-5 bg-white">
+              <CheckRow label="Branded Calling (10 branches)" status="done" note="Company name shows on screen when Tommy calls" />
+              <CheckRow label="Business Profile (Sunset entity)" status="pending" note="Separate EIN, separate profile — not PTS Tax" />
+              <CheckRow label="Brand (TCR)" status="pending" note="Starts after PTS Tax A2P is approved" />
+              <CheckRow label="A2P Campaign" status="pending" note="Required before SMS launch June 1" />
+              <CheckRow label="Numbers → Messaging Service" status="pending" note="50 numbers total (5 per branch × 10 branches)" />
+              <CheckRow label="Emergency Call Registration" status="pending" note="All 50 branch numbers" />
+            </div>
+          </div>
+          <div className="rounded-2xl border-2 border-slate-200 overflow-hidden">
+            <div className="bg-slate-700 px-6 py-3 flex items-center justify-between">
+              <span className="text-white font-black uppercase tracking-tight">FOIA List — Cold outbound voice</span><Badge status="pending" />
+            </div>
+            <div className="p-5 bg-white">
+              <CheckRow label="Separate number (not mixing with main)" status="done" note="Agreed — contamination risk avoided" />
+              <CheckRow label="Connie opt-out logic" status="done" note="Implemented — prospect says no → immediately marked" />
+              <CheckRow label="Tony written authorization (TCPA risk)" status="pending" note="Verbal only so far — needs email or signed doc before launch" />
+              <CheckRow label="Campaign registered with correct use case" status="pending" note="Must be outreach — be honest with use case" />
+            </div>
+            <div className="bg-amber-50 border-t border-amber-200 px-5 py-4">
+              <p className="text-xs font-black text-amber-700 uppercase tracking-widest mb-1">Legal context</p>
+              <p className="text-xs text-slate-600 leading-relaxed">FOIA list = no prior consent. Safe path: Connie calls only if prospect replied to the SmartLead email (reply = implied consent). Alternative: Tony signs written authorization accepting TCPA risk ($500–$1,500 × calls if challenged).</p>
+            </div>
+          </div>
+        </Tabs>
+      </section>
+    );
+
+    /* ── How it works ── */
+    const HowItWorks = () => (
+      <section id="how">
+        <SH eyebrow="The basics" title="How Twilio actually works" sub="One paragraph. Read it once. Everything else makes sense after this." />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+          {[
+            { title:'Carriers', sub:'AT&T · T-Mobile · Verizon', desc:"They own the network. They decide if your message arrives. Their rules are law — no appeal guaranteed.", bg:'bg-slate-900 text-white' },
+            { title:'Twilio', sub:'The intermediary', desc:"Twilio rents access to the carriers' network and resells it to you via API. It translates carrier rules into something programmable.", bg:'bg-red-600 text-white' },
+            { title:'You', sub:'The sender', desc:"You send through Twilio, which sends through carriers. Follow carrier rules or lose access — Twilio's and yours.", bg:'bg-slate-100 text-slate-900' },
+          ].map((c,i) => (
+            <div key={i} className={`rounded-2xl p-6 ${c.bg}`}>
+              <p className={`text-xs font-black uppercase tracking-widest mb-1 ${c.bg.includes('slate-1')?'text-slate-500':'opacity-60'}`}>{c.sub}</p>
+              <p className="text-lg font-black uppercase tracking-tight mb-3">{c.title}</p>
+              <p className={`text-xs leading-relaxed ${c.bg.includes('slate-1')?'text-slate-600':'opacity-80'}`}>{c.desc}</p>
+            </div>
+          ))}
+        </div>
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-sm text-slate-600 leading-relaxed">
+          <strong className="text-slate-900">The analogy:</strong> Twilio is the trucking company. AT&T is the highway. The government is the regulator. You're the shipper. If your cargo violates road rules, the trucking company loses its highway license — not just you. That's why Twilio is strict: every violating customer threatens the entire ecosystem's carrier access.
+        </div>
+      </section>
+    );
+
+    /* ── Glossary ── */
+    const GLOSS = [
+      { group:'Core concepts', terms:[
+        { term:'A2P', full:'Application to Person', def:"Any message from a system to a person — everything Connie does is A2P." },
+        { term:'P2P', full:'Person to Person', def:"You texting a friend. We don't operate in P2P." },
+        { term:'Brand', full:'Your registered business identity', def:'"Who sends these messages?" — PTS Tax and Sunset Finance are each their own Brand. Never mix.' },
+        { term:'Campaign', full:'Your declared use case', def:'"Why are you sending?" — Marketing, Transactional, or Mixed. Each Brand can have multiple Campaigns.' },
+        { term:'TCR', full:'The Campaign Registry', def:"The central database all carriers check before allowing SMS traffic. Twilio submits your Brand and Campaign here." },
+        { term:'Trust Hub', full:"Twilio's compliance HQ", def:"Where you manage Business Profiles, Brands, Campaigns. URL: console.twilio.com → Trust Hub" },
+        { term:'ISV', full:'Independent Software Vendor', def:"MitHub is the ISV — we build the system. PTS Tax and Sunset Finance are clients. Each needs their own Brand." },
+        { term:'Messaging Service', full:'Number pool tied to a Campaign', def:"Groups your Twilio numbers under an approved Campaign. Numbers must be added here before A2P traffic flows." },
+      ]},
+      { group:'Numbers', terms:[
+        { term:'10DLC', full:'10-Digit Long Code', def:"A standard local number (404-555-1234) registered for A2P. What we use — local feel, moderate volume." },
+        { term:'Toll-Free', full:'1-800, 1-877 numbers', def:"Different registration, no $4 Brand fee. Good for corporate image. Not what we use today." },
+        { term:'Short Code', full:'5–6 digit numbers', def:"For massive volume (100 msg/sec). Expensive, 8-12 week approval. Not our use case." },
+        { term:'Segment', full:'160-character SMS block', def:"One message = one segment. 320 chars = 2 segments = double the cost." },
+      ]},
+      { group:'Consent & compliance', terms:[
+        { term:'Opt-in', full:'User consented to receive messages', def:"Without this, every SMS is a potential TCPA violation. Must be voluntary, explicit, documented." },
+        { term:'Opt-out', full:'User said stop', def:"Reply STOP. Must be honored within 10 seconds. Every message sent after is a separate TCPA violation." },
+        { term:'TCPA', full:'Telephone Consumer Protection Act (1991)', def:"US federal law. $500–$1,500 per illegal call or text. Class actions can reach millions." },
+        { term:'CTIA', full:'Wireless industry trade association', def:"Sets the rules carriers follow. A2P 10DLC is a CTIA initiative, not just Twilio's." },
+        { term:'KYC', full:'Know Your Customer', def:"Twilio's identity verification before granting high-volume access." },
+      ]},
+      { group:'Voice', terms:[
+        { term:'STIR/SHAKEN', full:'Call verification protocol', def:"Signs the Caller ID digitally. Without it, carriers label your call Spam Risk or Scam Likely." },
+        { term:'CNAM', full:'Caller ID Name', def:'"PTS Tax" instead of an unknown number on the recipient\'s screen.' },
+        { term:'Branded Calling', full:'Name + logo + reason on screen', def:"Shows company logo and reason for calling. Sunset Finance 10 branches already have this." },
+        { term:'Attestation', full:'STIR/SHAKEN level A / B / C', def:"A = fully verified. B = carrier knows you but can't verify number. C = unverified. Aim for A." },
+      ]},
+    ];
+    const Glossary = () => (
+      <section id="glossary">
+        <SH eyebrow="Reference" title="Glossary" sub="Every term you'll see in the Twilio console — in plain English." />
+        <div className="space-y-2">
+          {GLOSS.map((group,gi) => (
+            <Accordion key={gi} title={group.group} subtitle={`${group.terms.length} terms`} defaultOpen={gi===0}>
+              <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                {group.terms.map((t,ti) => (
+                  <div key={ti} className="py-3 border-b border-slate-200 last:border-0 md:odd:pr-8 md:even:pl-8 md:even:border-l md:even:border-slate-200">
+                    <div className="flex items-baseline gap-2 flex-wrap">
+                      <span className="text-sm font-black text-slate-900">{t.term}</span>
+                      <span className="text-xs text-slate-400">{t.full}</span>
+                    </div>
+                    <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">{t.def}</p>
+                  </div>
+                ))}
+              </div>
+            </Accordion>
+          ))}
+        </div>
+      </section>
+    );
+
+    /* ── The 4 Steps ── */
+    const STEPS = [
+      {
+        n:'01', title:'Business Profile', time:'~10 min · instant', status:'done',
+        summary:'Your legal identity inside Twilio. One per legal entity. PTS Tax and Sunset Finance are separate.',
+        fields:['Legal business name (must match EIN)','EIN / Tax ID','Business address','Website URL','Entity type (LLC / Corp)'],
+        rule:"TCR cross-checks your info against Dun & Bradstreet. Inconsistencies = rejection. The name in Twilio must match the name on your website exactly.",
+      },
+      {
+        n:'02', title:'Brand (TCR)', time:'24–72 hours', status:'active',
+        summary:'Connects your Business Profile to TCR — the registry all carriers check. Tells them who you are.',
+        fields:['Brand name (what carriers see)','Website (must match Business Profile)','Vertical / industry (Financial Services)','ISV note: "MitHub provides the system on behalf of [client]"'],
+        rule:"ISV rule: register PTS Tax as PTS Tax, not as LoopHub. Each client's Brand must reflect that client's legal entity.",
+        types:{
+          label:'Brand type — always Standard for our clients',
+          headers:['Type','Who','Daily limit (T-Mobile)','Fee'],
+          rows:[
+            ['Sole Proprietor','Individuals without EIN','1,000 segments/day','$0'],
+            ['Low-Volume Standard','Company with EIN, moderate volume','2,000 segments/day','$4 one-time'],
+            ['Standard ✓','Company with EIN, high volume','2,000+/day (scales with Trust Score)','$4 + $40 vetting'],
+          ],
+        },
+      },
+      {
+        n:'03', title:'Campaign (use case)', time:'1–3 weeks', status:'active',
+        summary:'Declares exactly what you\'re sending and why. Carriers evaluate this to decide if your traffic is legitimate.',
+        fields:['Use type: Mixed / Marketing / Transactional','Description of what Connie says and to whom','2 sample messages (must match real scripts)','Opt-in method with proof (URL, screenshot, verbal script)','Privacy Policy URL (must mention SMS)','HELP and STOP responses declared'],
+        rule:"The sample messages you submit are compared to real traffic. If Connie sends different scripts, carriers flag it. Write samples as close to the actual scripts as possible.",
+        types:{
+          label:'Campaign types — PTS Tax / Connie uses Mixed',
+          headers:['Type','What it covers','Fee'],
+          rows:[
+            ['Marketing','Promos, offers, outreach','$10/month'],
+            ['Transactional','Confirmations, reminders','$1.50–$10/month'],
+            ['Mixed ✓','Outreach + appointment follow-ups','Both fees · separate consent per type required'],
+            ['Customer Care','Support conversations','$1.50/month'],
+            ['2FA / OTP','Verification codes','Use Twilio Verify instead'],
+          ],
+        },
+      },
+      {
+        n:'04', title:'Numbers → Messaging Service', time:'Instant (post-approval)', status:'pending',
+        summary:'Assign each phone number to the approved Campaign. Without this, zero messages go out — even with an approved Campaign.',
+        fields:['Add each Connie number to the Campaign\'s Messaging Service','One Campaign per use case — outreach ≠ confirmations','PTS Tax numbers → PTS Tax Campaign only','Sunset Finance numbers → Sunset Finance Campaign only'],
+        rule:"Most commonly skipped step. The Campaign passes review. You celebrate. Then silence. The numbers weren't added to the Messaging Service. Always verify this immediately after approval.",
+      },
+    ];
+    const Steps = () => (
+      <section id="steps">
+        <SH eyebrow="A2P Registration" title="The 4 steps — in order" sub="Each step unlocks the next. None can be skipped." />
+        <div className="space-y-3 mb-5">
+          {STEPS.map((step,i) => (
+            <Accordion key={i} title={`${step.n} — ${step.title}`} subtitle={`${step.summary} · ${step.time}`} defaultOpen={i<2}>
+              <div className="p-6 space-y-5">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Timeline: {step.time}</p>
+                  <Badge status={step.status} />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Required fields</p>
+                    <ul className="space-y-2">
+                      {step.fields.map((f,j) => (
+                        <li key={j} className="flex items-start gap-2 text-xs text-slate-600">
+                          <span className="text-slate-300 font-black flex-shrink-0 mt-0.5">·</span>{f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="bg-amber-50 rounded-xl p-4 border border-amber-200 self-start">
+                    <p className="text-xs font-black text-amber-700 uppercase tracking-widest mb-2">Critical rule</p>
+                    <p className="text-xs text-slate-700 leading-relaxed">{step.rule}</p>
+                  </div>
+                </div>
+                {step.types && (
+                  <div>
+                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">{step.types.label}</p>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs border-collapse">
+                        <thead><tr className="bg-slate-100">{step.types.headers.map((h,j) => <th key={j} className="text-left px-3 py-2 font-black text-slate-600 uppercase tracking-widest">{h}</th>)}</tr></thead>
+                        <tbody>{step.types.rows.map((row,j) => (
+                          <tr key={j} className={`border-b border-slate-100 ${row[0].includes('✓')?'bg-emerald-50':''}`}>
+                            {row.map((cell,k) => <td key={k} className={`px-3 py-2.5 ${k===0?'font-bold text-slate-800':'text-slate-600'}`}>{cell}</td>)}
+                          </tr>
+                        ))}</tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Accordion>
+          ))}
+        </div>
+        <div className="bg-red-50 border-2 border-dashed border-red-300 rounded-2xl p-6 flex flex-col md:flex-row gap-5 items-start">
+          <div className="bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-xl uppercase tracking-widest flex-shrink-0">Separate step</div>
+          <div className="flex-1 space-y-1">
+            <p className="font-black text-red-800 uppercase tracking-tight text-sm">Emergency Call Registration</p>
+            <p className="text-xs text-slate-700 leading-relaxed">Independent from A2P Campaign. Done in console: Phone Numbers → Manage → Emergency Calling. One per number. Twilio charges $75/number automatically if skipped.</p>
+            <p className="text-xs font-bold text-red-700 mt-1">Owner: Mauricio · Before scaling SMS volume</p>
+          </div>
+          <div className="flex-shrink-0 text-center">
+            <p className="text-4xl font-black text-red-600">$75</p>
+            <p className="text-xs text-red-500 font-black uppercase tracking-widest">per number<br/>if skipped</p>
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ── Rules ── */
+    const Rules = () => (
+      <section id="rules" className="space-y-4">
+        <SH eyebrow="Non-negotiable" title="The rules" sub="These apply to every campaign, every client, every time." ec="text-red-500" />
+
+        <Accordion title="Consent — the legal foundation" subtitle="No consent = no right to contact. $500–$1,500 per violation." defaultOpen>
+          <div className="p-6 space-y-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              {[
+                { level:'Double opt-in',   desc:'User confirms after giving number. Gold standard.', bg:'bg-emerald-600 text-white' },
+                { level:'Explicit opt-in', desc:'Specific checkbox: "I agree to receive SMS/calls." Required for A2P.', bg:'bg-emerald-100 text-emerald-900 border border-emerald-300' },
+                { level:'Implied opt-in',  desc:'Customer gave number when buying. Covers only that transaction.', bg:'bg-slate-100 text-slate-700 border border-slate-200' },
+                { level:'No consent',      desc:'Can call business numbers in business hours. Cannot send automated SMS.', bg:'bg-red-50 text-red-800 border border-red-200' },
+              ].map((l,i) => (
+                <div key={i} className={`rounded-xl p-4 ${l.bg}`}>
+                  <p className="text-xs font-black uppercase tracking-widest mb-1">{l.level}</p>
+                  <p className="text-xs leading-relaxed opacity-80">{l.desc}</p>
+                </div>
+              ))}
+            </div>
+            <div>
+              <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Every opt-in confirmation message must contain — all 6, no exceptions</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {['What the messages are for','Approximate frequency — "up to X messages/month"','"Message and data rates may apply"','"Reply HELP for help"','"Reply STOP to opt out"','Link to Privacy Policy'].map((item,i) => (
+                  <div key={i} className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3">
+                    <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-black flex-shrink-0">{i+1}</span>
+                    <span className="text-xs text-slate-700">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="bg-slate-900 rounded-xl p-4">
+              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Example — correct first message</p>
+              <code className="text-sm text-emerald-400 leading-relaxed font-mono block whitespace-pre-line">{`Welcome to PTS Tax Alerts. Up to 4 messages/month.\nMsg & data rates may apply.\nReply HELP for help, STOP to cancel.\nPrivacy: [URL]`}</code>
+            </div>
+          </div>
+        </Accordion>
+
+        <div className="border-2 border-amber-300 rounded-2xl overflow-hidden">
+          <div className="bg-amber-50 px-6 py-5">
+            <p className="text-xs font-black text-amber-700 uppercase tracking-widest mb-2">Privacy Policy — one sentence that cannot be missing</p>
+            <p className="text-lg font-black text-slate-900 leading-snug">"No mobile information will be shared with third parties or affiliates for marketing or promotional purposes."</p>
+          </div>
+          <div className="bg-white px-6 py-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div><p className="font-black text-red-700 uppercase tracking-widest mb-1">If missing</p><p className="text-slate-600">Campaign auto-rejected. No exceptions.</p></div>
+            <div><p className="font-black text-slate-500 uppercase tracking-widest mb-1">Link requirements</p><p className="text-slate-600">Public, loads from anywhere in the world, clickable at moment of opt-in.</p></div>
+            <div><p className="font-black text-emerald-700 uppercase tracking-widest mb-1">What IS allowed</p><p className="text-slate-600">Sharing with CRM or tech providers (operational). Selling numbers to third parties: never.</p></div>
+          </div>
+        </div>
+
+        <Accordion title="Volume warmup — new numbers start slow" subtitle="A number sending 5,000 messages on day 1 looks identical to a botnet. Carrier blocks it automatically.">
+          <div className="p-6 space-y-5">
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { week:'Week 1', limit:'200', sub:'messages/day per number' },
+                { week:'Week 2', limit:'500', sub:'messages/day per number' },
+                { week:'Week 3+', limit:'2,000', sub:'messages/day (Standard Brand cap)' },
+              ].map((w,i) => (
+                <div key={i} className="bg-white border border-slate-200 rounded-xl p-4 text-center">
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">{w.week}</p>
+                  <p className="text-3xl font-black text-slate-900">{w.limit}</p>
+                  <p className="text-xs text-slate-500 mt-1">{w.sub}</p>
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <p className="font-black text-blue-700 uppercase tracking-widest mb-1">Consistency matters</p>
+                <p className="text-slate-600">Sending at the same time every day signals legitimacy. Random bursts signal spam.</p>
+              </div>
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                <p className="font-black text-red-700 uppercase tracking-widest mb-1">If a number gets blocked</p>
+                <p className="text-slate-600">Retire it. Get a new number. Assign to Campaign. Restart warmup from zero.</p>
+              </div>
+            </div>
+          </div>
+        </Accordion>
+
+        <Accordion title="Prohibited content — SHAFT" subtitle="NLP-based filter. Euphemisms don't work. PTS Tax and Sunset Finance are in the clear — see below.">
+          <div className="p-6 space-y-5">
+            <div className="grid grid-cols-5 gap-2">
+              {[
+                { letter:'S', word:'Sex', desc:'Sexual content or implied services' },
+                { letter:'H', word:'Hate', desc:'Discriminatory language' },
+                { letter:'A', word:'Alcohol', desc:'Without age verification' },
+                { letter:'F', word:'Firearms', desc:'Weapons, parts, ammunition' },
+                { letter:'T', word:'Tobacco / Cannabis', desc:'Even if legal in that state' },
+              ].map((item,i) => (
+                <div key={i} className="bg-slate-900 text-white rounded-xl p-4 text-center">
+                  <p className="text-3xl font-black text-red-500 mb-1">{item.letter}</p>
+                  <p className="font-black text-xs uppercase tracking-widest">{item.word}</p>
+                  <p className="text-xs text-slate-400 mt-1">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Also high-risk</p>
+                <ul className="space-y-1 text-xs text-slate-600">
+                  {['Payday loans / short-term express loans','Debt collection (separate FDCPA rules)','Unverified pharmacies','"Miracle" health claims','High-risk investment advice'].map((t,i) => (
+                    <li key={i} className="flex gap-2"><span className="text-red-400 font-black">·</span>{t}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-200">
+                <p className="text-xs font-black text-emerald-700 uppercase tracking-widest mb-2">Our clients — safe zone</p>
+                <p className="text-xs text-slate-600 leading-relaxed">Tax prep and banking products are legitimate. Keep copy clear and professional. "Bank products" = fine. "Get cash now, no questions asked" = blocked.</p>
+              </div>
+            </div>
+          </div>
+        </Accordion>
+
+        <Accordion title="Common mistakes and what they cost" subtitle="10 errors that cause rejection or penalties.">
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs border-collapse">
+              <thead><tr className="bg-slate-100">
+                <th className="text-left px-4 py-3 font-black text-slate-600 uppercase tracking-widest">Mistake</th>
+                <th className="text-left px-4 py-3 font-black text-slate-600 uppercase tracking-widest">Consequence</th>
+                <th className="text-left px-4 py-3 font-black text-slate-600 uppercase tracking-widest">Fix</th>
+              </tr></thead>
+              <tbody>
+                {[
+                  ['Pre-checked opt-in checkbox','Immediate Campaign rejection','Never pre-check. User must click.'],
+                  ['One checkbox for marketing + transactional','Immediate rejection','Two separate checkboxes required'],
+                  ['Website down or returns 404','Immediate rejection','Test from incognito before submitting'],
+                  ['Contact email is @gmail.com','Reviewer suspicion','Use email@business.com'],
+                  ['Numbers not added to Messaging Service','Campaign approved, zero SMS sent','Always do this immediately after approval'],
+                  ['Different clients under same Trust Hub Profile','Compliance violation at scale','One Profile per legal entity'],
+                  ['Registering marketing traffic as 2FA','Campaign blocked post-approval','Be honest with use case'],
+                  ['Privacy Policy missing the SMS phrase','Campaign rejection','Add the exact phrase'],
+                  ['STOP not propagated to CRM','TCPA violation per message','N8N → Zoho Do Not Contact sync'],
+                  ['Full volume from new number on day 1','Number blocked by carrier','Follow warmup schedule'],
+                ].map(([mistake,consequence,fix],i) => (
+                  <tr key={i} className={`border-b border-slate-100 ${i%2===0?'bg-white':'bg-slate-50'}`}>
+                    <td className="px-4 py-3 font-semibold text-slate-800">{mistake}</td>
+                    <td className="px-4 py-3 text-red-700">{consequence}</td>
+                    <td className="px-4 py-3 text-slate-600">{fix}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Accordion>
+      </section>
+    );
+
+    /* ── Checklist ── */
+    const Checklist = () => (
+      <section id="checklist">
+        <SH eyebrow="Launch protocol" title="5-phase checklist" sub="Use before any campaign goes live. No exceptions." />
+        <div className="space-y-2">
+          {[
+            { n:'01', title:'Preparation', when:'1–2 days before registering', items:['Define the Brand: legal name, website, corporate email, EIN','Define use type: marketing, transactional, or mixed','Document opt-in method with proof (URL, screenshot, verbal script, or photo)','Verify website loads from incognito from a different country','Verify Privacy Policy contains the exact SMS data-sharing phrase','Write sample messages — include brand name and STOP instruction','If mixed Campaign: write examples of BOTH message types'] },
+            { n:'02', title:'Registration', when:'Day 1', items:['Open Trust Hub in Twilio console','Create or verify the client Business Profile','Register Brand using client info (PTS Tax, not MitHub)','Add ISV note: "MitHub provides the system on behalf of [client]"','Register Campaign with the correct use case','Click test every link in the form from incognito','Identity check: Brand name = website name = email domain'] },
+            { n:'03', title:'Wait & follow up', when:'Days 2–15', items:['Wait for Twilio confirmation (currently 10–15 business days)','If Twilio requests info → respond within 24 hours','If Campaign rejected → read feedback, fix, resubmit (additional fee applies)'] },
+            { n:'04', title:'Activate', when:'Day of approval', open:true, items:['⚠️ Add all numbers to the Campaign Messaging Service — most forgotten step','Register Emergency Call for each number ($75/number if skipped)','Test SMS: AT&T, T-Mobile, and Xfinity','Confirm STOP works: Twilio blocks + N8N updates Zoho','Confirm first message includes HELP and STOP'] },
+            { n:'05', title:'Ongoing monitoring', when:'Weekly', items:['Review Messaging Insights in Twilio console weekly','Watch opt-out rate — sudden spike = content or frequency problem','Watch delivery rate — sudden drop = carrier filtering','If message types change, verify they still match the registered use case'] },
+          ].map((phase,i) => (
+            <Accordion key={i} title={`Phase ${phase.n} — ${phase.title}`} subtitle={phase.when} defaultOpen={phase.open||false}>
+              <ul className="p-6 space-y-2">
+                {phase.items.map((item,j) => (
+                  <li key={j} className="flex items-start gap-3">
+                    <span className="w-4 h-4 rounded border border-slate-300 flex-shrink-0 mt-0.5" />
+                    <span className={`text-sm ${item.startsWith('⚠️')?'font-bold text-red-800':'text-slate-700'}`}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </Accordion>
+          ))}
+        </div>
+      </section>
+    );
+
+    /* ── Cost of violations ── */
+    const Costs = () => (
+      <section>
+        <SH eyebrow="Risk" title="Cost of non-compliance" ec="text-red-500" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+          {[
+            { cost:'$500–$1,500', label:'per TCPA violation', sub:'Per call or SMS without consent' },
+            { cost:'$75', label:'per number', sub:'Emergency Call Reg if skipped' },
+            { cost:'Blocked', label:'no warning', sub:'A2P sending without registration' },
+            { cost:'$3.75M', label:'exposure', sub:'7,500 FOIA calls × $500 minimum' },
+          ].map((c,i) => (
+            <div key={i} className="bg-red-50 border border-red-200 rounded-xl p-5 text-center">
+              <p className="text-2xl font-black text-red-600">{c.cost}</p>
+              <p className="text-xs font-black text-red-800 uppercase tracking-widest mt-1">{c.label}</p>
+              <p className="text-xs text-slate-500 mt-1">{c.sub}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-sm text-slate-600 leading-relaxed bg-slate-50 border border-slate-200 rounded-xl p-5">If Twilio suspends the account: Connie goes silent. No calls, no SMS, no appointment flow. Recovery takes weeks. That's why warmup, registration, and consent are non-negotiable — the operational cost of suspension exceeds any shortcut.</p>
+      </section>
+    );
+
+    /* ── Team ── */
+    const Team = () => (
+      <section id="team">
+        <SH eyebrow="Responsibilities" title="Who does what" sub="No ambiguity. If it's not in your column, don't touch it." />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            { name:'Mauricio', bg:'bg-slate-900', border:'border-slate-200',
+              does:['Owns Twilio account and all registrations','Submits Brand + Campaign for each client','Emergency Call Registration per number','Manages Twilio support tickets','Opens Sunset Finance registration after PTS Tax clears'],
+              not:['Does not run SMS tests (Jason)','Does not connect N8N to CRM (Yeison)','Does not scale volume without warmup complete'] },
+            { name:'Yeison', bg:'bg-blue-700', border:'border-blue-200',
+              does:['STOP → Zoho Do Not Contact sync in N8N','Opt-out propagation across all active campaigns','Delivery rate monitoring in SmartLead','Clay → SmartLead API mapping'],
+              not:['Does not touch the Twilio console','Does not do A2P registrations','Does not run manual SMS tests'] },
+            { name:'Jason', bg:'bg-orange-600', border:'border-orange-200',
+              does:['Tests Connie SMS: AT&T, T-Mobile, Xfinity after A2P approval','Validates session memory — no repeated questions','Confirms handoff behavior when prospect requests human','Verifies "Are you still there?" logic'],
+              not:['Does not make changes to Twilio account','Does not modify N8N flows','Does not scale Connie before tests pass'] },
+          ].map((role,i) => (
+            <div key={i} className={`border ${role.border} rounded-2xl overflow-hidden`}>
+              <div className={`${role.bg} px-5 py-3`}><h4 className="font-black text-sm uppercase tracking-widest text-white">{role.name}</h4></div>
+              <div className="p-5 space-y-4 bg-white">
+                <div>
+                  <p className="text-xs font-black text-emerald-600 uppercase tracking-widest mb-2">Does</p>
+                  <ul className="space-y-1.5">
+                    {role.does.map((item,j) => (
+                      <li key={j} className="flex items-start gap-2 text-xs text-slate-600"><span className="text-emerald-500 font-black flex-shrink-0">✓</span>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="border-t border-slate-100 pt-4">
+                  <p className="text-xs font-black text-red-500 uppercase tracking-widest mb-2">Does not</p>
+                  <ul className="space-y-1.5">
+                    {role.not.map((item,j) => (
+                      <li key={j} className="flex items-start gap-2 text-xs text-slate-400"><span className="text-red-400 font-black flex-shrink-0">✗</span>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+
+    /* ── FAQ ── */
+    const FAQ = () => (
+      <section id="faq">
+        <SH eyebrow="Questions" title="FAQ" sub="If it's not here, re-read this page before scheduling a call." />
+        <div className="space-y-2">
+          {[
+            { q:"Why can't we send SMS now if the Twilio account is already active?",
+              a:"An active Twilio account lets you make calls and send test messages — but the carrier network filters any account sending SMS volume without an approved A2P Campaign. Messages are silently discarded. You don't get an error. They just don't arrive." },
+            { q:"Does Sunset Finance need its own separate registration from PTS Tax?",
+              a:"Yes. They are different legal entities with different EINs. Each needs its own Business Profile, its own Brand, and its own Campaign. Carriers verify that message content matches the declared entity. Mixing them is a registration violation." },
+            { q:"What is the ISV relationship and why does it matter?",
+              a:"MitHub is the ISV — we build the system. PTS Tax and Sunset Finance are clients. Each client must be registered as its own Brand in their own Trust Hub Profile. We cannot register all clients under one LoopHub Brand — carriers check that message content matches the declared entity." },
+            { q:"Can Connie use the same number for both calls and SMS?",
+              a:"Yes — a 10DLC number can handle both. A2P registration covers SMS traffic. Voice calls go through STIR/SHAKEN (separate). The number must be A2P registered before sending SMS regardless of whether it also makes calls." },
+            { q:"What counts as opt-in for FOIA list prospects?",
+              a:"The FOIA list is a public IRS directory — those prospects never consented to be called. Two paths: (A) Connie calls only if the prospect replied to the SmartLead email — that reply = implied consent. (B) Tony signs written authorization accepting TCPA risk. Option A is always the safer, legally cleaner path." },
+            { q:"What's the difference between A2P registration and Branded Calling?",
+              a:"A2P is for SMS — it tells the carrier network your texts are legitimate, not spam. Branded Calling is for voice — it shows your company name and logo on the recipient's screen. Both are separate registrations. Sunset Finance's Branded Calling is done. A2P for SMS is pending." },
+            { q:"Why is the Privacy Policy requirement so specific about mobile data?",
+              a:"Twilio's carrier partners require the exact declaration that mobile data won't be shared for third-party marketing. This phrase signals to the reviewer that you understand the regulations. Without it, the Campaign is auto-rejected — it's a literal checklist item in the carrier review." },
+            { q:"What happens if the Campaign use case doesn't match what Connie actually says?",
+              a:"Carriers run ongoing monitoring after approval. If your registered use case is 'appointment reminders' but Connie is doing outbound sales, the Campaign gets flagged post-approval. That means number blocks and having to re-register — with an additional fee and 1–3 weeks of waiting." },
+          ].map((item,i) => (
+            <Accordion key={i} title={item.q}>
+              <p className="px-6 py-5 text-sm text-slate-600 leading-relaxed">{item.a}</p>
+            </Accordion>
+          ))}
+        </div>
+      </section>
+    );
+
+    /* ── App ── */
     const App = () => (
       <div className="min-h-screen bg-white text-slate-900">
-
-        {/* HEADER */}
-        <header className="border-b border-slate-200 bg-white sticky top-0 z-50 shadow-sm">
+        <header className="border-b border-slate-200 bg-white sticky top-0 z-50">
           <div className="max-w-6xl mx-auto px-6">
             <div className="flex items-center justify-between gap-4 py-3 border-b border-slate-100">
               <div className="flex items-center gap-3">
-                <img src="/images/twilio-logo.png" alt="Twilio" className="h-7 object-contain" />
+                <img src="/images/twilio-logo.png" alt="Twilio" className="h-6 object-contain" />
                 <div className="border-l border-slate-200 pl-3">
                   <p className="text-sm font-black uppercase tracking-tight text-slate-900 leading-none">PTS AI</p>
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-widest italic">Operational Platform · 2026</p>
+                  <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Operational Platform · 2026</p>
                 </div>
               </div>
               <div className="flex gap-5">
                 <div className="text-right">
-                  <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">PTS Tax</p>
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest">PTS Tax</p>
                   <p className="text-sm font-black text-amber-600">A2P in progress</p>
                 </div>
                 <div className="text-right border-l border-slate-200 pl-5">
-                  <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">Sunset Finance</p>
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Sunset Finance</p>
                   <p className="text-sm font-black text-red-600">Not started</p>
                 </div>
               </div>
             </div>
             <div className="flex gap-1 py-2">
               <a href="/georgia-dashboard" className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition-colors">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
-                Georgia FOIA Campaign
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />Georgia FOIA Campaign
               </a>
               <a href="/twilio-setup" className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest bg-red-600 text-white">
-                <span className="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0" />
-                Twilio — Voice & SMS
+                <span className="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0" />Twilio — Voice & SMS
               </a>
             </div>
           </div>
         </header>
-
-        <main className="max-w-5xl mx-auto px-6 py-16 space-y-24 pb-32">
-
-          {/* ─── SECTION 1: THIS WEEK ─── */}
-          <section className="bg-slate-950 rounded-[40px] p-10 text-white space-y-8">
-            <div>
-              <p className="text-xs font-black text-red-400 uppercase tracking-widest mb-2">Action required now</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
-                This week —<br />
-                <span className="text-red-400">what needs to happen</span>
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                { owner: 'Mauricio', action: 'Confirm A2P Campaign status with Twilio Support', note: 'Ticket is already open — we need an ETA on approval', urgent: true },
-                { owner: 'Mauricio', action: 'Emergency Call Registration on all PTS Tax numbers', note: '$75/number penalty if skipped — do this before scaling volume', urgent: true },
-                { owner: 'Yeison', action: 'STOP → Zoho Do Not Contact in N8N', note: 'Twilio blocks the number, but the CRM also needs to be updated', urgent: false },
-                { owner: 'Jason', action: 'Prepare test plan for Connie SMS', note: 'Test AT&T, T-Mobile, Xfinity once A2P is approved', urgent: false },
-              ].map((item, i) => (
-                <div key={i} className={`rounded-2xl p-5 flex items-start gap-4 ${item.urgent ? 'bg-red-950 border border-red-800' : 'bg-slate-900 border border-slate-800'}`}>
-                  <div className={`w-2 h-2 rounded-full flex-shrink-0 mt-1.5 ${item.urgent ? 'bg-red-500' : 'bg-slate-600'}`} />
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{item.owner}</span>
-                      {item.urgent && <span className="bg-red-500 text-white text-xs font-black px-2 py-0.5 rounded-full uppercase tracking-widest">Urgent</span>}
-                    </div>
-                    <p className="text-sm font-bold text-white leading-snug">{item.action}</p>
-                    <p className="text-xs text-slate-400 mt-1">{item.note}</p>
-                  </div>
-                </div>
-              ))}
+        <AnchorNav />
+        <main className="max-w-5xl mx-auto px-6 py-12 space-y-20 pb-32">
+          <ThisWeek />
+          <Progress />
+          <Status />
+          <HowItWorks />
+          <Glossary />
+          <Steps />
+          <Rules />
+          <Checklist />
+          <Costs />
+          <Team />
+          <FAQ />
+          <section className="bg-slate-900 text-white rounded-[32px] p-10 text-center space-y-5">
+            <p className="text-xs font-black uppercase tracking-widest text-slate-400">Still blocked?</p>
+            <h2 className="text-2xl font-black uppercase tracking-tighter leading-none">Schedule a call.<br /><span className="text-red-400">Bring the exact Twilio error.</span></h2>
+            <p className="text-slate-400 text-sm max-w-sm mx-auto leading-relaxed">"It doesn't work" takes 10× longer than "Brand registration returned error code 60600."</p>
+            <div className="flex flex-wrap gap-3 justify-center pt-1">
+              <a href="https://calendly.com/mauricio-frontdesk" target="_blank" rel="noopener noreferrer" className="bg-red-600 hover:bg-red-700 transition-colors text-white px-8 py-3.5 rounded-xl text-sm font-black uppercase tracking-widest">Schedule a call</a>
+              <a href="mailto:mauricio.frontdesk@gmail.com" className="bg-white/10 hover:bg-white/20 transition-colors text-white px-8 py-3.5 rounded-xl text-sm font-black uppercase tracking-widest border border-white/20">Send email</a>
             </div>
           </section>
-
-          {/* ─── SECTION 2: ALREADY DONE ─── */}
-          <section className="space-y-8">
-            <div>
-              <p className="text-xs font-black text-emerald-600 uppercase tracking-widest mb-2">Real progress</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                Already <span className="text-emerald-600">done</span>
-              </h2>
-              <p className="text-slate-400 text-sm mt-2">This is complete. We don't go back from here.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                { label: 'Twilio account active', sub: 'Both clients — PTS Tax and Sunset Finance have console access' },
-                { label: 'Business Profile — PTS Tax', sub: 'EIN registered, address confirmed — step 1 of 4 complete' },
-                { label: 'Brand (TCR) submitted', sub: 'PTS Tax — under review with TCR, approval in 24–72h' },
-                { label: 'A2P Campaign submitted to carriers', sub: 'PTS Tax — under review · Tony approved the Twilio support upgrade on May 15 — that unlocked the process' },
-                { label: 'Branded Calling — Sunset Finance', sub: '10 branches active — company name shows on the recipient\'s screen' },
-                { label: 'Twilio numbers purchased', sub: 'Numbers assigned per client — ready to attach to Campaign once approved' },
-                { label: 'SHAFT rules documented', sub: 'Team knows what content is prohibited and why' },
-                { label: 'Connie connected to Twilio', sub: 'Voice integration working — calls go out and in correctly' },
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-4 bg-emerald-50 border border-emerald-200 rounded-2xl p-5">
-                  <span className="text-emerald-600 font-black text-lg flex-shrink-0 mt-0.5">✓</span>
-                  <div>
-                    <p className="text-sm font-black text-slate-900">{item.label}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{item.sub}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ─── SECTION 3: HOW THIS NETWORK ACTUALLY WORKS ─── */}
-          <section className="bg-slate-950 rounded-[40px] p-10 text-white space-y-10">
-            <div>
-              <p className="text-xs font-black text-blue-400 uppercase tracking-widest mb-2">The fundamentals</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
-                How this network<br />
-                <span className="text-blue-400">actually works</span>
-              </h2>
-              <p className="text-slate-400 text-sm mt-3 leading-relaxed">Three separate parties control your ability to reach anyone. Understanding who does what is the foundation of everything else on this page.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: '🔌',
-                  title: 'Twilio',
-                  subtitle: 'The Pipe (Middleman)',
-                  color: 'border-blue-700 bg-blue-950',
-                  titleColor: 'text-blue-300',
-                  points: [
-                    'API layer between you and the carriers',
-                    'You pay Twilio for access to the network',
-                    'Twilio is responsible to carriers for your behavior',
-                    'If you violate rules, Twilio loses carrier access — affecting ALL customers',
-                    'This is why Twilio is strict with compliance',
-                  ]
-                },
-                {
-                  icon: '📡',
-                  title: 'Carriers',
-                  subtitle: 'AT&T · T-Mobile · Verizon',
-                  color: 'border-red-700 bg-red-950',
-                  titleColor: 'text-red-300',
-                  points: [
-                    'They OWN the network infrastructure',
-                    'Their rules are absolute law — no appeal process',
-                    'They can block any traffic without notice',
-                    'They run algorithmic spam detection on all traffic',
-                    'They created A2P 10DLC — a CTIA industry initiative',
-                  ]
-                },
-                {
-                  icon: '🏢',
-                  title: 'You (MitHub/PTS)',
-                  subtitle: 'The Sender',
-                  color: 'border-emerald-700 bg-emerald-950',
-                  titleColor: 'text-emerald-300',
-                  points: [
-                    'Access the network through Twilio',
-                    'Must follow carrier rules, not just Twilio rules',
-                    'Must register your identity, brand, and use case',
-                    'Responsible for consent from every recipient',
-                    'Every violation lands on your account — permanently',
-                  ]
-                }
-              ].map((col, i) => (
-                <div key={i} className={`rounded-3xl border ${col.color} p-6 space-y-4`}>
-                  <div>
-                    <p className={`text-lg font-black ${col.titleColor} uppercase tracking-tight`}>{col.title}</p>
-                    <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-0.5">{col.subtitle}</p>
-                  </div>
-                  <ul className="space-y-2">
-                    {col.points.map((p, j) => (
-                      <li key={j} className="flex items-start gap-2 text-xs text-slate-300 leading-relaxed">
-                        <span className="text-slate-500 mt-0.5 flex-shrink-0">·</span>
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-
-            <div className="bg-slate-900 rounded-3xl p-8 border border-slate-700 space-y-4">
-              <p className="text-xs font-black text-amber-400 uppercase tracking-widest">The analogy that makes it click</p>
-              <blockquote className="text-lg font-black text-white leading-snug italic">
-                "Twilio is the trucking company. Carriers are the highway. The government is the regulator. You're the shipper. If your cargo violates road rules, the trucking company loses its license — not just you."
-              </blockquote>
-              <p className="text-sm text-slate-400 leading-relaxed pt-2">
-                This is why Twilio is strict: every violating customer threatens the whole ecosystem's carrier access. They have commercial incentive to enforce compliance more aggressively than the law requires.
-              </p>
-            </div>
-          </section>
-
-          {/* ─── SECTION 4: GLOSSARY ─── */}
-          <section className="space-y-8">
-            <div>
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Reference</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                Glossary — <span className="text-slate-400">every term explained</span>
-              </h2>
-              <p className="text-slate-400 text-sm mt-2">If someone uses a term not on this list, ask them to define it first.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[
-                { term: 'A2P', full: 'Application to Person', plain: 'Any message sent from a system or software to a person. Everything Connie does is A2P. The opposite of a human texting from their phone.' },
-                { term: 'P2P', full: 'Person to Person', plain: 'You texting a friend from your phone. We do not operate in P2P. This is why regular phone apps don\'t need carrier registration.' },
-                { term: '10DLC', full: '10-Digit Long Code', plain: 'A standard local phone number like 404-555-1234, registered for A2P use. What we use for both PTS Tax and Sunset Finance. "Local feel" for the recipient.' },
-                { term: 'Brand', full: 'TCR Brand Registration', plain: '"Who is sending these messages?" Your company registered with the carrier network. PTS Tax and Sunset Finance are each their own Brand. Never share a Brand between entities.' },
-                { term: 'Campaign', full: 'A2P Campaign', plain: '"Why are you sending these messages?" Your declared use case. Outreach, confirmations, mixed. Each Brand can have multiple Campaigns for different purposes.' },
-                { term: 'TCR', full: 'The Campaign Registry', plain: 'The central database all carriers check before allowing SMS traffic. Twilio submits your Brand and Campaign here. Think of it as the DMV for business texting.' },
-                { term: 'Trust Hub', full: 'Twilio Trust Hub', plain: 'Twilio\'s compliance control center. Where you manage Business Profiles, Brands, and Campaigns. Access at console.twilio.com → Trust Hub.' },
-                { term: 'Opt-in', full: 'Consent to Receive', plain: 'The person consented to receive your messages. Without documented opt-in, every automated SMS is potentially a TCPA violation. This is the legal foundation.' },
-                { term: 'Opt-out', full: 'STOP Request', plain: 'The person said "no more." Must be honored immediately, permanently, within seconds. Every message sent after a STOP is a separate legal violation.' },
-                { term: 'STIR/SHAKEN', full: 'Voice Auth Protocol', plain: 'Voice call verification protocol. Signs the Caller ID digitally so the receiving carrier knows the call is from who it claims. Without it = "Spam Risk" label on the recipient\'s screen.' },
-                { term: 'CNAM', full: 'Caller ID Name', plain: '"PTS Tax" displayed instead of an unknown number. Costs a small monthly fee per number. Different from Branded Calling (which also shows logo and reason).' },
-                { term: 'Branded Calling', full: 'Rich Call Display', plain: 'Shows company name + logo + reason for call on the recipient\'s screen before they answer. Sunset Finance\'s 10 branches already have this active.' },
-                { term: 'KYC', full: 'Know Your Customer', plain: 'Twilio\'s identity verification process before granting high-volume access. They verify EIN, address, website, business ownership. Standard banking-style compliance.' },
-                { term: 'Segment', full: 'SMS Billing Unit', plain: 'One SMS block = 160 characters. A 320-character message = 2 segments = double the cost. Emojis and special characters use more bytes and reduce segment size to 70 chars.' },
-                { term: 'Toll-Free', full: '1-800 / 877 Numbers', plain: 'Different registration process, no $4 Brand fee. Good for corporate image. Separate carrier review process. Not what we use today but an option for scale.' },
-                { term: 'Short Code', full: '5-6 Digit Numbers', plain: 'Like 12345. For massive volume (100 messages/second). Very expensive ($1,000+/month), 8–12 weeks to approve. Not our use case — too expensive for our volume.' },
-                { term: 'ISV', full: 'Independent Software Vendor', plain: 'MitHub is the ISV — we build and operate the system. PTS Tax and Sunset Finance are the clients. Each client needs their own Brand. Never mix client traffic.' },
-                { term: 'Messaging Service', full: 'Twilio Number Pool', plain: 'Twilio\'s pool that groups your numbers under a Campaign. Numbers must be added to a Messaging Service to send A2P traffic. The most commonly forgotten step after approval.' },
-                { term: 'TCPA', full: 'Telephone Consumer Protection Act', plain: 'US federal law from 1991. $500–$1,500 per illegal call or text. Class actions can reach millions. This is the legal risk that makes compliance non-negotiable.' },
-                { term: 'CTIA', full: 'Wireless Industry Association', plain: 'The trade association that sets rules carriers follow. A2P 10DLC is a CTIA initiative — not a government mandate, but carriers enforce it as if it were law.' },
-              ].map((g, i) => (
-                <div key={i} className="bg-white border border-slate-200 rounded-3xl p-6 space-y-2 shadow-sm hover:border-slate-300 transition-colors">
-                  <p className="text-2xl font-black text-slate-900 leading-none">{g.term}</p>
-                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest">{g.full}</p>
-                  <div className="border-t border-slate-100 pt-3 mt-3">
-                    <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">In plain English</p>
-                    <p className="text-sm text-slate-600 leading-relaxed">{g.plain}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ─── SECTION 5: SMS vs VOICE ─── */}
-          <section className="space-y-8">
-            <div>
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Two channels</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                SMS vs Voice — <span className="text-blue-600">two separate registrations</span>
-              </h2>
-              <p className="text-slate-400 text-sm mt-2">One number can do both — but each channel has its own independent registration. Don't confuse progress on one with the other.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* SMS */}
-              <div className="rounded-3xl border-2 border-blue-200 overflow-hidden">
-                <div className="bg-blue-700 px-8 py-5">
-                  <p className="text-xs font-black text-blue-300 uppercase tracking-widest mb-1">Channel 1</p>
-                  <h3 className="text-xl font-black text-white uppercase tracking-tight">SMS Channel</h3>
-                </div>
-                <div className="p-6 bg-white space-y-4">
-                  <div className="space-y-1">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">What it is</p>
-                    <p className="text-sm text-slate-700 leading-relaxed">Text messages sent by Connie to prospects and clients. Appointment confirmations, outreach, follow-ups.</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Registration required</p>
-                    <p className="text-sm text-slate-700 font-bold">A2P 10DLC: Brand + Campaign + Messaging Service</p>
-                    <p className="text-xs text-slate-500">$4 one-time Brand fee + monthly Campaign fee</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Timeline</p>
-                    <p className="text-sm text-slate-700">10–15 business days (currently running longer)</p>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Current status</p>
-                    <div className="flex items-center gap-2">
-                      <StatusDot status="active" />
-                      <span className="text-xs text-slate-600">PTS Tax — in progress</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <StatusDot status="pending" />
-                      <span className="text-xs text-slate-600">Sunset Finance — not started</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Voice */}
-              <div className="rounded-3xl border-2 border-emerald-200 overflow-hidden">
-                <div className="bg-emerald-700 px-8 py-5">
-                  <p className="text-xs font-black text-emerald-300 uppercase tracking-widest mb-1">Channel 2</p>
-                  <h3 className="text-xl font-black text-white uppercase tracking-tight">Voice Channel</h3>
-                </div>
-                <div className="p-6 bg-white space-y-4">
-                  <div className="space-y-1">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">What it is</p>
-                    <p className="text-sm text-slate-700 leading-relaxed">Outbound and inbound calls made by Connie. Live transfers, appointment calls, follow-up calls.</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Registration required</p>
-                    <p className="text-sm text-slate-700 font-bold">STIR/SHAKEN (auto via Trust Hub) + Branded Calling</p>
-                    <p className="text-xs text-slate-500">Branded Calling shows company name + logo + reason for call</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Timeline</p>
-                    <p className="text-sm text-slate-700">Days to 2 weeks for Branded Calling rollout</p>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Current status</p>
-                    <div className="flex items-center gap-2">
-                      <StatusDot status="done" />
-                      <span className="text-xs text-slate-600">Sunset Finance — 10 branches done</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <StatusDot status="pending" />
-                      <span className="text-xs text-slate-600">PTS Tax — pending</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex items-start gap-4">
-              <span className="text-amber-500 font-black text-lg flex-shrink-0">!</span>
-              <p className="text-sm text-slate-700 leading-relaxed">
-                <strong className="text-slate-900">Key rule:</strong> One number can do both voice and SMS — but each registration is completely independent. Being approved for voice does not give you SMS. Being approved for SMS does not cover voice. Always verify both.
-              </p>
-            </div>
-          </section>
-
-          {/* ─── SECTION 6: THE 4 A2P REGISTRATION STEPS ─── */}
-          <section className="space-y-10">
-            <div className="space-y-2">
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest">The process</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                The 4 A2P registration steps
-              </h2>
-              <p className="text-slate-500 text-sm">In order. Each step unlocks the next. None can be skipped.</p>
-            </div>
-
-            <div className="space-y-4">
-
-              {/* Step 1 */}
-              <div className="rounded-3xl border-2 border-slate-300 overflow-hidden shadow-sm">
-                <div className="bg-slate-800 px-8 py-4 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <span className="bg-white/20 text-white text-xs font-black w-8 h-8 rounded-xl flex items-center justify-center">01</span>
-                    <span className="text-white font-black text-base uppercase tracking-tight">Business Profile</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-white/60 text-xs font-bold">~10 min · instant approval</span>
-                    <StatusDot status="done" />
-                  </div>
-                </div>
-                <div className="p-8 bg-white grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <p className="text-sm text-slate-600 leading-relaxed">Your legal identity inside Twilio. One per legal entity — EIN is the fingerprint. TCR cross-checks your information against Dun &amp; Bradstreet before approving your Brand in the next step.</p>
-                    <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                      <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Required fields</p>
-                      <ul className="space-y-2">
-                        {['Legal business name (must match EIN)', 'EIN / Tax ID', 'Business address', 'Website URL (must be live)', 'Entity type (LLC / Corp / Private)', 'Corporate email (no @gmail — use company domain)'].map((f, j) => (
-                          <li key={j} className="flex items-start gap-2 text-xs text-slate-600">
-                            <span className="text-slate-300 font-black mt-0.5 flex-shrink-0">·</span>{f}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="bg-amber-50 rounded-2xl p-4 border border-amber-200">
-                      <p className="text-xs font-black text-amber-700 uppercase tracking-widest mb-2">Critical rule</p>
-                      <p className="text-xs text-slate-700 leading-relaxed">One Business Profile per legal entity. PTS Tax and Sunset Finance are separate entities — separate profiles. TCR will flag any inconsistency between the name here and what appears on your website or in public business registries.</p>
-                    </div>
-                    <div className="bg-blue-50 rounded-2xl p-4 border border-blue-200">
-                      <p className="text-xs font-black text-blue-700 uppercase tracking-widest mb-2">D&amp;B cross-check</p>
-                      <p className="text-xs text-slate-700 leading-relaxed">TCR verifies your entity against Dun &amp; Bradstreet. If your business is not in D&amp;B, or the name doesn't match, your Brand can be delayed. Make sure your legal name is consistent everywhere.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="rounded-3xl border-2 border-blue-300 overflow-hidden shadow-sm">
-                <div className="bg-blue-700 px-8 py-4 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <span className="bg-white/20 text-white text-xs font-black w-8 h-8 rounded-xl flex items-center justify-center">02</span>
-                    <span className="text-white font-black text-base uppercase tracking-tight">Brand (TCR)</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-white/60 text-xs font-bold">~15 min · TCR: 24–72 hours</span>
-                    <StatusDot status="active" />
-                  </div>
-                </div>
-                <div className="p-8 bg-white space-y-6">
-                  <p className="text-sm text-slate-600 leading-relaxed">The Brand connects your Business Profile to The Campaign Registry — the central database all carriers check before allowing SMS traffic. The brand name in Twilio must match what appears on your website and in your business records.</p>
-                  <div>
-                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Brand Types — which one we use</p>
-                    <div className="overflow-x-auto rounded-2xl border border-slate-200">
-                      <table className="text-xs">
-                        <thead>
-                          <tr className="bg-slate-900 text-white">
-                            <th className="py-3 px-4 text-left font-black uppercase tracking-widest">Type</th>
-                            <th className="py-3 px-4 text-left font-black uppercase tracking-widest">Who it's for</th>
-                            <th className="py-3 px-4 text-left font-black uppercase tracking-widest">Daily limit (T-Mobile)</th>
-                            <th className="py-3 px-4 text-left font-black uppercase tracking-widest">Fee</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr><td className="py-3 px-4 font-bold text-slate-700">Sole Proprietor</td><td className="py-3 px-4 text-slate-600">Individuals without EIN</td><td className="py-3 px-4 text-slate-600">1,000 segments/day</td><td className="py-3 px-4 text-slate-600">$0</td></tr>
-                          <tr className="bg-slate-50"><td className="py-3 px-4 font-bold text-slate-700">Low-Volume Standard</td><td className="py-3 px-4 text-slate-600">Company with EIN, moderate sends</td><td className="py-3 px-4 text-slate-600">2,000 segments/day</td><td className="py-3 px-4 text-slate-600">$4 one-time</td></tr>
-                          <tr className="bg-emerald-50 border border-emerald-200"><td className="py-3 px-4 font-black text-emerald-800">Standard ← We use this</td><td className="py-3 px-4 text-slate-600">Company with EIN, high volume</td><td className="py-3 px-4 text-slate-600">2,000+ (unlimited by Trust Score)</td><td className="py-3 px-4 text-slate-600">$4 + $40 vetting</td></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <p className="text-xs text-slate-500 mt-2">We always register PTS Tax and Sunset Finance as Standard Brand — same cost, higher throughput ceiling, needed for any real business operation.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="rounded-3xl border-2 border-orange-300 overflow-hidden shadow-sm">
-                <div className="bg-orange-600 px-8 py-4 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <span className="bg-white/20 text-white text-xs font-black w-8 h-8 rounded-xl flex items-center justify-center">03</span>
-                    <span className="text-white font-black text-base uppercase tracking-tight">Campaign (Use case)</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-white/60 text-xs font-bold">~20 min · carrier review: 1–3 weeks</span>
-                    <StatusDot status="active" />
-                  </div>
-                </div>
-                <div className="p-8 bg-white space-y-6">
-                  <p className="text-sm text-slate-600 leading-relaxed">The Campaign declares exactly what you're sending and to whom. Carriers evaluate this to determine if your traffic is legitimate. Sample messages you submit are compared against real traffic.</p>
-                  <div>
-                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Campaign Types — monthly fees</p>
-                    <div className="overflow-x-auto rounded-2xl border border-slate-200">
-                      <table className="text-xs">
-                        <thead>
-                          <tr className="bg-slate-900 text-white">
-                            <th className="py-3 px-4 text-left font-black uppercase tracking-widest">Type</th>
-                            <th className="py-3 px-4 text-left font-black uppercase tracking-widest">What it covers</th>
-                            <th className="py-3 px-4 text-left font-black uppercase tracking-widest">Monthly fee</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr><td className="py-3 px-4 font-bold text-slate-700">Marketing</td><td className="py-3 px-4 text-slate-600">Promos, offers, lead generation</td><td className="py-3 px-4 text-slate-600">$10/mo</td></tr>
-                          <tr className="bg-slate-50"><td className="py-3 px-4 font-bold text-slate-700">Transactional</td><td className="py-3 px-4 text-slate-600">Confirmations, reminders, alerts</td><td className="py-3 px-4 text-slate-600">$1.50–$10/mo</td></tr>
-                          <tr className="bg-amber-50 border border-amber-200"><td className="py-3 px-4 font-black text-amber-800">Mixed ← Connie uses this</td><td className="py-3 px-4 text-slate-600">Marketing + transactional combined</td><td className="py-3 px-4 text-slate-600">Requires separate consent for each type</td></tr>
-                          <tr className="bg-slate-50"><td className="py-3 px-4 font-bold text-slate-700">Customer Care</td><td className="py-3 px-4 text-slate-600">Support conversations</td><td className="py-3 px-4 text-slate-600">$1.50/mo</td></tr>
-                          <tr><td className="py-3 px-4 font-bold text-slate-700">2FA / OTP</td><td className="py-3 px-4 text-slate-600">Verification codes</td><td className="py-3 px-4 text-slate-600">Use Twilio Verify instead</td></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <p className="text-xs text-slate-500 mt-2">PTS Tax / Connie = Mixed. Connie sends both outreach (marketing) and appointment confirmations (transactional). Mixed requires separate opt-in consent documentation for each type.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 4 */}
-              <div className="rounded-3xl border-2 border-emerald-300 overflow-hidden shadow-sm">
-                <div className="bg-emerald-700 px-8 py-4 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <span className="bg-white/20 text-white text-xs font-black w-8 h-8 rounded-xl flex items-center justify-center">04</span>
-                    <span className="text-white font-black text-base uppercase tracking-tight">Numbers → Campaign (Messaging Service)</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-white/60 text-xs font-bold">Instant — after approval</span>
-                    <StatusDot status="pending" />
-                  </div>
-                </div>
-                <div className="p-8 bg-white grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <p className="text-sm text-slate-600 leading-relaxed">Each physical phone number must be assigned to the Campaign's Messaging Service. A number not added to a Messaging Service cannot send A2P traffic — even with an approved Campaign.</p>
-                    <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                      <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">What to do</p>
-                      <ul className="space-y-2">
-                        {['Go to Trust Hub → Registrations → your approved Campaign', 'Open the associated Messaging Service', 'Add each Connie number one by one', 'Verify each number shows "Active" status', 'Test delivery from each number before scaling'].map((f, j) => (
-                          <li key={j} className="flex items-start gap-2 text-xs text-slate-600">
-                            <span className="text-slate-300 font-black mt-0.5 flex-shrink-0">·</span>{f}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="bg-red-50 rounded-2xl p-6 border-2 border-red-200 flex flex-col justify-center space-y-3">
-                    <p className="text-xs font-black text-red-700 uppercase tracking-widest">The most forgotten step</p>
-                    <p className="text-sm text-slate-700 leading-relaxed font-bold">"Campaign approved. Numbers not added. Zero messages go out. Always verify this step."</p>
-                    <p className="text-xs text-slate-600 leading-relaxed">This happens constantly. The Campaign passes review. The team celebrates. No messages actually send because the numbers were never connected to the Messaging Service. Don't skip this.</p>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            {/* Emergency Call Registration */}
-            <div className="bg-red-50 border-2 border-dashed border-red-300 rounded-3xl p-8 flex flex-col md:flex-row gap-6 items-start">
-              <div className="bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-xl uppercase tracking-widest flex-shrink-0 self-start">Separate step</div>
-              <div className="space-y-3 flex-1">
-                <p className="font-black text-red-800 uppercase tracking-tight">Emergency Call Registration</p>
-                <p className="text-sm text-slate-700 leading-relaxed">
-                  Each number needs Emergency Call Registration independently from the A2P Campaign. This is a Twilio requirement — if skipped, they charge <strong className="text-red-700">$75 per number</strong>. It's a quick, one-time registration per number, done in the Twilio console under "Phone Numbers → Manage → Emergency Calling."
-                </p>
-                <p className="text-xs font-bold text-red-700">Status: Pending · Mauricio · Do before scaling SMS volume</p>
-              </div>
-              <div className="flex-shrink-0 text-center">
-                <p className="text-5xl font-black text-red-600">$75</p>
-                <p className="text-xs text-red-500 font-black uppercase tracking-widest">per number<br/>if skipped</p>
-              </div>
-            </div>
-          </section>
-
-          {/* ─── SECTION 7: CONSENT ─── */}
-          <section className="space-y-8">
-            <div>
-              <p className="text-xs font-black text-red-600 uppercase tracking-widest mb-2">Legal foundation</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                Consent — <span className="text-red-600">no consent = no legal right to contact</span>
-              </h2>
-            </div>
-
-            {/* 4 levels */}
-            <div className="space-y-3">
-              <p className="text-xs font-black text-slate-500 uppercase tracking-widest">A — The 4 levels of consent (strongest to weakest)</p>
-              {[
-                { level: 'Double Opt-In', badge: 'Gold Standard', color: 'bg-amber-50 border-amber-300', badgeColor: 'bg-amber-400 text-white', desc: 'User confirms subscription after giving number. Example: form submit → confirmation SMS "Reply YES to confirm" → they reply YES. Highest legal protection. Required in some regulated verticals.' },
-                { level: 'Explicit Opt-In', badge: 'Best Practice', color: 'bg-blue-50 border-blue-300', badgeColor: 'bg-blue-600 text-white', desc: 'Specific checkbox: "I agree to receive SMS/calls from [Company]." Must not be pre-checked. Required for A2P Campaign approval. Clearest consent trail.' },
-                { level: 'Implied Opt-In', badge: 'Limited Scope', color: 'bg-slate-50 border-slate-300', badgeColor: 'bg-slate-500 text-white', desc: 'Customer gave you their number when buying something or creating an account. Covers contact about that transaction only. Cannot be used for marketing or outreach.' },
-                { level: 'No Consent', badge: 'Restricted', color: 'bg-red-50 border-red-300', badgeColor: 'bg-red-600 text-white', desc: 'Can call business numbers during business hours for B2B. CANNOT send automated SMS. CANNOT autodial cell phones. FOIA list = no consent. This is where TCPA exposure lives.' },
-              ].map((row, i) => (
-                <div key={i} className={`rounded-2xl border-2 ${row.color} p-5 flex items-start gap-4`}>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <p className="font-black text-slate-900">{row.level}</p>
-                      <span className={`text-xs font-black px-2 py-0.5 rounded-full uppercase tracking-widest ${row.badgeColor}`}>{row.badge}</span>
-                    </div>
-                    <p className="text-sm text-slate-600 leading-relaxed">{row.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* 6 required elements */}
-            <div className="space-y-4">
-              <p className="text-xs font-black text-slate-500 uppercase tracking-widest">B — The 6 things every opt-in confirmation message MUST contain</p>
-              <p className="text-xs text-slate-400">If any of these are missing, the Campaign will be rejected. There is no exception.</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {[
-                  { n: '1', label: 'What the messages are for', note: 'Be specific: "Tax alerts and appointment confirmations" not just "updates"' },
-                  { n: '2', label: 'Approximate frequency', note: '"Up to 4 messages per month" — exact is fine, approximate is required' },
-                  { n: '3', label: '"Message and data rates may apply"', note: 'Word for word. This exact phrase.' },
-                  { n: '4', label: '"Reply HELP for help"', note: 'Must be in the first message the person receives' },
-                  { n: '5', label: '"Reply STOP to opt out"', note: 'Or "cancel" — STOP keyword must be documented' },
-                  { n: '6', label: 'Link to Privacy Policy', note: 'Must be publicly accessible, not behind a login, not a redirect to a generic page' },
-                ].map((req, i) => (
-                  <div key={i} className="flex items-start gap-3 bg-white border border-slate-200 rounded-2xl p-4">
-                    <span className="w-7 h-7 bg-red-600 text-white text-xs font-black rounded-full flex items-center justify-center flex-shrink-0">{req.n}</span>
-                    <div>
-                      <p className="text-sm font-bold text-slate-800">{req.label}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{req.note}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="bg-slate-900 rounded-2xl p-6 text-white space-y-3">
-                <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Example confirmation message (PTS Tax)</p>
-                <div className="bg-slate-800 rounded-xl p-4 font-mono text-sm text-emerald-400 leading-relaxed border border-slate-700">
-                  Welcome to PTS Tax Alerts. Up to 4 messages/month.<br />
-                  Msg &amp; data rates may apply.<br />
-                  Reply HELP for help, STOP to cancel.<br />
-                  Privacy: [URL]
-                </div>
-                <p className="text-xs text-slate-500">This message must appear immediately after opt-in — before any other message is sent.</p>
-              </div>
-            </div>
-
-            {/* Opt-in documentation */}
-            <div className="space-y-4">
-              <p className="text-xs font-black text-slate-500 uppercase tracking-widest">C — How to document opt-in (acceptable methods)</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                  { method: 'Web Form', icon: '🌐', desc: 'Submit URL to Twilio. Must be publicly accessible from any location in incognito mode. Include screenshot of the form showing the unchecked checkbox.' },
-                  { method: 'Verbal (Phone/In-person)', icon: '🎙', desc: 'Script word-for-word. Must include disclosure of message types, frequency, and opt-out. Ideally recorded or confirmed with a follow-up confirmation SMS.' },
-                  { method: 'Paper Form', icon: '📄', desc: 'Photograph the form. Upload and provide a public link. Must show the opt-in language clearly. Scanned PDFs accepted.' },
-                  { method: 'Keyword SMS (text JOIN)', icon: '📱', desc: 'Document source where user saw the keyword (flyer, website, receipt). Show the confirmation message that was sent back immediately after.' },
-                ].map((m, i) => (
-                  <div key={i} className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-2">
-                    <p className="font-black text-slate-900">{m.method}</p>
-                    <p className="text-sm text-slate-600 leading-relaxed">{m.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* FOIA situation */}
-            <div className="bg-red-950 rounded-3xl p-8 text-white space-y-6">
-              <div>
-                <p className="text-xs font-black text-red-400 uppercase tracking-widest mb-2">High risk — read carefully</p>
-                <h3 className="text-xl font-black uppercase tracking-tight">D — The FOIA List Situation</h3>
-                <p className="text-sm text-slate-300 mt-2 leading-relaxed">The FOIA list (IRS public directory of tax preparers) = NO consent. Those people never agreed to be contacted by Connie. Two paths forward:</p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-emerald-950 border border-emerald-700 rounded-2xl p-5 space-y-3">
-                  <span className="text-xs font-black bg-emerald-600 text-white px-2 py-1 rounded-full uppercase tracking-widest">Option A — Safe</span>
-                  <p className="text-sm text-white font-bold">Connie only calls if prospect replied to SmartLead email first</p>
-                  <p className="text-xs text-slate-300 leading-relaxed">That reply = implied consent. The prospect showed interest by engaging. This keeps us within TCPA safe harbor. Always the recommended path.</p>
-                </div>
-                <div className="bg-red-900 border border-red-600 rounded-2xl p-5 space-y-3">
-                  <span className="text-xs font-black bg-red-600 text-white px-2 py-1 rounded-full uppercase tracking-widest">Option B — Risky</span>
-                  <p className="text-sm text-white font-bold">Tony signs written authorization accepting TCPA liability</p>
-                  <p className="text-xs text-slate-300 leading-relaxed">Exposure: $500–$1,500 × number of calls. 7,500 FOIA calls = $3.75M theoretical exposure. Verbal authorization is not enough. Written only. Tony has not yet signed.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ─── SECTION 8: PRIVACY POLICY RULE ─── */}
-          <section className="space-y-6">
-            <div>
-              <p className="text-xs font-black text-amber-600 uppercase tracking-widest mb-2">Non-negotiable</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                The Privacy Policy rule
-              </h2>
-            </div>
-            <div className="border-4 border-amber-400 bg-amber-50 rounded-3xl p-8 space-y-4">
-              <p className="text-xs font-black text-amber-700 uppercase tracking-widest">The exact phrase that must appear — word for word</p>
-              <blockquote className="text-xl font-black text-slate-900 leading-snug border-l-4 border-amber-400 pl-6">
-                "No mobile information will be shared with third parties or affiliates for marketing or promotional purposes."
-              </blockquote>
-              <p className="text-sm text-slate-600 leading-relaxed">If this sentence (or equivalent language) is NOT in the Privacy Policy → Campaign rejected immediately. Twilio's carrier partners require this exact declaration. It signals to the reviewer that you understand the regulatory framework.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 space-y-2">
-                <p className="text-xs font-black text-emerald-700 uppercase tracking-widest">What is allowed</p>
-                <ul className="space-y-2">
-                  {[
-                    'Sharing data with your own CRM (Zoho, HubSpot)',
-                    'Sharing with tech providers for operational purposes (n8n, Twilio itself)',
-                    'Internal use across your organization',
-                    'Aggregated, anonymized analytics',
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
-                      <span className="text-emerald-500 font-black">✓</span>{item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bg-red-50 border border-red-200 rounded-2xl p-5 space-y-2">
-                <p className="text-xs font-black text-red-700 uppercase tracking-widest">What is never allowed</p>
-                <ul className="space-y-2">
-                  {[
-                    'Selling phone numbers to third parties',
-                    'Sharing phone numbers for marketing by other companies',
-                    'Data brokers or lead list services',
-                    'Sharing without explicit consent for a new purpose',
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
-                      <span className="text-red-500 font-black">✗</span>{item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="bg-slate-100 rounded-2xl p-5 space-y-2">
-              <p className="text-xs font-black text-slate-500 uppercase tracking-widest">Technical requirements for the Privacy Policy link</p>
-              <ul className="space-y-1.5">
-                {[
-                  'Must be publicly accessible from anywhere in the world — no login required',
-                  'Must be live at the moment of opt-in — broken link = rejected Campaign',
-                  'Test it from incognito mode before submitting anything to Twilio',
-                  'Must be clickable in the opt-in confirmation message (not just a text mention)',
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
-                    <span className="text-slate-400 font-black">·</span>{item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          {/* ─── SECTION 9: VOLUME WARMUP ─── */}
-          <section className="space-y-8">
-            <div>
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Critical — do not skip</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                Volume Warmup — <span className="text-amber-600">don't skip this</span>
-              </h2>
-              <p className="text-slate-500 text-sm mt-2 leading-relaxed">New numbers start cold. A number that sends 5,000 messages on day one looks identical to a botnet to the carrier algorithm. Automatic block. No appeal.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { week: 'Week 1', limit: '200 msg/day', sub: 'Per number. Establish baseline legitimacy.', color: 'bg-blue-700', textColor: 'text-blue-300' },
-                { week: 'Week 2', limit: '500 msg/day', sub: 'Per number. Maintain consistency in timing.', color: 'bg-blue-600', textColor: 'text-blue-200' },
-                { week: 'Week 3+', limit: '~2,000/day', sub: 'Campaign limit for Standard Brand. Do not exceed.', color: 'bg-emerald-700', textColor: 'text-emerald-300' },
-              ].map((w, i) => (
-                <div key={i} className={`${w.color} rounded-3xl p-8 text-white text-center space-y-3`}>
-                  <p className={`text-xs font-black uppercase tracking-widest ${w.textColor}`}>{w.week}</p>
-                  <p className="text-4xl font-black">{w.limit}</p>
-                  <p className="text-xs text-white/70 leading-relaxed">{w.sub}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 space-y-2">
-                <p className="text-xs font-black text-amber-700 uppercase tracking-widest">Voice warmup</p>
-                <p className="text-sm text-slate-700 leading-relaxed">No formal warmup schedule for voice, but 500 calls/hour from a new number triggers carrier alerts. Start at 50–100 calls/hour and increase gradually over the first 2 weeks.</p>
-              </div>
-              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 space-y-2">
-                <p className="text-xs font-black text-blue-700 uppercase tracking-widest">Consistency is the signal</p>
-                <p className="text-sm text-slate-700 leading-relaxed">Same time every day signals a legitimate business operation. Random bursts at 2 AM followed by silence for 3 days signals spam. Carriers use pattern matching, not just volume.</p>
-              </div>
-            </div>
-
-            <div className="bg-red-50 border border-red-200 rounded-2xl p-5 flex items-start gap-4">
-              <span className="text-red-600 font-black text-lg flex-shrink-0">!</span>
-              <div className="space-y-1">
-                <p className="text-sm font-bold text-slate-800">If a number gets blocked mid-warmup</p>
-                <p className="text-sm text-slate-600 leading-relaxed">Retire the number. Get a new one. Assign it to the approved Campaign. Restart warmup from zero. There is no unblocking process — once a number is flagged by a carrier, it stays flagged. This is exactly why warmup compliance is not optional.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* ─── SECTION 10: TRUST HUB ─── */}
-          <section className="bg-slate-950 rounded-[40px] p-10 text-white space-y-8">
-            <div>
-              <p className="text-xs font-black text-blue-400 uppercase tracking-widest mb-2">Compliance HQ</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
-                Trust Hub — <span className="text-blue-400">where all registrations live</span>
-              </h2>
-              <p className="text-slate-400 text-sm mt-2">Every registration — Brand, Campaign, Branded Calling, Toll-Free — lives inside Trust Hub. Know this interface.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                { n: '1', title: 'Overview', icon: '📊', desc: 'The dashboard. Any broken, rejected, or pending item shows here with a red or yellow indicator. Check this first when something isn\'t working.' },
-                { n: '2', title: 'Profiles', icon: '🏢', desc: 'Your verified legal identity (KYC). One per client. PTS Tax has one. Sunset Finance will need one. This is the foundation everything else builds on.' },
-                { n: '3', title: 'Registrations', icon: '📋', desc: 'All active A2P Brands, Campaigns, Branded Calling registrations, and Toll-Free verifications. This is where you submit, track, and manage approval status.' },
-                { n: '4', title: 'Addresses', icon: '📍', desc: 'Company physical addresses required for certain registrations. Must match what was provided in the Business Profile. Keep these current.' },
-              ].map((item, i) => (
-                <div key={i} className="bg-slate-900 border border-slate-700 rounded-2xl p-5 space-y-2">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl">{item.icon}</span>
-                    <p className="font-black text-white uppercase tracking-tight">{item.n}. {item.title}</p>
-                  </div>
-                  <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="bg-slate-900 rounded-2xl p-6 border border-slate-700 space-y-4">
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest">The correct flow — top to bottom</p>
-              <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-white">
-                {['Trust Hub', '→', 'Profiles (verify identity)', '→', 'Registrations', '→', 'Brand (who sends)', '→', 'Campaign (why/what)', '→', 'Messaging Service (connect numbers)', '→', 'Numbers can send ✓'].map((step, i) => (
-                  <span key={i} className={step === '→' ? 'text-slate-600' : 'bg-slate-800 px-3 py-1 rounded-lg text-xs'}>{step}</span>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-red-950 border border-red-700 rounded-2xl p-5 flex items-start gap-4">
-              <span className="text-red-400 font-black text-lg flex-shrink-0">!</span>
-              <div>
-                <p className="text-sm font-bold text-red-300">Most common mistake in this step</p>
-                <p className="text-sm text-slate-400 leading-relaxed mt-1">Register Brand + Campaign but forget to add numbers to the Messaging Service. Campaign approved. Zero messages go out. Always verify the last step. The Campaign status screen will show "Active" even if no numbers are connected.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* ─── SECTION 11: PHONE NUMBER TYPES ─── */}
-          <section className="space-y-8">
-            <div>
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Infrastructure decision</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                Phone number types — <span className="text-blue-600">when to use each</span>
-              </h2>
-            </div>
-
-            <div className="overflow-x-auto rounded-3xl border border-slate-200 shadow-sm">
-              <table className="text-sm">
-                <thead>
-                  <tr className="bg-slate-900 text-white">
-                    <th className="py-4 px-5 text-left font-black uppercase tracking-widest text-xs">Type</th>
-                    <th className="py-4 px-5 text-left font-black uppercase tracking-widest text-xs">Format</th>
-                    <th className="py-4 px-5 text-left font-black uppercase tracking-widest text-xs">Speed</th>
-                    <th className="py-4 px-5 text-left font-black uppercase tracking-widest text-xs">Registration</th>
-                    <th className="py-4 px-5 text-left font-black uppercase tracking-widest text-xs">When to use</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="bg-blue-50 border-b-2 border-blue-200">
-                    <td className="py-4 px-5 font-black text-blue-800">Local 10DLC ← We use</td>
-                    <td className="py-4 px-5 text-slate-700 font-mono">404-XXX-XXXX</td>
-                    <td className="py-4 px-5 text-slate-700">1–50 msg/sec</td>
-                    <td className="py-4 px-5 text-slate-700">A2P Brand + Campaign ($4)</td>
-                    <td className="py-4 px-5 text-slate-600 text-xs">Current operation. Local feel. Moderate volume.</td>
-                  </tr>
-                  <tr className="bg-white border-b border-slate-100">
-                    <td className="py-4 px-5 font-bold text-slate-700">Toll-Free</td>
-                    <td className="py-4 px-5 text-slate-700 font-mono">1-800-XXX</td>
-                    <td className="py-4 px-5 text-slate-700">~3 msg/sec</td>
-                    <td className="py-4 px-5 text-slate-700">Separate verification, no $4 Brand fee</td>
-                    <td className="py-4 px-5 text-slate-600 text-xs">Corporate image, inbound support lines</td>
-                  </tr>
-                  <tr className="bg-slate-50">
-                    <td className="py-4 px-5 font-bold text-slate-700">Short Code</td>
-                    <td className="py-4 px-5 text-slate-700 font-mono">12345</td>
-                    <td className="py-4 px-5 text-slate-700">100 msg/sec</td>
-                    <td className="py-4 px-5 text-slate-700">8–12 weeks, ~$1,000/mo</td>
-                    <td className="py-4 px-5 text-slate-600 text-xs">Mass alerts at scale — not our use case</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div className="bg-slate-900 text-white rounded-3xl p-8 space-y-6">
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Sunset Finance number math</p>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-                <div className="bg-slate-800 rounded-2xl p-4 space-y-1">
-                  <p className="text-3xl font-black text-white">4 + 1</p>
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Numbers per branch<br/>(4 active + 1 backup)</p>
-                </div>
-                <div className="flex items-center justify-center text-4xl font-black text-slate-600">×</div>
-                <div className="bg-slate-800 rounded-2xl p-4 space-y-1">
-                  <p className="text-3xl font-black text-white">10</p>
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Branches</p>
-                </div>
-                <div className="bg-emerald-900 border border-emerald-700 rounded-2xl p-4 space-y-1">
-                  <p className="text-3xl font-black text-emerald-400">50</p>
-                  <p className="text-xs text-emerald-300 font-bold uppercase tracking-widest">Total numbers</p>
-                </div>
-              </div>
-              <div className="bg-slate-800 rounded-2xl p-5 space-y-2">
-                <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Each number needs</p>
-                <ul className="space-y-1.5">
-                  {[
-                    'A2P Campaign registration + connection to Messaging Service',
-                    'Emergency Call registration (separate)',
-                    'Branded Calling registration (voice — already done for existing 10 branches)',
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
-                      <span className="text-slate-500">·</span>{item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <p className="text-xs text-slate-500 leading-relaxed">First A2P approval: 2–3 weeks. Each new number added after the first approval in the same Campaign: 24–36 hours. Get the first one approved, then scale fast.</p>
-            </div>
-          </section>
-
-          {/* ─── SECTION 12: PRE-FLIGHT CHECKLIST ─── */}
-          <section className="space-y-8">
-            <div>
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Before submitting anything</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                4 checks that prevent rejection
-              </h2>
-              <p className="text-slate-500 text-sm mt-2">Run these before clicking submit. Every single time. No exceptions.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  key: 'Key 1',
-                  title: 'Consent documented',
-                  color: 'border-blue-300 bg-blue-50',
-                  titleColor: 'text-blue-700',
-                  checks: [
-                    'Can you prove opt-in for every method users can use to sign up?',
-                    'Web form URL is public and accessible from incognito',
-                    'Verbal script is written down word for word',
-                    'Paper form is photographed and uploaded somewhere public',
-                    'Keyword source is documented (where did user see "text JOIN"?)',
-                  ]
-                },
-                {
-                  key: 'Key 2',
-                  title: 'Privacy Policy',
-                  color: 'border-amber-300 bg-amber-50',
-                  titleColor: 'text-amber-700',
-                  checks: [
-                    'Contains the exact phrase about mobile data not being shared',
-                    'Link is public — test from incognito, outside your network',
-                    'Link works at this exact moment (not just last week)',
-                    'Link is clickable in the opt-in message, not just mentioned in text',
-                  ]
-                },
-                {
-                  key: 'Key 3',
-                  title: 'Brand consistency',
-                  color: 'border-emerald-300 bg-emerald-50',
-                  titleColor: 'text-emerald-700',
-                  checks: [
-                    'Name in Twilio = name on website = name in email domain',
-                    'Website is live and loads in under 3 seconds from any network',
-                    'Test website URL from incognito — does it load completely?',
-                    'Contact email uses company domain (not @gmail)',
-                  ]
-                },
-                {
-                  key: 'Key 4',
-                  title: 'Perfect submission',
-                  color: 'border-red-300 bg-red-50',
-                  titleColor: 'text-red-700',
-                  checks: [
-                    'Click every link in the submission from incognito',
-                    'Sample messages match real Connie scripts exactly',
-                    'Dynamic data shown in [brackets] in samples',
-                    'HELP and STOP mentioned in first message',
-                    'Mixed Campaign: 2 sample messages per type (marketing + transactional)',
-                  ]
-                },
-              ].map((card, i) => (
-                <div key={i} className={`rounded-3xl border-2 ${card.color} p-6 space-y-4`}>
-                  <div>
-                    <p className={`text-xs font-black uppercase tracking-widest ${card.titleColor}`}>{card.key}</p>
-                    <h3 className={`text-lg font-black uppercase tracking-tight ${card.titleColor} mt-1`}>{card.title}</h3>
-                  </div>
-                  <ul className="space-y-2">
-                    {card.checks.map((c, j) => (
-                      <li key={j} className="flex items-start gap-2 text-sm text-slate-700">
-                        <span className="w-4 h-4 border-2 border-slate-300 rounded flex-shrink-0 mt-0.5" />
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ─── SECTION 13: COMMON ERRORS TABLE ─── */}
-          <section className="space-y-8">
-            <div>
-              <p className="text-xs font-black text-red-600 uppercase tracking-widest mb-2">Learn from these</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                Mistakes that cause <span className="text-red-600">rejection or fines</span>
-              </h2>
-            </div>
-            <div className="overflow-x-auto rounded-3xl border border-slate-200 shadow-sm">
-              <table className="text-sm">
-                <thead>
-                  <tr className="bg-slate-900 text-white">
-                    <th className="py-3 px-5 text-left font-black uppercase tracking-widest text-xs">Mistake</th>
-                    <th className="py-3 px-5 text-left font-black uppercase tracking-widest text-xs">Consequence</th>
-                    <th className="py-3 px-5 text-left font-black uppercase tracking-widest text-xs">Fix</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    ['Pre-checked opt-in checkbox', 'Immediate Campaign rejection', 'Never pre-check. User must click it themselves.'],
-                    ['One checkbox for marketing + transactional', 'Immediate rejection', 'Two separate checkboxes. Two separate consent trails.'],
-                    ['Website is down or returns 404', 'Immediate rejection', 'Verify from incognito before submitting.'],
-                    ['Contact email is @gmail.com', 'Reviewer suspicion, likely rejection', 'Use yourname@yourbusiness.com.'],
-                    ['Numbers not added to Messaging Service', 'Campaign approved, zero messages sent', 'Always do this immediately after approval.'],
-                    ['Different clients under same Trust Hub Profile', 'Compliance violation at scale', 'One Profile per legal entity. No exceptions.'],
-                    ['Registering marketing as 2FA', 'Campaign blocked after review', 'Be honest with the use case. Reviewers verify content.'],
-                    ['STOP not propagated to CRM', 'TCPA violation per message sent after STOP', 'N8N → Zoho Do Not Contact must sync automatically.'],
-                    ['No "mobile data sharing" phrase in Privacy Policy', 'Campaign rejection', 'Add exact phrase before submitting.'],
-                    ['Sending full volume from new number day 1', 'Number blocked by carrier', 'Follow warmup schedule strictly. No shortcuts.'],
-                  ].map(([mistake, consequence, fix], i) => (
-                    <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
-                      <td className="py-3 px-5 font-bold text-slate-800 text-xs">{mistake}</td>
-                      <td className="py-3 px-5 text-red-600 font-bold text-xs">{consequence}</td>
-                      <td className="py-3 px-5 text-slate-600 text-xs">{fix}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          {/* ─── SECTION 14: STATUS BY CLIENT ─── */}
-          <section className="space-y-8">
-            <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-              Current status — by client
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* PTS Tax */}
-              <div className="rounded-3xl border-2 border-blue-200 overflow-hidden shadow-sm">
-                <div className="bg-blue-700 px-8 py-4 flex items-center justify-between">
-                  <span className="text-white font-black text-base uppercase tracking-tight">PTS Tax</span>
-                  <StatusDot status="active" />
-                </div>
-                <div className="p-6 bg-white space-y-1">
-                  <CheckRow label="Business Profile" status="done" note="EIN registered, address confirmed" />
-                  <CheckRow label="Brand (TCR)" status="active" note="Submitted — awaiting TCR approval (24–72h)" />
-                  <CheckRow label="A2P Campaign" status="active" note="In progress with Twilio support" />
-                  <CheckRow label="Numbers → Campaign (Messaging Service)" status="pending" note="Blocked until Campaign is approved" />
-                  <CheckRow label="Emergency Call Registration" status="pending" note="$75/number penalty if skipped" />
-                  <CheckRow label="Connie SMS tests (AT&T, T-Mobile, Xfinity)" status="pending" note="Jason runs tests post A2P approval" />
-                  <CheckRow label="STOP → N8N → Zoho Do Not Contact" status="pending" note="Yeison connects opt-out to CRM" />
-                </div>
-              </div>
-
-              {/* Sunset Finance */}
-              <div className="rounded-3xl border-2 border-orange-200 overflow-hidden shadow-sm">
-                <div className="bg-orange-600 px-8 py-4 flex items-center justify-between">
-                  <span className="text-white font-black text-base uppercase tracking-tight">Sunset Finance</span>
-                  <StatusDot status="pending" />
-                </div>
-                <div className="p-6 bg-white space-y-1">
-                  <CheckRow label="Branded Calling (10 branches)" status="done" note="Complete — company name shows when receiving the call" />
-                  <CheckRow label="Business Profile (Sunset entity)" status="pending" note="Separate from PTS Tax — needs its own profile with EIN" />
-                  <CheckRow label="Brand (TCR)" status="pending" note="Not started — begins after PTS Tax completes" />
-                  <CheckRow label="A2P Campaign" status="pending" note="Required before SMS launch on June 1" />
-                  <CheckRow label="Numbers → Campaign (Messaging Service)" status="pending" note="Blocked until Campaign is approved" />
-                  <CheckRow label="Emergency Call Registration" status="pending" note="All 10 branch numbers need this — 50 total" />
-                </div>
-              </div>
-            </div>
-
-            {/* FOIA List status — 3rd card */}
-            <div className="rounded-3xl border-2 border-amber-200 overflow-hidden shadow-sm">
-              <div className="bg-amber-600 px-8 py-4 flex items-center justify-between">
-                <span className="text-white font-black text-base uppercase tracking-tight">FOIA List Campaign — Georgia</span>
-                <StatusDot status="pending" />
-              </div>
-              <div className="p-6 bg-white grid grid-cols-1 md:grid-cols-2 gap-1">
-                <CheckRow label="Separate number for FOIA outreach" status="done" note="Agreed — keeps FOIA traffic isolated from main campaigns" />
-                <CheckRow label="Opt-out in Connie" status="done" note="STOP handling is built in" />
-                <CheckRow label="Tony's written authorization (TCPA)" status="pending" note="Verbal only — written signature required for liability protection" />
-                <CheckRow label="Campaign use case registered" status="pending" note="Needs its own Campaign declaration in Trust Hub" />
-              </div>
-            </div>
-          </section>
-
-          {/* ─── SECTION 15: SHAFT ─── */}
-          <section className="space-y-8">
-            <div>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">Prohibited content — SHAFT</h2>
-              <p className="text-slate-500 text-sm mt-2">The carrier filter is NLP-based, not keyword-based. Euphemisms don't work.</p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              {[
-                { letter: 'S', word: 'Sex', desc: 'Sexual content or services' },
-                { letter: 'H', word: 'Hate', desc: 'Discriminatory language' },
-                { letter: 'A', word: 'Alcohol', desc: 'Without age verification' },
-                { letter: 'F', word: 'Firearms', desc: 'Weapons, parts, ammunition' },
-                { letter: 'T', word: 'Tobacco / Cannabis', desc: 'Even if legal' },
-              ].map((item, i) => (
-                <div key={i} className="bg-slate-900 text-white rounded-3xl p-6 text-center space-y-2">
-                  <p className="text-4xl font-black text-red-500">{item.letter}</p>
-                  <p className="font-black text-xs uppercase tracking-widest">{item.word}</p>
-                  <p className="text-xs text-slate-400">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
-                <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Also high-risk</p>
-                <ul className="space-y-1.5 text-xs text-slate-600">
-                  {['Payday loans / short-term express loans', 'Debt collection (separate FDCPA rules)', 'Unverified pharmacies', '"Miracle" health claims', 'High-risk investment advice'].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2"><span className="text-red-400 font-black">·</span>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bg-emerald-50 rounded-2xl p-5 border border-emerald-200">
-                <p className="text-xs font-black text-emerald-700 uppercase tracking-widest mb-3">PTS Tax / Sunset Finance — safe zone</p>
-                <p className="text-xs text-slate-600 leading-relaxed">Tax preparation services and banking products (refund advances, earned income products) are legitimate financial services. Copy must be clear, professional, and not resemble short-term loan language. "Bank products" = fine. "Get cash now, no questions asked" = blocked.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* ─── SECTION 16: LAUNCH CHECKLIST — 5 PHASES ─── */}
-          <section className="space-y-8">
-            <div>
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Operations protocol</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                Before any campaign goes live — <span className="text-blue-600">5 phases, no exceptions</span>
-              </h2>
-            </div>
-
-            <div className="space-y-4">
-              {[
-                {
-                  phase: 'Phase 1',
-                  title: 'Preparation',
-                  timing: '1–2 days before registering',
-                  color: 'bg-slate-800',
-                  items: [
-                    'Define Brand: legal name, website URL, corporate email, EIN',
-                    'Define use type: marketing, transactional, or mixed',
-                    'Document opt-in method with proof (URL, screenshot, script, or photo)',
-                    'Verify website loads completely from incognito mode',
-                    'Verify Privacy Policy contains the SMS protection phrase',
-                    'Write sample messages — include brand name + STOP instruction in each',
-                    'If mixed Campaign: write examples of BOTH marketing AND transactional types',
-                  ]
-                },
-                {
-                  phase: 'Phase 2',
-                  title: 'Register',
-                  timing: 'Day 1',
-                  color: 'bg-blue-700',
-                  items: [
-                    'Open Trust Hub in console.twilio.com',
-                    'Create or verify client Business Profile',
-                    'Register Brand (use client info — not MitHub)',
-                    'Document ISV relationship: "MitHub provides the system on behalf of [client]"',
-                    'Register Campaign with correct use case type',
-                    'Click-test every link from incognito before submitting',
-                    'Identity check: Brand name in form = website name = email domain',
-                  ]
-                },
-                {
-                  phase: 'Phase 3',
-                  title: 'Wait & Follow Up',
-                  timing: 'Days 2–15',
-                  color: 'bg-amber-600',
-                  items: [
-                    'Wait for Twilio confirmation (10–15 business days currently)',
-                    'Check Trust Hub daily for status changes or info requests',
-                    'If Twilio requests additional info → respond within 24 hours',
-                    'If Campaign rejected → read feedback carefully, fix specific issue, resubmit (extra fee applies)',
-                    'Do not make changes to the submission unless explicitly asked',
-                  ]
-                },
-                {
-                  phase: 'Phase 4',
-                  title: 'Activate',
-                  timing: 'Day of approval',
-                  color: 'bg-emerald-700',
-                  items: [
-                    'Add ALL numbers to the Campaign\'s Messaging Service (most forgotten step)',
-                    'Register Emergency Call for each number ($75/number if you skip this)',
-                    'Test SMS delivery: send to AT&T, T-Mobile, and Xfinity numbers',
-                    'Confirm STOP works — Twilio must block + N8N must update Zoho',
-                    'Confirm first message to every new contact includes HELP and STOP',
-                    'Start warmup: max 200 messages/day per number for Week 1',
-                  ]
-                },
-                {
-                  phase: 'Phase 5',
-                  title: 'Monitor Continuously',
-                  timing: 'Ongoing — weekly',
-                  color: 'bg-slate-900',
-                  items: [
-                    'Check Messaging Insights in Twilio every week',
-                    'Watch opt-out rate — sudden spike = content or frequency problem',
-                    'Watch delivery rate — sudden drop = carrier filtering starting',
-                    'If message types change → verify still consistent with registered use case',
-                    'Reconfirm numbers are still active and in Messaging Service after any account changes',
-                  ]
-                },
-              ].map((phase, i) => (
-                <div key={i} className="rounded-3xl overflow-hidden border border-slate-200 shadow-sm">
-                  <div className={`${phase.color} px-8 py-4 flex items-center justify-between`}>
-                    <div className="flex items-center gap-4">
-                      <span className="bg-white/20 text-white text-xs font-black px-3 py-1 rounded-xl uppercase tracking-widest">{phase.phase}</span>
-                      <span className="text-white font-black text-base uppercase tracking-tight">{phase.title}</span>
-                    </div>
-                    <span className="text-white/60 text-xs font-bold">{phase.timing}</span>
-                  </div>
-                  <div className="p-6 bg-white">
-                    <ul className="space-y-2.5">
-                      {phase.items.map((item, j) => (
-                        <li key={j} className="flex items-start gap-3 text-sm text-slate-700">
-                          <span className="w-5 h-5 border-2 border-slate-200 rounded flex-shrink-0 mt-0.5" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ─── SECTION 17: WHO DOES WHAT ─── */}
-          <section className="space-y-8">
-            <div>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">Who does what — and what they don't</h2>
-              <p className="text-slate-400 text-sm mt-1">No ambiguity. If it's not in your column, don't touch it.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  name: 'Mauricio',
-                  headerBg: 'bg-slate-900',
-                  border: 'border-slate-900',
-                  does: [
-                    'Owns the Twilio account and all registrations',
-                    'Submits Brand + Campaign for PTS Tax',
-                    'Opens Sunset Finance registration after PTS Tax completes',
-                    'Emergency Call Registration per number',
-                    'Manages support tickets with Twilio',
-                  ],
-                  doesNot: [
-                    'Does not run SMS tests (that\'s Jason)',
-                    'Does not connect N8N to CRM (that\'s Yeison)',
-                    'Does not scale volume without warmup complete',
-                  ],
-                },
-                {
-                  name: 'Yeison',
-                  headerBg: 'bg-blue-700',
-                  border: 'border-blue-200',
-                  does: [
-                    'Connects STOP responses in N8N → Zoho (Do Not Contact)',
-                    'Ensures opt-out propagates to all active campaigns',
-                    'Monitors delivery rates in SmartLead',
-                    'Connects Clay → SmartLead API mapping',
-                  ],
-                  doesNot: [
-                    'Does not touch the Twilio account directly',
-                    'Does not do A2P registrations',
-                    'Does not run manual SMS tests',
-                  ],
-                },
-                {
-                  name: 'Jason',
-                  headerBg: 'bg-orange-600',
-                  border: 'border-orange-200',
-                  does: [
-                    'Tests Connie SMS: AT&T, T-Mobile, Xfinity once A2P approved',
-                    'Verifies session memory — Connie doesn\'t re-ask already-answered questions',
-                    'Validates handoff behavior when prospect requests a human',
-                    'Confirms "Are you still there?" only triggers after prior conversation',
-                  ],
-                  doesNot: [
-                    'Does not make changes to the Twilio account',
-                    'Does not modify N8N flows',
-                    'Does not scale Connie before tests pass',
-                  ],
-                },
-              ].map((role, i) => (
-                <div key={i} className={`border-2 ${role.border} rounded-3xl overflow-hidden`}>
-                  <div className={`${role.headerBg} px-6 py-4`}>
-                    <h4 className="font-black text-sm uppercase tracking-widest text-white">{role.name}</h4>
-                  </div>
-                  <div className="p-6 space-y-5 bg-white">
-                    <div className="space-y-2">
-                      <p className="text-xs font-black text-emerald-600 uppercase tracking-widest">Does</p>
-                      <ul className="space-y-2">
-                        {role.does.map((item, j) => (
-                          <li key={j} className="flex items-start gap-2 text-xs text-slate-600">
-                            <span className="text-emerald-500 font-black mt-0.5 flex-shrink-0">✓</span>{item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="border-t border-slate-100 pt-4 space-y-2">
-                      <p className="text-xs font-black text-red-500 uppercase tracking-widest">Does not</p>
-                      <ul className="space-y-2">
-                        {role.doesNot.map((item, j) => (
-                          <li key={j} className="flex items-start gap-2 text-xs text-slate-400">
-                            <span className="text-red-400 font-black mt-0.5 flex-shrink-0">✗</span>{item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ─── SECTION 18: COST OF NON-COMPLIANCE ─── */}
-          <section className="space-y-8">
-            <div>
-              <p className="text-xs font-black text-red-600 uppercase tracking-widest mb-2">Financial reality</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">
-                What happens if we skip the rules
-              </h2>
-            </div>
-            <div className="overflow-x-auto rounded-3xl border border-red-200 shadow-sm">
-              <table className="text-sm">
-                <thead>
-                  <tr className="bg-red-900 text-white">
-                    <th className="py-4 px-5 text-left font-black uppercase tracking-widest text-xs">Violation</th>
-                    <th className="py-4 px-5 text-left font-black uppercase tracking-widest text-xs">Cost</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="bg-white border-b border-red-100">
-                    <td className="py-4 px-5 font-bold text-slate-800">TCPA call without consent</td>
-                    <td className="py-4 px-5 font-black text-red-600 text-lg">$500–$1,500 per call</td>
-                  </tr>
-                  <tr className="bg-red-50 border-b border-red-100">
-                    <td className="py-4 px-5 font-bold text-slate-800">Emergency Call Registration missed</td>
-                    <td className="py-4 px-5 font-black text-red-600 text-lg">$75 per number</td>
-                  </tr>
-                  <tr className="bg-white border-b border-red-100">
-                    <td className="py-4 px-5 font-bold text-slate-800">A2P sending without registration</td>
-                    <td className="py-4 px-5 font-black text-red-600">Number blocked + possible account suspension</td>
-                  </tr>
-                  <tr className="bg-red-50">
-                    <td className="py-4 px-5 font-bold text-slate-800">TCPA class action — 7,500 FOIA calls without consent</td>
-                    <td className="py-4 px-5 font-black text-red-600 text-lg">$500 × 7,500 = $3.75M exposure</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="bg-slate-900 text-white rounded-3xl p-8 space-y-3">
-              <p className="text-xs font-black text-red-400 uppercase tracking-widest">The operational consequence</p>
-              <p className="text-lg font-black leading-snug">"If Twilio suspends the account: Connie goes silent. No calls, no SMS, no appointment flow. Recovery: weeks."</p>
-              <p className="text-sm text-slate-400 leading-relaxed">That's why warmup, registration, and consent are non-negotiable. One bad day can cost weeks of pipeline recovery and the trust of both clients.</p>
-            </div>
-          </section>
-
-          {/* ─── SECTION 19: IF TWILIO GOES AWAY ─── */}
-          <section className="bg-slate-950 rounded-[40px] p-10 text-white space-y-8">
-            <div>
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Independence principle</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
-                If Twilio goes away
-              </h2>
-              <p className="text-slate-400 text-sm mt-3 leading-relaxed">Twilio is just one provider. If tomorrow it became Bandwidth, Vonage, or Plivo — the process would be identical. The rules come from the carriers and the government, not from Twilio. Understanding this gives us true operational independence.</p>
-            </div>
-            <div className="bg-slate-900 border border-slate-700 rounded-3xl p-8 space-y-4">
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest">The 6 steps that never change — regardless of provider</p>
-              <div className="space-y-3">
-                {[
-                  { n: '1', step: 'Register your Business Profile with the new provider' },
-                  { n: '2', step: 'Create Brands — one per legal entity' },
-                  { n: '3', step: 'Create Campaigns — one per use case type' },
-                  { n: '4', step: 'Associate phone numbers to their Campaigns' },
-                  { n: '5', step: 'Respect consent, opt-out, and prohibited content rules' },
-                  { n: '6', step: 'Warm up volume gradually — never send full blast from new numbers' },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 bg-slate-800 rounded-xl px-5 py-3">
-                    <span className="w-8 h-8 bg-slate-700 text-slate-300 text-xs font-black rounded-lg flex items-center justify-center flex-shrink-0">{item.n}</span>
-                    <p className="text-sm text-slate-300">{item.step}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <p className="text-xs text-slate-500 leading-relaxed">Knowing this also means: if you learn these rules deeply, you are not dependent on any specific platform. The compliance knowledge is yours. The relationships you build with carriers through good behavior persist through provider changes.</p>
-          </section>
-
-          {/* ─── SECTION 20: FAQ ─── */}
-          <section className="space-y-8">
-            <div>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none text-slate-900">Questions & Answers</h2>
-              <p className="text-slate-500 text-sm mt-1">If your question isn't here, re-read this page before scheduling a call.</p>
-            </div>
-            <div className="space-y-2">
-              {[
-                {
-                  q: "Why can't we send SMS now if the account is already active?",
-                  a: "Having an active Twilio account is not the same as being registered for A2P. The account lets you make calls and send test messages. But the carrier network (AT&T, T-Mobile, Verizon) filters any account sending SMS volume without an approved A2P Campaign. Messages are silently discarded — you don't get an error, they just don't arrive."
-                },
-                {
-                  q: "Does Sunset Finance need its own separate registration from PTS Tax?",
-                  a: "Yes. They are different legal entities with different EINs. Each entity needs its own Business Profile, its own Brand, and its own Campaign. Mixing them under the same Brand is a registration violation — carriers verify that message content matches the declared entity."
-                },
-                {
-                  q: "What happens if a carrier blocks a number mid-campaign?",
-                  a: "The number stops delivering messages. There's no automatic notification — you'll only know by the drop in delivery rates in Twilio logs. Recovery: retire the number, get a new one, assign it to the approved Campaign, and restart the warmup from zero. That's why warmup from day one matters."
-                },
-                {
-                  q: "Can Connie use the same number for both calls AND SMS?",
-                  a: "Yes — a 10DLC number can handle both voice calls and SMS. But A2P registration covers SMS traffic. Voice calls go through Twilio's voice infrastructure (covered by STIR/SHAKEN, not A2P). The number needs to be A2P registered before sending SMS, regardless of whether it also makes calls."
-                },
-                {
-                  q: "What exactly counts as 'opt-in' for FOIA list prospects?",
-                  a: "The FOIA list is a public IRS directory — those prospects never consented to be called by Connie. Two compliant paths: (A) Connie calls only if the prospect replied first to the SmartLead email — that reply is implied consent. (B) Tony signs a written authorization accepting the TCPA risk of calling without consent. Option A is always the safer, legally cleaner path."
-                },
-                {
-                  q: "What's the difference between A2P registration and Branded Calling?",
-                  a: "A2P registration is for SMS — it tells the carrier network that your texts are legitimate business communications, not spam. Branded Calling is for voice — it shows your company name and logo on the recipient's screen instead of an unknown number. Both are separate registrations. Sunset Finance's Branded Calling is already done. A2P for SMS is still pending."
-                },
-                {
-                  q: "What is the ISV relationship and why does it matter?",
-                  a: "MitHub builds and operates the system. PTS Tax and Sunset Finance are the clients who own the message content and the customer relationships. Each client must have its OWN Brand and Campaign. Carriers verify that message content matches the declared entity. If PTS Tax and Sunset Finance messages go out under the same Brand, carriers see inconsistency — that's a violation flag. Never mix."
-                },
-                {
-                  q: "Why is the Privacy Policy so specific about mobile data?",
-                  a: "Because Twilio's carrier partners require the exact declaration that mobile data won't be shared for marketing. This phrase signals to the reviewer that you understand the regulations. Without it, the Campaign is auto-rejected. It's a pass/fail filter — not a nuanced review. The phrase must be there, exactly."
-                },
-                {
-                  q: "What happens if the Campaign use case doesn't match what Connie actually says?",
-                  a: "Carriers run ongoing monitoring using NLP. If your registered use case is 'appointment reminders' but Connie is actually selling, the Campaign gets flagged post-approval. That can mean number blocks and having to re-register with a corrected use case — plus explaining why you misrepresented the use case in the first place. Be honest in the registration."
-                },
-              ].map((item, i) => (
-                <FAQItem key={i} q={item.q} a={item.a} />
-              ))}
-            </div>
-          </section>
-
-          {/* ─── SECTION 21: CTA ─── */}
-          <section className="bg-slate-900 text-white rounded-[48px] p-12 text-center space-y-6">
-            <div className="space-y-2">
-              <p className="text-xs font-black uppercase tracking-widest text-slate-400">Still blocked?</p>
-              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
-                Schedule a call.<br />
-                <span className="text-red-400">Bring the Twilio error.</span>
-              </h2>
-            </div>
-            <p className="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
-              Bring the exact error message, the step you're on, and the account name. "It doesn't work" takes 10× longer than "Brand registration returned error code 60600."
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center pt-2">
-              <a href="https://calendly.com/mauricio-frontdesk" target="_blank" rel="noopener noreferrer"
-                className="bg-red-600 hover:bg-red-700 transition-colors text-white px-10 py-4 rounded-2xl text-sm font-black uppercase tracking-widest shadow-lg">
-                Schedule a call
-              </a>
-              <a href="mailto:mauricio.frontdesk@gmail.com"
-                className="bg-white/10 hover:bg-white/20 transition-colors text-white px-10 py-4 rounded-2xl text-sm font-black uppercase tracking-widest border border-white/20">
-                Send email
-              </a>
-            </div>
-          </section>
-
         </main>
-
-        <footer className="py-12 bg-white border-t border-slate-200 text-center">
-          <div className="flex items-center justify-center gap-6 opacity-40">
-            <img src="/images/twilio-logo.png" alt="Twilio" className="h-5 object-contain grayscale" />
-            <span className="text-xs font-black uppercase tracking-widest text-slate-400 italic">PTS AI · Twilio Complete Reference Manual · 2026</span>
-            <a href="/georgia-dashboard" className="text-xs font-black uppercase tracking-widest text-slate-400 hover:opacity-100">← Georgia Campaign</a>
+        <footer className="py-10 bg-white border-t border-slate-100 text-center">
+          <div className="flex items-center justify-center gap-6 opacity-30">
+            <img src="/images/twilio-logo.png" alt="Twilio" className="h-4 object-contain grayscale" />
+            <span className="text-xs font-black uppercase tracking-widest text-slate-400">PTS AI · Twilio Protocol 2026</span>
+            <a href="/georgia-dashboard" className="text-xs font-black uppercase tracking-widest text-slate-400">← Georgia Campaign</a>
           </div>
         </footer>
-
       </div>
     );
 
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-  </script>
+  <\/script>
 </body>
 </html>
