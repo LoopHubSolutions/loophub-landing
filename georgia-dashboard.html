@@ -48,15 +48,259 @@
       <Icon d={Icons[name] || ""} size={size} className={className} />
     );
 
-    const realScoring = [
-      { event: 'Signed Contract',        points: '+10', color: 'text-emerald-600', bg: 'bg-emerald-50', icon: 'FileCheck' },
-      { event: 'Attended Meeting',        points: '+5',  color: 'text-blue-600',   bg: 'bg-blue-50',    icon: 'Users' },
-      { event: 'Clicked "Talk to AI"',   points: '+3',  color: 'text-orange-600', bg: 'bg-orange-50',  icon: 'MousePointer2' },
-      { event: 'Called Back (Missed)',    points: '+2',  color: 'text-blue-500',   bg: 'bg-blue-50',    icon: 'PhoneIncoming' },
-      { event: 'Email Replied',           points: '+1',  color: 'text-slate-800',  bg: 'bg-slate-50',   icon: 'Mail' },
-      { event: 'Email Bounce',            points: '-2',  color: 'text-red-400',    bg: 'bg-red-50',     icon: 'AlertTriangle' },
-      { event: 'Unsubscribed',            points: '-6',  color: 'text-red-700',    bg: 'bg-red-100',    icon: 'UserMinus' },
+    const scoring = [
+      { event: 'Signed Contract',       points: '+10', color: 'text-emerald-600', bg: 'bg-emerald-50', icon: 'FileCheck' },
+      { event: 'Attended Meeting',       points: '+5',  color: 'text-blue-600',   bg: 'bg-blue-50',    icon: 'Users' },
+      { event: 'Clicked "Talk to AI"',  points: '+3',  color: 'text-orange-600', bg: 'bg-orange-50',  icon: 'MousePointer2' },
+      { event: 'Called Back (Missed)',   points: '+2',  color: 'text-blue-500',   bg: 'bg-blue-50',    icon: 'PhoneIncoming' },
+      { event: 'Email Replied',          points: '+1',  color: 'text-slate-800',  bg: 'bg-slate-50',   icon: 'Mail' },
+      { event: 'Email Bounce',           points: '-2',  color: 'text-red-400',    bg: 'bg-red-50',     icon: 'AlertTriangle' },
+      { event: 'Unsubscribed',           points: '-6',  color: 'text-red-700',    bg: 'bg-red-100',    icon: 'UserMinus' },
     ];
+
+    const StatusDot = ({ status }) => {
+      const map = {
+        done:    { bg: 'bg-emerald-500', label: 'Done',        text: 'text-emerald-700', light: 'bg-emerald-50 border-emerald-200' },
+        active:  { bg: 'bg-blue-500',    label: 'In progress', text: 'text-blue-700',    light: 'bg-blue-50 border-blue-200' },
+        pending: { bg: 'bg-amber-400',   label: 'Pending',     text: 'text-amber-700',   light: 'bg-amber-50 border-amber-200' },
+        blocked: { bg: 'bg-red-500',     label: 'Blocked',     text: 'text-red-700',     light: 'bg-red-50 border-red-200' },
+      };
+      const s = map[status] || map.pending;
+      return (
+        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-widest border ${s.light} ${s.text}`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${s.bg} flex-shrink-0`} />
+          {s.label}
+        </span>
+      );
+    };
+
+    const CheckRow = ({ label, status, note }) => {
+      const icon = status === 'done' ? '✓' : status === 'active' ? '◉' : status === 'blocked' ? '✕' : '○';
+      const color = status === 'done' ? 'text-emerald-600' : status === 'active' ? 'text-blue-600' : status === 'blocked' ? 'text-red-500' : 'text-amber-500';
+      return (
+        <div className="flex items-start gap-3 py-3 border-b border-slate-100 last:border-0">
+          <span className={`font-black text-sm mt-0.5 flex-shrink-0 ${color}`}>{icon}</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-slate-800">{label}</p>
+            {note && <p className="text-xs text-slate-400 mt-0.5">{note}</p>}
+          </div>
+          <StatusDot status={status} />
+        </div>
+      );
+    };
+
+    const TwilioFAQItem = ({ q, a }) => {
+      const [open, setOpen] = React.useState(false);
+      return (
+        <div className="border border-red-200 rounded-2xl overflow-hidden">
+          <button onClick={() => setOpen(!open)} className="w-full flex items-start justify-between gap-4 p-5 text-left hover:bg-red-50 transition-colors">
+            <span className="text-sm font-bold text-slate-800 leading-snug">{q}</span>
+            <span className={`text-lg font-black flex-shrink-0 mt-0.5 transition-colors ${open ? 'text-red-600' : 'text-slate-300'}`}>{open ? '−' : '+'}</span>
+          </button>
+          {open && (
+            <div className="px-5 pb-5 bg-red-50 border-t border-red-100">
+              <p className="text-sm text-slate-600 leading-relaxed pt-4">{a}</p>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const faqCategories = [
+      {
+        category: "About Connie",
+        color: "text-orange-600",
+        borderColor: "border-orange-200",
+        bgColor: "bg-orange-50",
+        questions: [
+          {
+            q: "What is Connie exactly?",
+            a: "Connie is an AI voice agent that calls leads automatically. When a lead reaches 100 points in the scoring system, she calls them within 30 seconds. She qualifies them with one key question about their refund volume, and if they qualify, she books a demo with the PTS sales team. She doesn't close deals — she filters and schedules so the human team only talks to ready buyers."
+          },
+          {
+            q: "When does Connie call?",
+            a: "Monday–Friday 8am–5pm EST: Connie calls normally and a live transfer to a sales rep is available. Monday–Friday 5pm–8pm and Saturdays: Connie calls but no live transfer — the sales team follows up the next business day. Sundays for cold FOIA list leads: Connie does not call."
+          },
+          {
+            q: "What does Connie ask leads?",
+            a: "Her primary qualifying question is: \"How many refunds did your office e-file last season?\" If the answer is 50 or more → high priority, passes to sales. If 1–49 → stays in the standard pipeline (MitHub scope). If zero bank products → the lead is disqualified and not booked. Connie will not schedule a meeting with someone who has zero bank products."
+          },
+          {
+            q: "What happens after Connie qualifies someone?",
+            a: "Connie books a demo directly into the sales calendar. Erick receives a notification with the lead's name and the scheduled time. The sales team runs the demo. The lead's score, qualification answers, and booking link are all logged in Zoho CRM automatically."
+          },
+          {
+            q: "Does Connie identify herself as an AI?",
+            a: "Yes. She introduces herself as \"Connie from PTS.\" She does not use the name of a specific sales rep — she always says \"a sales representative\" when referring handoffs. If a lead asks to speak with a human immediately, Connie transfers them without asking additional questions."
+          },
+        ]
+      },
+      {
+        category: "About the Campaigns",
+        color: "text-blue-700",
+        borderColor: "border-blue-200",
+        bgColor: "bg-blue-50",
+        questions: [
+          {
+            q: "What is AFSP and why does it matter?",
+            a: "AFSP stands for Annual Filing Season Program — a voluntary IRS certification that tax preparers don't need to operate legally. If someone got it, they chose to invest in their professional development. That's the signal: they take the business seriously, they have real clients, and they're actively trying to grow. That's why Wave 1 targets them first — they're the warmest audience."
+          },
+          {
+            q: "Why are specific cities prioritized in Wave 2?",
+            a: "In 18 specific Georgia cities, a large share of the population relies on the IRS refund as one of their biggest annual income events. In those markets, refund advances aren't optional — clients walk in every season expecting them. A preparer who doesn't offer that product loses clients to the shop next door. That built-in demand makes them high-priority leads even without the AFSP credential."
+          },
+          {
+            q: "What's the difference between 'Email + Connie call' and 'Connie call only'?",
+            a: "Some leads have both a verified email and a phone number — they get both channels: a SmartLead email sequence and a Connie call. Leads with only a phone number get Connie calls only. Leads with only an email get the SmartLead sequence only. The contact channel is determined by what Clay found during enrichment."
+          },
+          {
+            q: "When does the next wave start?",
+            a: "Wave 2 starts only after Wave 1 is actively running. Wave 3 starts only after Waves 1 and 2 are both underway. Wave 4 (adjacent businesses like accountants and bookkeepers) starts once the first three waves are showing conversions. Yeison does not start a new wave until the previous one is confirmed active. This is intentional — waves are sequential and mutually exclusive."
+          },
+          {
+            q: "What happens to leads who don't have 'tax' in their business name?",
+            a: "They go to Wave 4 (GA_ADJACENT), which targets accountants, bookkeepers, payroll firms, and financial services businesses. Wave 4 is email-only for now — no Connie calls yet — because these leads need more education before they're ready for a pitch. Wave 4 is the lowest priority and only activates once the first three waves are converting."
+          },
+        ]
+      },
+      {
+        category: "Scoring & the CRM",
+        color: "text-slate-700",
+        borderColor: "border-slate-200",
+        bgColor: "bg-slate-50",
+        questions: [
+          {
+            q: "How does the lead scoring system work?",
+            a: "Every action a lead takes changes their score: Signed contract (+10 pts), Attended meeting (+5), Clicked 'Talk to AI' (+3), Called back a missed call (+2), Replied to an email (+1), Email bounced (-2), Unsubscribed (-6). Leads above 100 points trigger a Connie call automatically. Leads above 80 points are worked by the human sales team. The CRM sorts by score so the highest-priority leads always surface first."
+          },
+          {
+            q: "What is 'Low Fit' vs 'Non-ICP / Zero BP'?",
+            a: "Low Fit means the lead has 1–49 bank products per season — they're below ideal volume but still worth keeping in the pipeline (MitHub scope). Non-ICP / Zero BP means the lead has zero bank products — Connie should NOT book them for a demo. They get marked as Disqualified in Zoho CRM. This distinction is critical: booking a zero-BP lead wastes sales team time and distorts conversion metrics."
+          },
+          {
+            q: "Where do I see my leads?",
+            a: "All leads are in Zoho CRM, sorted by score. Connie-qualified leads have the booking time pre-filled. You can filter by campaign (GA_CERTIFIED, GA_HIGHDEMAND, GA_REST) and by score threshold. If you need access to the CRM or aren't sure how to filter, contact Yeison."
+          },
+          {
+            q: "Can I add or remove leads manually?",
+            a: "Contact Yeison. He manages the Clay → SmartLead pipeline and all CRM mapping. Don't manually edit the source list — any changes need to go through the pipeline so that enrichment data, scoring, and campaign assignment stay consistent."
+          },
+        ]
+      },
+      {
+        category: "Compliance & Legal",
+        color: "text-red-700",
+        borderColor: "border-red-200",
+        bgColor: "bg-red-50",
+        questions: [
+          {
+            q: "Is it legal for Connie to call people from the FOIA list?",
+            a: "The FOIA list is a public IRS directory of registered tax preparers — these are business numbers, not personal cell phones. Calling them has less regulatory exposure than calling consumers. However, if Connie is making automated calls without prior consent, there is still risk under TCPA. Two compliant options: (A) Connie calls only if the lead replied to the email first — that reply is implicit opt-in. (B) Tony signs a written authorization accepting the risk of cold outreach. Option A is always the safer path. Option B requires Tony's explicit written consent before activation."
+          },
+          {
+            q: "What is the STOP / opt-out rule?",
+            a: "If any lead replies STOP to an SMS, they must be immediately removed from all automated outreach. Twilio handles the SMS block automatically, but Zoho CRM must also be updated to Do Not Contact so that no human on the team accidentally calls or emails them. Ignoring an opt-out is a separate legal violation for every message sent after. This is non-negotiable."
+          },
+          {
+            q: "What is A2P registration and why is SMS on hold?",
+            a: "A2P (Application-to-Person) registration is required before any phone number can send SMS at volume through the carrier network. Without it, AT&T and T-Mobile filter or block the messages. PTS Tax's numbers are currently being registered with Twilio (this takes 2–3 weeks). Until the registration is approved, Connie makes voice calls only — no SMS. Once approved, SMS will be enabled for all campaigns."
+          },
+          {
+            q: "Who is responsible for compliance decisions?",
+            a: "Tony, as the PTS Tax business owner. LoopHub/PTS AI provides the technology and documents every regulatory risk clearly. Any decision to activate cold outreach (calling people who haven't opted in) requires Tony's explicit written authorization. The technology team does not make that call on his behalf."
+          },
+          {
+            q: "What is the Emergency Call Registration fee?",
+            a: "Twilio requires a one-time Emergency Call Registration for each phone number. If it's not completed, there's a $75 fee per number. This is a separate step from A2P registration. Both need to be done before full SMS and call operations go live. This is being handled by Mauricio as part of the current Twilio compliance process."
+          },
+        ]
+      },
+      {
+        category: "Roles & Who to Contact",
+        color: "text-emerald-700",
+        borderColor: "border-emerald-200",
+        bgColor: "bg-emerald-50",
+        questions: [
+          {
+            q: "Who do I contact if Connie books a bad lead (Non-ICP)?",
+            a: "Report it to Alejandra. The AI prompting is being adjusted so that Connie asks about bank products in the first 2–3 interactions and disqualifies leads with zero bank products before booking anything. If you see a bad booking in the calendar, flag it with the lead's name and the number of bank products they said they have."
+          },
+          {
+            q: "Who manages the email campaigns?",
+            a: "Krystal writes the email sequences (3 emails per wave). Yeison connects Clay → SmartLead via API and manages the technical pipeline. Questions about email content → Krystal. Questions about delivery, filtering, or CRM sync → Yeison."
+          },
+          {
+            q: "Who do I contact for a CRM or pipeline issue?",
+            a: "Yeison handles all CRM (Zoho) issues, the Clay enrichment pipeline, and the SmartLead → CRM sync. If a lead isn't showing up, a score looks wrong, or a wave isn't running — contact Yeison with the specific lead name or email so he can trace it through the pipeline."
+          },
+          {
+            q: "Who handles Connie's voice script and qualification logic?",
+            a: "Alejandra manages Connie's prompting and fine-tuning. Jason handles technical SMS fixes (session memory, response timing, handoff behavior). If Connie said something unexpected or booked incorrectly, report it to Alejandra with the lead's name and what Connie said, so the prompting can be corrected."
+          },
+        ]
+      },
+    ];
+
+    const FAQItem = ({ q, a, accentColor, bgColor }) => {
+      const [open, setOpen] = React.useState(false);
+      return (
+        <div
+          className={`border border-slate-200 rounded-2xl overflow-hidden transition-all`}
+        >
+          <button
+            onClick={() => setOpen(!open)}
+            className="w-full flex items-start justify-between gap-4 p-5 text-left hover:bg-slate-50 transition-colors"
+          >
+            <span className="text-sm font-bold text-slate-800 leading-snug">{q}</span>
+            <span className={`text-lg font-black flex-shrink-0 mt-0.5 ${open ? accentColor : 'text-slate-300'} transition-colors`}>
+              {open ? '−' : '+'}
+            </span>
+          </button>
+          {open && (
+            <div className={`px-5 pb-5 ${bgColor} border-t border-slate-100`}>
+              <p className="text-sm text-slate-600 leading-relaxed pt-4">{a}</p>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const FAQ = () => {
+      const [activeCategory, setActiveCategory] = React.useState(0);
+      const cat = faqCategories[activeCategory];
+      return (
+        <div className="space-y-6">
+          {/* Category tabs */}
+          <div className="flex flex-wrap gap-2">
+            {faqCategories.map((c, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveCategory(i)}
+                className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all border ${
+                  activeCategory === i
+                    ? `${c.bgColor} ${c.color} ${c.borderColor}`
+                    : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                {c.category}
+              </button>
+            ))}
+          </div>
+          {/* Questions */}
+          <div className="space-y-2">
+            {cat.questions.map((item, i) => (
+              <FAQItem
+                key={i}
+                q={item.q}
+                a={item.a}
+                accentColor={cat.color}
+                bgColor={cat.bgColor}
+              />
+            ))}
+          </div>
+        </div>
+      );
+    };
 
     const App = () => (
       <div className="min-h-screen bg-white text-slate-900">
@@ -79,11 +323,11 @@
             </div>
             <div className="flex gap-8">
               <div className="text-right">
-                <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">Lista original</p>
+                <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">Original List</p>
                 <p className="text-lg font-black text-slate-800 tracking-tighter">21,391</p>
               </div>
               <div className="text-right border-l border-slate-200 pl-8">
-                <p className="text-xs font-black text-blue-700 uppercase tracking-tighter">Contactables</p>
+                <p className="text-xs font-black text-blue-700 uppercase tracking-tighter">Reachable</p>
                 <p className="text-lg font-black text-slate-800 tracking-tighter">7,531</p>
               </div>
             </div>
@@ -92,22 +336,22 @@
 
         <main className="max-w-5xl mx-auto p-6 space-y-24 mt-12 pb-32">
 
-          {/* NÚMEROS BASE */}
+          {/* BASE NUMBERS */}
           <section className="space-y-8">
             <div className="text-center space-y-2">
               <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900">
-                Los números <span className="text-blue-700">reales</span>
+                The real <span className="text-blue-700">numbers</span>
               </h2>
               <p className="text-slate-500 text-base max-w-2xl mx-auto">
-                De 21,391 preparadores de impuestos en Georgia sacados del IRS, solo 7,531 tienen teléfono o email para contactarlos. Los demás se descartan.
+                From 21,391 tax preparers in Georgia pulled from IRS public records, only 7,531 have a phone or email to reach them. The rest are discarded.
               </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: "Lista original",           value: "21,391", color: "border-slate-300" },
-                { label: "Sin contacto (descarte)",  value: "13,860", color: "border-red-300"   },
-                { label: "Con email verificado",     value: "921",    color: "border-blue-400"  },
-                { label: "Solo teléfono (Connie)",   value: "6,610",  color: "border-orange-400"},
+                { label: "Original list",          value: "21,391", color: "border-slate-300" },
+                { label: "No contact (discarded)", value: "13,860", color: "border-red-300"   },
+                { label: "Verified email",         value: "921",    color: "border-blue-400"  },
+                { label: "Phone only (Connie)",    value: "6,610",  color: "border-orange-400"},
               ].map((s, i) => (
                 <div key={i} className={`p-6 rounded-3xl border-2 ${s.color} bg-white text-center shadow-sm`}>
                   <p className="text-3xl font-black text-slate-900">{s.value}</p>
@@ -117,19 +361,84 @@
             </div>
           </section>
 
-          {/* JOURNEY */}
+          {/* YA LO LOGRAMOS */}
+          <section className="space-y-6">
+            <div className="flex items-center gap-4">
+              <div>
+                <p className="text-xs font-black text-emerald-600 uppercase tracking-widest">Progreso real</p>
+                <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900 leading-none">Ya lo logramos</h2>
+              </div>
+              <div className="h-px flex-1 bg-slate-100" />
+              <span className="text-xs font-black bg-emerald-600 text-white px-3 py-1.5 rounded-full uppercase tracking-widest flex-shrink-0">10 de 10 listos</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {[
+                { label: '21,391 preparadores identificados en Georgia', sub: 'FOIA list completa — descargada del IRS y filtrada por estado' },
+                { label: '7,531 con datos de contacto verificados', sub: 'Email o teléfono confirmado — los 13,860 sin contacto se descartaron' },
+                { label: '3 waves segmentadas y listas', sub: 'GA_CERTIFIED → GA_HIGHDEMAND → GA_REST — cada una con criterios distintos' },
+                { label: '24 inboxes de SmartLead calentados', sub: '~700 emails/día corriendo — calentamiento completado sin quemas' },
+                { label: 'Scoring automático en Zoho CRM', sub: 'Cada acción del lead suma o resta puntos — 100 pts = pasa a ventas' },
+                { label: 'Connie activa — primer booking completado', sub: 'Yakubu Momodu · aprendizaje: ICP checklist ahora incluye PTIN vs EFIN' },
+                { label: 'Clay pipeline operativo', sub: '50K créditos procesados · enriquecimiento de email, teléfono, AFSP, Instagram' },
+                { label: 'N8N migration completada — PTS Tax', sub: 'Zapier reemplazado · flujos de automatización estables' },
+                { label: 'Branded Calling activo — Sunset Finance', sub: '10 sucursales · nombre y logo aparecen en pantalla del receptor' },
+                { label: 'A2P Campaign enviado a carriers', sub: 'PTS Tax — en revisión · Tony aprobó el upgrade del soporte de Twilio el 15 de Mayo — eso desbloqueó el proceso' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3 bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-3">
+                  <span className="text-emerald-600 font-black text-base flex-shrink-0 mt-0.5">✓</span>
+                  <div>
+                    <p className="text-sm font-bold text-slate-800 leading-snug">{item.label}</p>
+                    <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{item.sub}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* PRÓXIMOS HITOS */}
+          <section className="space-y-6">
+            <div className="flex items-center gap-4">
+              <div>
+                <p className="text-xs font-black text-blue-600 uppercase tracking-widest">Siguiente etapa</p>
+                <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900 leading-none">Próximos hitos</h2>
+              </div>
+              <div className="h-px flex-1 bg-slate-100" />
+            </div>
+            <div className="space-y-3">
+              {[
+                { milestone: 'Primer lead ICP calificado por Connie', trigger: 'Wave 1 GA_CERTIFIED respondió al email + Connie confirmó PTIN y +50 bank products', when: 'Esta semana', color: 'border-blue-200 bg-blue-50', dot: 'bg-blue-500' },
+                { milestone: 'Primera demo cerrada por el equipo de ventas', trigger: 'Lead con 100+ puntos en CRM + demo agendada + contrato firmado', when: 'Semana 2–3', color: 'border-blue-200 bg-blue-50', dot: 'bg-blue-400' },
+                { milestone: 'SMS de Connie activos — PTS Tax', trigger: 'Campaign A2P aprobado por carriers · números asignados al Campaign', when: '1–3 semanas', color: 'border-amber-200 bg-amber-50', dot: 'bg-amber-400' },
+                { milestone: '10 sucursales Sunset Finance con SMS operativo', trigger: 'A2P Campaign Sunset aprobado · N8N migrado · STOP handling activo', when: 'Junio 2026', color: 'border-orange-200 bg-orange-50', dot: 'bg-orange-400' },
+                { milestone: '46 sucursales Sunset Finance con SMS', trigger: 'Piloto de 10 sucursales validado · Tony alineado en expectativas', when: 'Julio 1, 2026', color: 'border-slate-200 bg-slate-50', dot: 'bg-slate-400' },
+              ].map((item, i) => (
+                <div key={i} className={`rounded-2xl border-2 ${item.color} p-4 flex items-start gap-4`}>
+                  <div className={`w-3 h-3 rounded-full ${item.dot} flex-shrink-0 mt-1`} />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                      <p className="font-black text-sm text-slate-800 uppercase tracking-tight">{item.milestone}</p>
+                      <span className="text-xs font-black text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-full flex-shrink-0">{item.when}</span>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">{item.trigger}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* HOW THE LIST WAS BUILT */}
           <section className="space-y-10">
             <div className="text-center space-y-2">
               <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">
-                Cómo se construyó la lista
+                How the list was built
               </h2>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { id: '01', title: 'Lista FOIA nacional', desc: 'Todos los preparadores registrados en el IRS en EE.UU.', bg: 'bg-slate-900', text: 'text-white' },
-                { id: '02', title: 'Filtro Georgia',       desc: '21,391 preparadores solo en Georgia.',                bg: 'bg-blue-700',  text: 'text-white' },
-                { id: '03', title: 'Enriquecimiento',      desc: '7,531 con teléfono o email válido.',                  bg: 'bg-slate-100', text: 'text-slate-900' },
-                { id: '04', title: '4 oleadas de ataque',  desc: 'Clasificados por prioridad y canal.',                 bg: 'bg-orange-600',text: 'text-white' },
+                { id: '01', title: 'National FOIA List', desc: 'All tax preparers registered with the IRS across the US.', bg: 'bg-slate-900', text: 'text-white' },
+                { id: '02', title: 'Georgia Filter',     desc: '21,391 preparers in Georgia only.',                        bg: 'bg-blue-700',  text: 'text-white' },
+                { id: '03', title: 'Enrichment',         desc: '7,531 with a valid phone or email.',                       bg: 'bg-slate-100', text: 'text-slate-900' },
+                { id: '04', title: '4 Attack Waves',     desc: 'Sorted by priority and contact channel.',                  bg: 'bg-orange-600',text: 'text-white' },
               ].map((step, i) => (
                 <div key={i} className="p-6 rounded-3xl border border-slate-100 bg-white text-center space-y-4 shadow-sm">
                   <div className={`w-10 h-10 ${step.bg} ${step.text} rounded-xl mx-auto flex items-center justify-center font-black text-sm`}>{step.id}</div>
@@ -142,120 +451,231 @@
             </div>
           </section>
 
-          {/* LAS 4 OLEADAS */}
+          {/* THE 4 WAVES */}
           <section className="space-y-10">
             <div>
-              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Las 4 oleadas de ataque</h2>
-              <p className="text-slate-500 text-sm mt-2">En qué orden se contacta cada grupo y por qué.</p>
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900">The 4 campaigns</h2>
+              <p className="text-slate-500 text-sm mt-2">Each campaign is a distinct group of people with different profiles, different reasons they were selected, and different contact channels.</p>
             </div>
             <div className="space-y-6">
 
-              {/* Oleada 1 */}
-              <div className="p-8 bg-white rounded-3xl border-2 border-blue-700 shadow-sm">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-                  <div className="space-y-3 flex-1">
-                    <p className="text-xs font-black text-blue-700 uppercase tracking-widest">OLEADA 1 — Esta semana</p>
-                    <h4 className="font-black text-lg text-slate-900 uppercase">Certificados activos</h4>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      Preparadores que el IRS certificó voluntariamente (credencial AFSP) y cuyo negocio se llama "tax algo".
-                      Son los más serios. Si sacaron una certificación voluntaria del IRS es porque tienen clientes reales y quieren crecer.
-                    </p>
-                    <p className="text-xs font-mono bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 inline-block">
-                      AFSP = Y + "tax" en nombre del negocio + tiene teléfono o email
+              {/* Wave 1 */}
+              <div className="rounded-3xl border-2 border-blue-700 overflow-hidden shadow-sm">
+                {/* Campaign header */}
+                <div className="bg-blue-700 px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                  <div className="flex items-center gap-4">
+                    <span className="bg-white text-blue-700 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest">Wave 1</span>
+                    <span className="text-white font-black text-base uppercase tracking-tight">GA_CERTIFIED</span>
+                  </div>
+                  <span className="text-blue-200 text-xs font-bold uppercase tracking-widest">Status: Active this week</span>
+                </div>
+                <div className="p-8 bg-white space-y-6">
+                  {/* Who */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-black text-blue-700 uppercase tracking-widest">Who are these people</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">
+                      Tax preparers who voluntarily passed an IRS program called AFSP (Annual Filing Season Program). This is not a required license — they chose to do it. That tells us they take the business seriously, they have real clients, and they're actively trying to grow. Their business name includes the word "tax," so they identify primarily as tax preparers.
                     </p>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 md:min-w-56">
+                  {/* Filters */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Why they ended up in this campaign — all 3 must be true</p>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { label: "IRS AFSP credential = YES", color: "bg-blue-100 text-blue-800 border-blue-200" },
+                        { label: 'Business name contains "tax"', color: "bg-blue-100 text-blue-800 border-blue-200" },
+                        { label: "Has phone OR email (reachable)", color: "bg-blue-100 text-blue-800 border-blue-200" },
+                      ].map((f, i) => (
+                        <span key={i} className={`text-xs font-bold px-3 py-1.5 rounded-xl border ${f.color}`}>{f.label}</span>
+                      ))}
+                    </div>
+                    <p className="text-xs text-slate-400 pt-1">Anyone who doesn't have the AFSP credential goes to Wave 2 or 3, not here.</p>
+                  </div>
+                  {/* Copy angle */}
+                  <div className="bg-blue-50 rounded-2xl p-4 border border-blue-100">
+                    <p className="text-xs font-black text-blue-700 uppercase tracking-widest mb-1">Pitch angle</p>
+                    <p className="text-xs text-slate-600 leading-relaxed">They already know the IRS game — they certified voluntarily. Talk to them peer-to-peer. Show them the bank products math: how many refunds they process per season and what they're leaving on the table.</p>
+                  </div>
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
                     {[
-                      { label: "Total",            value: "465"  },
-                      { label: "Email + Connie",   value: "83"   },
-                      { label: "Solo Connie",      value: "382"  },
-                      { label: "Con Instagram",    value: "219"  },
+                      { label: "Total in campaign",  value: "465",  sub: "people" },
+                      { label: "Email + Connie call", value: "83",  sub: "both channels" },
+                      { label: "Connie call only",    value: "382", sub: "phone only" },
+                      { label: "Have Instagram",      value: "219", sub: "for future ads" },
                     ].map((s, i) => (
-                      <div key={i} className="bg-blue-50 rounded-2xl p-3 text-center">
-                        <p className="text-xl font-black text-blue-700">{s.value}</p>
-                        <p className="text-xs text-slate-500 mt-1">{s.label}</p>
+                      <div key={i} className="bg-blue-50 rounded-2xl p-4 text-center border border-blue-100">
+                        <p className="text-2xl font-black text-blue-700">{s.value}</p>
+                        <p className="text-xs text-slate-700 mt-1 font-bold">{s.label}</p>
+                        <p className="text-xs text-slate-400">{s.sub}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Oleada 2 */}
-              <div className="p-8 bg-white rounded-3xl border-2 border-orange-500 shadow-sm">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-                  <div className="space-y-3 flex-1">
-                    <p className="text-xs font-black text-orange-500 uppercase tracking-widest">OLEADA 2 — Semana siguiente</p>
-                    <h4 className="font-black text-lg text-slate-900 uppercase">Zonas de alta demanda</h4>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      Preparadores de tax sin certificación AFSP que están en ciudades donde la gente gana poco y el reembolso del IRS es la entrada de dinero más grande del año.
-                      Sus clientes piden anticipos de efectivo constantemente. Si no ofrecen bank products, pierden clientes.
-                    </p>
-                    <p className="text-xs text-slate-500 italic">
-                      Ciudades: Jonesboro, Macon, Albany, Decatur, Columbus, Savannah, Douglasville, Conyers, McDonough, Lithonia, Forest Park, Riverdale, Valdosta, Smyrna y otras.
+              {/* Wave 2 */}
+              <div className="rounded-3xl border-2 border-orange-500 overflow-hidden shadow-sm">
+                <div className="bg-orange-500 px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                  <div className="flex items-center gap-4">
+                    <span className="bg-white text-orange-600 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest">Wave 2</span>
+                    <span className="text-white font-black text-base uppercase tracking-tight">GA_HIGHDEMAND</span>
+                  </div>
+                  <span className="text-orange-100 text-xs font-bold uppercase tracking-widest">Status: Starts after Wave 1</span>
+                </div>
+                <div className="p-8 bg-white space-y-6">
+                  {/* Who */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-black text-orange-600 uppercase tracking-widest">Who are these people</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">
+                      Tax preparers in 18 specific Georgia cities where a large portion of the population earns low income and the IRS refund is often the biggest check they receive all year. In those cities, clients walk in every season and ask for a refund advance (cash before the IRS sends the money). A preparer who doesn't offer that loses clients to the shop next door. These preparers don't have the AFSP credential, but their location makes them high-priority — their demand is built in.
                     </p>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 md:min-w-56">
+                  {/* Filters */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Why they ended up in this campaign — all 4 must be true</p>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { label: 'Business name contains "tax"', color: "bg-orange-100 text-orange-800 border-orange-200" },
+                        { label: "IRS AFSP credential = NO", color: "bg-orange-100 text-orange-800 border-orange-200" },
+                        { label: "City is on the high-demand list", color: "bg-orange-100 text-orange-800 border-orange-200" },
+                        { label: "Has phone OR email (reachable)", color: "bg-orange-100 text-orange-800 border-orange-200" },
+                      ].map((f, i) => (
+                        <span key={i} className={`text-xs font-bold px-3 py-1.5 rounded-xl border ${f.color}`}>{f.label}</span>
+                      ))}
+                    </div>
+                    <div className="bg-slate-50 rounded-xl p-3 border border-slate-100 mt-1">
+                      <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-1">The 18 cities on the list</p>
+                      <p className="text-xs text-slate-500 leading-relaxed">Jonesboro · Macon · Albany · Decatur · Columbus · Savannah · Douglasville · Conyers · McDonough · Lithonia · Stone Mountain · Forest Park · Morrow · Riverdale · College Park · Valdosta · Smyrna · Austell</p>
+                    </div>
+                    <p className="text-xs text-slate-400">If they are in the AFSP program → they go to Wave 1, not here. If their city isn't on the list → they go to Wave 3.</p>
+                  </div>
+                  {/* Copy angle */}
+                  <div className="bg-orange-50 rounded-2xl p-4 border border-orange-100">
+                    <p className="text-xs font-black text-orange-600 uppercase tracking-widest mb-1">Pitch angle</p>
+                    <p className="text-xs text-slate-600 leading-relaxed">Lead with urgency and competition. "In your area, refund advances are table stakes — clients expect them. Right now you might be sending business to whoever in your city already offers this."</p>
+                  </div>
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
                     {[
-                      { label: "Total",          value: "1,341" },
-                      { label: "Email + Connie", value: "126"   },
-                      { label: "Solo Connie",    value: "1,215" },
-                      { label: "Canal SMS",      value: "Pronto"},
+                      { label: "Total in campaign",   value: "1,341", sub: "people" },
+                      { label: "Email + Connie call", value: "126",   sub: "both channels" },
+                      { label: "Connie call only",    value: "1,215", sub: "phone only" },
+                      { label: "SMS channel",         value: "Soon",  sub: "pending Twilio" },
                     ].map((s, i) => (
-                      <div key={i} className="bg-orange-50 rounded-2xl p-3 text-center">
-                        <p className="text-xl font-black text-orange-600">{s.value}</p>
-                        <p className="text-xs text-slate-500 mt-1">{s.label}</p>
+                      <div key={i} className="bg-orange-50 rounded-2xl p-4 text-center border border-orange-100">
+                        <p className="text-2xl font-black text-orange-600">{s.value}</p>
+                        <p className="text-xs text-slate-700 mt-1 font-bold">{s.label}</p>
+                        <p className="text-xs text-slate-400">{s.sub}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Oleada 3 */}
-              <div className="p-8 bg-white rounded-3xl border-2 border-slate-300 shadow-sm">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-                  <div className="space-y-3 flex-1">
-                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest">OLEADA 3 — Después</p>
-                    <h4 className="font-black text-lg text-slate-900 uppercase">Resto de Georgia</h4>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      Preparadores de tax en ciudades que no están en la lista de alta demanda.
-                      El copy es educativo — mostrarles el math de cuánto están dejando de ganar por cada cliente sin bank product.
+              {/* Wave 3 */}
+              <div className="rounded-3xl border-2 border-slate-300 overflow-hidden shadow-sm">
+                <div className="bg-slate-700 px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                  <div className="flex items-center gap-4">
+                    <span className="bg-white text-slate-700 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest">Wave 3</span>
+                    <span className="text-white font-black text-base uppercase tracking-tight">GA_REST</span>
+                  </div>
+                  <span className="text-slate-300 text-xs font-bold uppercase tracking-widest">Status: Starts after Waves 1 & 2</span>
+                </div>
+                <div className="p-8 bg-white space-y-6">
+                  {/* Who */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-black text-slate-600 uppercase tracking-widest">Who are these people</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">
+                      Tax preparers in every other city in Georgia that's not on the high-demand list. They have "tax" in their business name, no AFSP credential, and we can reach them. They're not as urgent of a buyer — their clients may be wealthier, get larger refunds, or not ask for advances as often. But there are 4,237 of them, so the volume makes up for lower conversion rate.
                     </p>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 md:min-w-56">
+                  {/* Filters */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Why they ended up in this campaign — all 4 must be true</p>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { label: 'Business name contains "tax"', color: "bg-slate-100 text-slate-700 border-slate-200" },
+                        { label: "IRS AFSP credential = NO", color: "bg-slate-100 text-slate-700 border-slate-200" },
+                        { label: "City is NOT on the high-demand list", color: "bg-slate-100 text-slate-700 border-slate-200" },
+                        { label: "Has phone OR email (reachable)", color: "bg-slate-100 text-slate-700 border-slate-200" },
+                      ].map((f, i) => (
+                        <span key={i} className={`text-xs font-bold px-3 py-1.5 rounded-xl border ${f.color}`}>{f.label}</span>
+                      ))}
+                    </div>
+                    <p className="text-xs text-slate-400">AFSP credential → Wave 1. High-demand city → Wave 2. Everything else → here.</p>
+                  </div>
+                  {/* Copy angle */}
+                  <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                    <p className="text-xs font-black text-slate-600 uppercase tracking-widest mb-1">Pitch angle</p>
+                    <p className="text-xs text-slate-600 leading-relaxed">Lead with math. Show them what a tax preparer processing 50, 100, or 200 refunds per season earns in commissions from bank products. Make it a revenue conversation, not a product pitch.</p>
+                  </div>
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
                     {[
-                      { label: "Total",          value: "4,237" },
-                      { label: "Email + Connie", value: "453"   },
-                      { label: "Solo Connie",    value: "3,784" },
-                      { label: "Canal SMS",      value: "Pronto"},
+                      { label: "Total in campaign",   value: "4,237", sub: "people" },
+                      { label: "Email + Connie call", value: "453",   sub: "both channels" },
+                      { label: "Connie call only",    value: "3,784", sub: "phone only" },
+                      { label: "SMS channel",         value: "Soon",  sub: "pending Twilio" },
                     ].map((s, i) => (
-                      <div key={i} className="bg-slate-50 rounded-2xl p-3 text-center">
-                        <p className="text-xl font-black text-slate-700">{s.value}</p>
-                        <p className="text-xs text-slate-500 mt-1">{s.label}</p>
+                      <div key={i} className="bg-slate-100 rounded-2xl p-4 text-center border border-slate-200">
+                        <p className="text-2xl font-black text-slate-700">{s.value}</p>
+                        <p className="text-xs text-slate-700 mt-1 font-bold">{s.label}</p>
+                        <p className="text-xs text-slate-400">{s.sub}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Oleada 4 */}
-              <div className="p-8 bg-white rounded-3xl border-2 border-slate-200 shadow-sm opacity-75">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-                  <div className="space-y-3 flex-1">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">OLEADA 4 — Cuando las 3 anteriores conviertan bien</p>
-                    <h4 className="font-black text-lg text-slate-900 uppercase">Servicios adyacentes</h4>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      Contadores, firmas de nómina, bookkeepers — no son preparadores de tax puros pero podrían estar interesados.
-                      Requieren más educación. Solo email por ahora.
+              {/* Wave 4 */}
+              <div className="rounded-3xl border-2 border-slate-200 overflow-hidden shadow-sm opacity-80">
+                <div className="bg-slate-200 px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                  <div className="flex items-center gap-4">
+                    <span className="bg-white text-slate-500 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest">Wave 4</span>
+                    <span className="text-slate-600 font-black text-base uppercase tracking-tight">GA_ADJACENT</span>
+                  </div>
+                  <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">Status: Starts once Waves 1–3 are converting</span>
+                </div>
+                <div className="p-8 bg-white space-y-6">
+                  {/* Who */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest">Who are these people</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">
+                      Accountants, bookkeepers, payroll firms, and general financial services businesses. They're not tax preparers by primary profession, but some of them do tax returns as a secondary service, or their clients ask them about it. They're a longer-cycle sell — more education needed before the pitch — and we only have emails for most of them, so no Connie calls yet.
                     </p>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 md:min-w-56">
+                  {/* Filters */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Why they ended up in this campaign — at least one must be true + must be reachable</p>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { label: 'Business name contains "accounting"', color: "bg-slate-100 text-slate-500 border-slate-200" },
+                        { label: 'Business name contains "financial"', color: "bg-slate-100 text-slate-500 border-slate-200" },
+                        { label: 'Business name contains "bookkeeping"', color: "bg-slate-100 text-slate-500 border-slate-200" },
+                        { label: 'Business name contains "payroll"', color: "bg-slate-100 text-slate-500 border-slate-200" },
+                        { label: "Has phone OR email (reachable)", color: "bg-slate-100 text-slate-500 border-slate-200" },
+                      ].map((f, i) => (
+                        <span key={i} className={`text-xs font-bold px-3 py-1.5 rounded-xl border ${f.color}`}>{f.label}</span>
+                      ))}
+                    </div>
+                    <p className="text-xs text-slate-400">If their business name has "tax" in it → they go to Wave 1, 2, or 3 depending on AFSP and city. Not here.</p>
+                  </div>
+                  {/* Copy angle */}
+                  <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Pitch angle</p>
+                    <p className="text-xs text-slate-600 leading-relaxed">Email only, educational tone. "Your clients are already asking about this. You could be adding a revenue stream without changing your core service."</p>
+                  </div>
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
                     {[
-                      { label: "Total",    value: "1,488" },
-                      { label: "Canal",    value: "Email" },
+                      { label: "Total in campaign", value: "1,488", sub: "people" },
+                      { label: "Channel",           value: "Email", sub: "only — no calls yet" },
                     ].map((s, i) => (
-                      <div key={i} className="bg-slate-50 rounded-2xl p-3 text-center">
-                        <p className="text-xl font-black text-slate-500">{s.value}</p>
-                        <p className="text-xs text-slate-400 mt-1">{s.label}</p>
+                      <div key={i} className="bg-slate-100 rounded-2xl p-4 text-center border border-slate-200">
+                        <p className="text-2xl font-black text-slate-500">{s.value}</p>
+                        <p className="text-xs text-slate-600 mt-1 font-bold">{s.label}</p>
+                        <p className="text-xs text-slate-400">{s.sub}</p>
                       </div>
                     ))}
                   </div>
@@ -266,61 +686,202 @@
           </section>
 
           {/* PIPELINE CLAY → SMARTLEAD */}
-          <section className="bg-slate-50 p-12 rounded-[48px] border border-slate-200">
-            <h3 className="text-2xl font-black italic uppercase mb-10 text-center text-slate-800 tracking-tighter">
-              Flujo operativo — Clay → Smartlead
-            </h3>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-10 md:gap-16 mb-8">
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-40 h-40 bg-white rounded-3xl shadow-xl border border-slate-100 flex flex-col items-center justify-center p-6">
-                  <img src="https://clay.com/images/clay-logo.png" alt="Clay" className="w-20 h-20 object-contain"
-                    onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
-                  <span className="text-2xl font-black" style={{display:'none'}}>Clay</span>
-                  <span className="font-black text-xs uppercase tracking-widest text-slate-400 mt-2">Enriquecimiento</span>
-                </div>
+          <section className="space-y-8">
+
+            {/* Header */}
+            <div className="bg-slate-50 rounded-[48px] p-10 border border-slate-200">
+              <div className="text-center mb-10">
+                <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Cómo funciona el pipeline</p>
+                <h3 className="text-3xl font-black uppercase tracking-tighter text-slate-800 leading-none">
+                  Clay → SmartLead
+                </h3>
+                <p className="text-slate-500 text-sm mt-3 max-w-xl mx-auto">
+                  Así es como 7,531 preparadores de impuestos en Georgia reciben un email personalizado — sin intervención manual en ningún paso.
+                </p>
               </div>
-              <div className="flex flex-col items-center gap-2">
-                <div className="bg-blue-700 p-4 rounded-full shadow-xl animate-pulse">
-                  <IC name="ArrowRightCircle" size={40} className="text-white" />
+              <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-36 h-36 bg-white rounded-3xl shadow-xl border border-slate-100 flex flex-col items-center justify-center p-5">
+                    <img src="/images/clay-logo.png" alt="Clay" className="w-24 object-contain" />
+                    <span className="font-black text-xs uppercase tracking-widest text-slate-400 mt-2">Enriquecimiento</span>
+                  </div>
+                  <p className="text-xs text-slate-500 font-bold text-center">Lista FOIA → datos verificados<br/>+ copy IA por persona</p>
                 </div>
-                <span className="text-xs font-black text-blue-700 uppercase tracking-widest">Mapeo automático</span>
-              </div>
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-40 h-40 bg-white rounded-3xl shadow-xl border border-slate-100 flex flex-col items-center justify-center p-6">
-                  <img src="https://smartlead.ai/wp-content/uploads/2023/09/smartlead-logo.png" alt="Smartlead" className="w-20 h-20 object-contain"
-                    onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
-                  <span className="text-2xl font-black text-blue-700" style={{display:'none'}}>Smartlead</span>
-                  <span className="font-black text-xs uppercase tracking-widest text-slate-400 mt-2">Envío de emails</span>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="bg-blue-700 p-3 rounded-full shadow-xl animate-pulse">
+                    <IC name="ArrowRightCircle" size={32} className="text-white" />
+                  </div>
+                  <span className="text-xs font-black text-blue-700 uppercase tracking-widest text-center">API mapping<br/>automático</span>
+                </div>
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-36 h-36 bg-white rounded-3xl shadow-xl border border-slate-100 flex flex-col items-center justify-center p-5">
+                    <img src="/images/smartlead-logo.webp" alt="SmartLead" className="w-24 object-contain" />
+                    <span className="font-black text-xs uppercase tracking-widest text-slate-400 mt-2">Email delivery</span>
+                  </div>
+                  <p className="text-xs text-slate-500 font-bold text-center">24 inboxes calentados<br/>~700 emails/día</p>
                 </div>
               </div>
             </div>
-            <div className="text-center p-5 bg-white rounded-2xl border border-slate-200 max-w-xl mx-auto">
-              <p className="text-xs text-slate-600 font-bold uppercase tracking-widest">
-                Yeison: Oleada 1 → campaña GA_CERTIFIED · Oleada 2 → GA_HIGHDEMAND · Oleada 3 → GA_REST
-              </p>
+
+            {/* 6 pasos del pipeline */}
+            <div className="space-y-3">
+              <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Qué pasa paso a paso — de la lista FOIA al inbox del preparador</p>
+              {[
+                {
+                  n: '01', tool: 'Clay',
+                  title: 'La lista FOIA entra a Clay',
+                  desc: '21,391 preparadores registrados en el IRS se importan a Clay. Clay corre enriquecimiento por cada fila: verifica email, teléfono, credencial AFSP, ciudad, presencia en Instagram. De 21,391 → 7,531 con datos de contacto válidos. Los 13,860 sin contacto se descartan automáticamente — Clay no los pasa a SmartLead.',
+                  toolBg: 'bg-slate-900',
+                },
+                {
+                  n: '02', tool: 'Clay',
+                  title: 'Clay scrape + IA generan copy personalizado por persona',
+                  desc: 'Para cada preparador, Clay usa IA (GPT) para generar los 3 emails de la secuencia con variables reales: nombre, ciudad, credencial AFSP. No hay un template genérico — cada persona recibe un email diferente. Clay guarda esto como columnas separadas: Email_1, Email_2, Email_3. Ejemplo: "Hi Maria, I love that you\'ve been serving clients in Jonesboro..." — escrito por IA, parece escrito a mano.',
+                  toolBg: 'bg-slate-900',
+                },
+                {
+                  n: '03', tool: 'Clay',
+                  title: 'Clay clasifica cada lead en su wave automáticamente',
+                  desc: 'Tiene credencial AFSP = YES + "tax" en el nombre del negocio → GA_CERTIFIED (Wave 1). Sin AFSP + ciudad en la lista de alta demanda → GA_HIGHDEMAND (Wave 2). Sin AFSP + cualquier otra ciudad de Georgia → GA_REST (Wave 3). Nombre contiene "accounting", "financial", "bookkeeping", "payroll" → GA_ADJACENT (Wave 4). Clay aplica estos filtros fila por fila, sin revisión manual.',
+                  toolBg: 'bg-slate-900',
+                },
+                {
+                  n: '04', tool: 'Clay',
+                  title: 'Clay empuja los leads a SmartLead vía API — sin CSV',
+                  desc: 'Clay tiene integración nativa "Add Lead to Campaign". Seleccionas la campaign en SmartLead (GA_CERTIFIED, GA_HIGHDEMAND, etc.), mapeas email_one, email_two, email_three como custom fields, y Clay inserta cada lead directamente por API. Una vez configurado el template, agregar una wave nueva toma 30 segundos. Los leads entran a SmartLead con nombre, email, y los 3 emails personalizados ya listos.',
+                  toolBg: 'bg-slate-900',
+                },
+                {
+                  n: '05', tool: 'SmartLead',
+                  title: 'SmartLead reemplaza el placeholder con el copy de Clay',
+                  desc: 'La secuencia en SmartLead tiene variables {email_one}, {email_two}, {email_three} donde iría el texto. SmartLead las reemplaza automáticamente con el copy personalizado que Clay generó para cada persona. El preparador recibe un email que parece escrito específicamente para él — porque técnicamente lo fue (por IA con sus datos reales).',
+                  toolBg: 'bg-blue-700',
+                },
+                {
+                  n: '06', tool: 'SmartLead',
+                  title: 'SmartLead envía la secuencia de 3 emails con 24 inboxes calentados',
+                  desc: 'Email 1 sale el día 1. Email 2 sale 5 días después. Email 3 sale 3 días después del 2. Los 24 inboxes rotan el envío (~700 emails/día en total) para no quemar ningún dominio. Los emails van en texto plano — no HTML — para mejor deliverability. Si alguien está fuera de oficina hasta el 15 de junio, SmartLead re-envía automáticamente el 15 de junio. IA categoriza cada respuesta: Interesado / No interesado / Fuera de oficina / Referral — sin asistente virtual.',
+                  toolBg: 'bg-blue-700',
+                },
+              ].map((step, i) => (
+                <div key={i} className="flex items-start gap-4 p-5 rounded-2xl border border-slate-100 bg-white hover:bg-slate-50 transition-colors">
+                  <div className="flex-shrink-0 flex flex-col items-center gap-2">
+                    <span className="w-8 h-8 bg-slate-900 text-white text-xs font-black rounded-xl flex items-center justify-center">{step.n}</span>
+                    <span className={`text-xs font-black px-2 py-0.5 rounded-lg text-white uppercase tracking-widest ${step.toolBg}`}>{step.tool}</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-black text-slate-900 leading-snug">{step.title}</p>
+                    <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
+
+            {/* Clay features vs SmartLead features */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-900 rounded-3xl p-8 space-y-5">
+                <div className="flex items-center gap-3 border-b border-slate-700 pb-4">
+                  <img src="/images/clay-logo.png" alt="Clay" className="h-5 object-contain brightness-0 invert" />
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Lo que Clay hace en este pipeline</p>
+                </div>
+                {[
+                  { label: 'Enriquecimiento de la lista FOIA', desc: 'Email verificado, teléfono, AFSP, ciudad, Instagram — fila por fila, automático' },
+                  { label: 'Copy IA por persona', desc: 'GPT genera Email 1, 2 y 3 personalizados con variables reales de cada preparador — no un template genérico' },
+                  { label: 'Clasificación automática por wave', desc: 'AFSP + ciudad + nombre del negocio determinan en qué campaign entra cada lead' },
+                  { label: 'Push API directo a SmartLead', desc: '"Add Lead to Campaign" — se insertan directamente con nombre y los 3 emails ya listos, sin exportar CSV' },
+                  { label: 'Templates reutilizables', desc: 'Primera vez: 13 minutos de configuración. Cada wave nueva después: 30 segundos' },
+                  { label: 'Fórmulas condicionales', desc: 'Si el preparador tiene AFSP → el email lo menciona. Si no → el email usa otro ángulo. Automático.' },
+                ].map((f, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <span className="text-emerald-400 font-black text-sm flex-shrink-0 mt-0.5">✓</span>
+                    <div>
+                      <p className="text-sm font-black text-white leading-snug">{f.label}</p>
+                      <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{f.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-blue-700 rounded-3xl p-8 space-y-5">
+                <div className="flex items-center gap-3 border-b border-blue-600 pb-4">
+                  <img src="/images/smartlead-logo.webp" alt="SmartLead" className="h-5 object-contain brightness-0 invert" />
+                  <p className="text-xs font-black text-blue-200 uppercase tracking-widest">Lo que SmartLead hace en este pipeline</p>
+                </div>
+                {[
+                  { label: '24 inboxes rotando', desc: '~700 emails/día distribuidos entre inboxes calentados — sin quemar ningún dominio. Reputación mínima: 97%' },
+                  { label: 'Secuencia de 3 emails espaciados', desc: 'Email 1 → espera 5 días → Email 2 → espera 3 días → Email 3. Parece manual. No lo es.' },
+                  { label: 'Texto plano — no HTML', desc: 'Mejor deliverability, no cae en spam como el HTML de marketing masivo. Configurado como default.' },
+                  { label: 'IA categoriza respuestas', desc: 'Interesado / No interesado / Fuera de oficina / Referral — sin contratar ni entrenar asistente virtual' },
+                  { label: 'Auto-pausa por rebotes', desc: 'Si >5% de emails rebotan → pausa la campaign automáticamente para proteger los dominios' },
+                  { label: 'Out-of-office inteligente', desc: 'Si alguien está fuera hasta el 20 de junio → SmartLead espera y envía el siguiente email el 20 de junio' },
+                ].map((f, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <span className="text-blue-200 font-black text-sm flex-shrink-0 mt-0.5">✓</span>
+                    <div>
+                      <p className="text-sm font-black text-white leading-snug">{f.label}</p>
+                      <p className="text-xs text-blue-200 mt-0.5 leading-relaxed">{f.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Wave → Campaign mapping */}
+            <div className="bg-white rounded-2xl border-2 border-slate-200 overflow-hidden shadow-sm">
+              <div className="bg-slate-800 px-6 py-4 flex items-center justify-between">
+                <p className="text-xs font-black text-slate-300 uppercase tracking-widest">Yeison — wave a campaign mapping</p>
+                <p className="text-xs text-slate-400">Wave 1 activa primero · las demás esperan su turno</p>
+              </div>
+              <div className="divide-y divide-slate-100">
+                {[
+                  { wave: 'Wave 1', campaign: 'GA_CERTIFIED',  leads: '465',   emails: '83',  calls: '382', status: 'active',  color: 'text-blue-700',   dot: 'bg-blue-500',   desc: 'AFSP = YES + "tax" en nombre' },
+                  { wave: 'Wave 2', campaign: 'GA_HIGHDEMAND', leads: '1,341', emails: '126', calls: '1,215', status: 'pending', color: 'text-orange-600', dot: 'bg-orange-400', desc: 'Sin AFSP + ciudad de alta demanda' },
+                  { wave: 'Wave 3', campaign: 'GA_REST',       leads: '4,237', emails: '453', calls: '3,784', status: 'pending', color: 'text-slate-600',  dot: 'bg-slate-400',  desc: 'Sin AFSP + resto de Georgia' },
+                  { wave: 'Wave 4', campaign: 'GA_ADJACENT',   leads: '1,488', emails: '—',   calls: '—',    status: 'pending', color: 'text-slate-400',  dot: 'bg-slate-300',  desc: 'Contadores, bookkeepers, payroll' },
+                ].map((row, i) => (
+                  <div key={i} className="flex items-center gap-4 px-6 py-4 hover:bg-slate-50 transition-colors">
+                    <span className={`w-2.5 h-2.5 rounded-full ${row.dot} flex-shrink-0`} />
+                    <span className="text-xs font-black text-slate-500 uppercase tracking-widest w-14 flex-shrink-0">{row.wave}</span>
+                    <span className={`text-sm font-black font-mono ${row.color} w-36 flex-shrink-0`}>{row.campaign}</span>
+                    <span className="text-xs text-slate-400 flex-1 hidden md:block">{row.desc}</span>
+                    <div className="flex items-center gap-4 flex-shrink-0 text-right">
+                      <div className="hidden md:block">
+                        <p className="text-xs font-black text-slate-800">{row.leads}</p>
+                        <p className="text-xs text-slate-400">leads total</p>
+                      </div>
+                      <div className="hidden md:block">
+                        <p className="text-xs font-black text-blue-700">{row.emails}</p>
+                        <p className="text-xs text-slate-400">con email</p>
+                      </div>
+                      <StatusDot status={row.status} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </section>
 
           {/* SCORING */}
           <section className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
             <div className="space-y-6">
               <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">
-                Sistema de puntuación de leads
+                Lead scoring system
               </h2>
               <p className="text-slate-500 text-sm leading-relaxed">
-                Cada acción que hace el lead suma o resta puntos. El CRM ordena automáticamente quién recibe atención primero.
+                Every action a lead takes adds or removes points. The CRM automatically sorts who gets attention first.
               </p>
               <div className="p-8 bg-blue-700 rounded-3xl text-white shadow-xl">
-                <p className="text-xs font-bold uppercase tracking-widest mb-2 opacity-80">Para pasar a ventas</p>
+                <p className="text-xs font-bold uppercase tracking-widest mb-2 opacity-80">To pass to sales</p>
                 <p className="text-5xl font-black tracking-tighter leading-none">100+ pts</p>
               </div>
             </div>
             <div className="lg:col-span-2 bg-white p-10 border border-slate-200 rounded-3xl shadow-sm">
               <h4 className="font-black text-xs uppercase mb-8 text-slate-400 tracking-widest border-b border-slate-100 pb-4 text-center">
-                Tabla de puntajes
+                Score weight table
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {realScoring.map((rule, idx) => (
+                {scoring.map((rule, idx) => (
                   <div key={idx} className={`flex items-center justify-between p-4 rounded-2xl ${rule.bg} border border-transparent`}>
                     <div className="flex items-center gap-3">
                       <div className={`p-2 rounded-xl bg-white ${rule.color}`}>
@@ -340,16 +901,16 @@
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div className="space-y-8">
                 <h2 className="text-4xl font-black uppercase tracking-tighter leading-none italic">
-                  Connie — el bot que llama
+                  Connie — the AI that calls
                 </h2>
                 <p className="text-orange-100 text-lg leading-relaxed">
-                  Cuando un lead llega con puntaje alto o pide que lo llamen, Connie contesta en menos de 1 segundo,
-                  verifica cuántos bank products hace la oficina, y agenda la demo con el equipo de PTS.
+                  When a lead hits a high score or requests a call, Connie answers in under 1 second,
+                  verifies how many bank products the office processes, and books a demo with the PTS team.
                 </p>
                 <div className="space-y-4">
                   {[
-                    { n: "01", title: "Respuesta inmediata", desc: "El lead llega a 100 puntos → Connie llama en ese momento." },
-                    { n: "02", title: "Calificación",        desc: "Connie pregunta cuántos reembolsos procesaron la última temporada. Si dicen más de 50 → pasa a ventas." },
+                    { n: "01", title: "Instant response", desc: "Lead hits 100 points → Connie calls immediately." },
+                    { n: "02", title: "Qualification",    desc: "Connie asks how many refunds they processed last season. If they say 50+ → passes to sales." },
                   ].map((item, i) => (
                     <div key={i} className="flex gap-4 items-start bg-white/10 p-4 rounded-2xl border border-white/20">
                       <div className="w-10 h-10 bg-white text-orange-600 rounded-xl flex-shrink-0 flex items-center justify-center font-black text-sm">{item.n}</div>
@@ -366,7 +927,7 @@
                   <IC name="PhoneIncoming" size={24} className="text-white" />
                 </div>
                 <h4 className="font-black text-xs uppercase text-orange-600 mb-6 tracking-widest border-b border-slate-100 pb-4">
-                  Guión estándar de Connie
+                  Connie's standard script
                 </h4>
                 <p className="text-sm italic leading-relaxed text-slate-700">
                   "Thank you for calling PTS. I'm Connie. I saw you were reviewing our regional analysis.
@@ -375,11 +936,11 @@
                 </p>
                 <div className="mt-8 flex gap-10 pt-6 border-t border-slate-100 text-center justify-center">
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase">Latencia</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase">Latency</p>
                     <p className="text-3xl font-black text-blue-700">0s</p>
                   </div>
                   <div className="border-l border-slate-100 pl-10">
-                    <p className="text-xs font-bold text-slate-400 uppercase">Disponibilidad</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase">Availability</p>
                     <p className="text-3xl font-black text-emerald-600">24/7</p>
                   </div>
                 </div>
@@ -387,22 +948,22 @@
             </div>
           </section>
 
-          {/* AVISO LEGAL */}
+          {/* LEGAL WARNING */}
           <section className="bg-red-50 border-4 border-dashed border-red-200 rounded-3xl p-12">
             <div className="max-w-3xl space-y-8">
               <div className="flex items-center gap-4">
                 <IC name="AlertTriangle" size={32} className="text-red-600" />
                 <h3 className="text-2xl font-black text-red-700 uppercase italic tracking-tighter leading-none">
-                  Aviso operativo — llamadas en frío con IA
+                  Operational Warning — Cold AI Calling
                 </h3>
               </div>
               <p className="text-red-900 text-lg leading-relaxed font-bold">
-                Tony: La decisión de activar a Connie para llamadas en frío (sin que el contacto haya dado permiso previo) es tuya y solo tuya.
+                Tony: The decision to activate Connie for cold calls (contacting people who have not given prior consent) is yours and yours alone.
               </p>
               <div className="space-y-4">
                 {[
-                  { icon: "ShieldCheck",     text: "PTS Tax advierte sobre los riesgos regulatorios asociados a llamadas automatizadas sin consentimiento (TCPA)." },
-                  { icon: "FileSignature",   text: "Para activar este modo se requiere firma digital reconociendo que la responsabilidad legal no recae sobre el proveedor de tecnología." },
+                  { icon: "ShieldCheck",   text: "PTS Tax explicitly warns of the regulatory risks associated with automated calling without consent (TCPA)." },
+                  { icon: "FileSignature", text: "Activation requires a digital signature acknowledging that legal responsibility does not fall on the technology provider." },
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4 p-5 bg-white/60 rounded-2xl border border-red-100">
                     <IC name={item.icon} size={20} className="text-red-700 flex-shrink-0 mt-0.5" />
@@ -412,54 +973,151 @@
               </div>
               <div className="flex flex-wrap gap-4 pt-4">
                 <button className="bg-red-600 text-white px-8 py-3 rounded-2xl text-xs font-black uppercase shadow-lg hover:bg-red-700 transition-colors">
-                  Acepto el riesgo — activar llamadas en frío
+                  I Accept the Risk — Activate Cold Calling
                 </button>
                 <button className="bg-white border-2 border-red-200 text-red-600 px-8 py-3 rounded-2xl text-xs font-black uppercase hover:bg-red-50 transition-colors">
-                  Solo trabajar leads con permiso previo
+                  Work Only With Opted-In Leads
                 </button>
               </div>
             </div>
           </section>
 
-          {/* ROLES */}
-          <section className="border-t border-slate-200 pt-16">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          {/* ROLES Y FOCO — ANTI SCOPE CREEP */}
+          <section className="border-t border-slate-200 pt-16 space-y-10">
+            <div>
+              <h3 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Quién hace qué — y qué no hace</h3>
+              <p className="text-slate-500 text-sm mt-1">El enfoque es la prioridad. Cambiar de tarea sin terminar la anterior es la razón número uno por la que los proyectos se atrasan. Esta página existe para que nadie tenga que preguntar qué sigue.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
-                  name: "Yeison", color: "text-blue-700", border: "border-blue-100",
-                  items: [
-                    "Mantener el mapeo entre Clay y Smartlead activo.",
-                    "Clasificar por credencial AFSP y ciudad de alta demanda.",
-                    "Oleada 1 primero. No empezar oleada 2 hasta que 1 esté corriendo.",
-                  ]
+                  name: "Yeison", color: "text-blue-700", border: "border-blue-100", bg: "bg-blue-50",
+                  does: [
+                    "Clay → SmartLead: mapping activo por wave.",
+                    "Clasificación por credencial AFSP y demanda de ciudad.",
+                    "Wave 1 primero. Wave 2 no inicia hasta que Wave 1 esté corriendo.",
+                    "N8N migration Sunset Finance (semana del 18 Mayo).",
+                    "STOP handling: N8N → Zoho CRM como Do Not Contact.",
+                  ],
+                  doesnt: "No toca configuraciones de Twilio ni del CRM de scoring.",
                 },
                 {
-                  name: "Equipo de ventas", color: "text-slate-800", border: "border-slate-200",
-                  items: [
-                    "Solo atender leads con más de 80 puntos.",
-                    "Ejecutar demos para los leads que calificó Connie.",
-                  ]
+                  name: "Equipo de ventas", color: "text-slate-800", border: "border-slate-200", bg: "bg-slate-50",
+                  does: [
+                    "Solo trabajar leads con 80+ puntos en CRM.",
+                    "Correr demos para leads que Connie ya calificó.",
+                    "Reportar a Alejandra si un lead bookea sin cumplir ICP (PTIN + 50+ bank products).",
+                  ],
+                  doesnt: "No contactar leads fríos directamente — Connie filtra primero.",
                 },
                 {
-                  name: "Connie (IA)", color: "text-orange-600", border: "border-orange-100",
-                  items: [
-                    "Responder sin latencia cuando un lead llega a 100 puntos.",
-                    "Calificar: ¿más o menos de 50 bank products la temporada pasada?",
-                  ]
+                  name: "Connie (IA)", color: "text-orange-600", border: "border-orange-100", bg: "bg-orange-50",
+                  does: [
+                    "Respuesta en 0 segundos cuando un lead llega a 100 puntos.",
+                    "Calificar: ¿procesaron más o menos de 50 bank products la temporada pasada?",
+                    "Verificar PTIN (no EFIN) — los que solo tienen EFIN no son ICP.",
+                  ],
+                  doesnt: "No manda SMS hasta que A2P esté aprobado.",
                 },
               ].map((role, i) => (
-                <div key={i} className="space-y-4">
-                  <h4 className={`font-black text-xs uppercase ${role.color} italic border-b-2 ${role.border} pb-2`}>{role.name}</h4>
-                  <ul className="text-xs text-slate-500 space-y-3 font-medium">
-                    {role.items.map((item, j) => (
-                      <li key={j} className="flex gap-2 items-start">
-                        <IC name="CheckCircle2" size={12} className={`${role.color} flex-shrink-0 mt-0.5`} />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                <div key={i} className={`rounded-3xl border-2 ${role.border} ${role.bg} p-6 space-y-4`}>
+                  <h4 className={`font-black text-sm uppercase ${role.color} tracking-widest`}>{role.name}</h4>
+                  <div>
+                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Hace</p>
+                    <ul className="space-y-2">
+                      {role.does.map((item, j) => (
+                        <li key={j} className="flex gap-2 items-start text-xs text-slate-700">
+                          <span className={`${role.color} font-black flex-shrink-0 mt-0.5`}>✓</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="border-t border-white pt-3">
+                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">No hace</p>
+                    <p className="text-xs text-slate-500 italic">{role.doesnt}</p>
+                  </div>
                 </div>
               ))}
+            </div>
+
+            <div className="bg-slate-900 rounded-3xl p-6 flex flex-col md:flex-row gap-6 items-start">
+              <div className="flex-shrink-0">
+                <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Regla de oro</p>
+                <p className="text-xl font-black text-white uppercase tracking-tight mt-1 leading-tight">Termina lo que<br/>empezaste.</p>
+              </div>
+              <div className="h-px md:h-auto md:w-px bg-slate-700 flex-shrink-0" />
+              <p className="text-slate-400 text-sm leading-relaxed">
+                El scope creep es silencioso — empieza con "solo esta cosa pequeña" y termina con Wave 1 a medias, N8N sin migrar, y nadie sabe qué está corriendo. <strong className="text-white">Si alguien te pide hacer algo que no está en esta página, la respuesta es "lo agendo para después de terminar lo actual."</strong> El tablero de prioridades no cambia sin decisión explícita de Mauricio.
+              </p>
+            </div>
+          </section>
+
+
+          {/* ─── TWILIO LINK ─── */}
+          <a href="/twilio-setup" className="block group">
+            <div className="bg-slate-950 rounded-3xl px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6 hover:bg-slate-900 transition-colors">
+              <div className="flex items-center gap-5">
+                <div className="bg-red-600 rounded-2xl p-3 shadow-xl group-hover:bg-red-500 transition-colors">
+                  <img src="/images/twilio-logo.png" alt="Twilio" className="h-7 object-contain brightness-0 invert" />
+                </div>
+                <div>
+                  <p className="text-xs font-black text-slate-500 uppercase tracking-widest">Infraestructura separada</p>
+                  <p className="text-2xl font-black uppercase tracking-tighter text-white leading-none">
+                    Twilio — <span className="text-red-400">Voz y SMS</span>
+                  </p>
+                  <p className="text-slate-400 text-xs mt-1">Registro A2P · pasos por cliente · reglas de compliance · acciones de esta semana</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <span className="bg-amber-400 text-amber-900 text-xs font-black px-4 py-2 rounded-2xl uppercase tracking-widest">A2P en proceso</span>
+                <span className="text-white/40 text-2xl group-hover:text-white/80 transition-colors">→</span>
+              </div>
+            </div>
+          </a>
+
+
+          {/* FAQ */}
+          <section className="space-y-10">
+            <div className="text-center space-y-3">
+              <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900">
+                Preguntas & <span className="text-blue-700">Respuestas</span>
+              </h2>
+              <p className="text-slate-500 text-sm max-w-xl mx-auto">
+                Todo lo que necesitas saber sobre cómo funciona el sistema. Si tu pregunta no está aquí, agéndala — pero ven con contexto específico.
+              </p>
+            </div>
+
+            <FAQ />
+          </section>
+
+          {/* BOOK A CALL CTA */}
+          <section className="bg-slate-900 text-white rounded-[48px] p-12 text-center space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-black uppercase tracking-widest text-slate-400">¿Aún tienes preguntas?</p>
+              <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
+                Agéndala.<br />
+                <span className="text-blue-400">Ven preparado.</span>
+              </h2>
+            </div>
+            <p className="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
+              Esta página cubre el 95% de lo que alguien puede preguntar. Si necesitas una llamada, trae el lead específico, el número, o el escenario — las preguntas sin contexto toman 10× más tiempo en resolverse.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center pt-2">
+              <a
+                href="https://calendly.com/mauricio-frontdesk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-600 hover:bg-blue-700 transition-colors text-white px-10 py-4 rounded-2xl text-sm font-black uppercase tracking-widest shadow-lg"
+              >
+                Agendar llamada
+              </a>
+              <a
+                href="mailto:mauricio.frontdesk@gmail.com"
+                className="bg-white/10 hover:bg-white/20 transition-colors text-white px-10 py-4 rounded-2xl text-sm font-black uppercase tracking-widest border border-white/20"
+              >
+                Enviar email
+              </a>
             </div>
           </section>
 
@@ -467,7 +1125,7 @@
 
         <footer className="py-16 bg-white border-t border-slate-200 text-center text-slate-400">
           <p className="text-xs font-black uppercase tracking-widest opacity-40 italic">
-            PTS Tax · Protocolo Operativo Georgia 2026
+            PTS Tax · Georgia Operational Protocol 2026
           </p>
         </footer>
       </div>
