@@ -307,29 +307,39 @@
 
         {/* HEADER */}
         <header className="border-b border-slate-200 bg-white sticky top-0 z-50 shadow-sm">
-          <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-4">
-              <div className="bg-slate-900 p-2.5 rounded-xl shadow-lg">
-                <IC name="Layers" size={24} className="text-white" />
+          <div className="max-w-6xl mx-auto px-6">
+            {/* Brand row */}
+            <div className="flex items-center justify-between gap-4 py-3 border-b border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="bg-slate-900 p-2 rounded-lg shadow">
+                  <IC name="Layers" size={18} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-black uppercase tracking-tight text-slate-900 leading-none">PTS AI</p>
+                  <p className="text-xs text-slate-400 font-bold uppercase tracking-widest italic">Plataforma Operacional · 2026</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-xl font-black uppercase tracking-tight text-slate-900 leading-none">
-                  Georgia Strategic <span className="text-blue-700">Revenue</span>
-                </h1>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1 italic">
-                  Unified Operational Directives — PTS Tax 2026
-                </p>
+              <div className="flex gap-6">
+                <div className="text-right">
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">Lista original</p>
+                  <p className="text-base font-black text-slate-800 tracking-tighter">21,391</p>
+                </div>
+                <div className="text-right border-l border-slate-200 pl-6">
+                  <p className="text-xs font-black text-blue-700 uppercase tracking-tighter">Alcanzables</p>
+                  <p className="text-base font-black text-slate-800 tracking-tighter">7,531</p>
+                </div>
               </div>
             </div>
-            <div className="flex gap-8">
-              <div className="text-right">
-                <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">Original List</p>
-                <p className="text-lg font-black text-slate-800 tracking-tighter">21,391</p>
-              </div>
-              <div className="text-right border-l border-slate-200 pl-8">
-                <p className="text-xs font-black text-blue-700 uppercase tracking-tighter">Reachable</p>
-                <p className="text-lg font-black text-slate-800 tracking-tighter">7,531</p>
-              </div>
+            {/* Nav tabs */}
+            <div className="flex gap-1 py-2">
+              <a href="/georgia-dashboard" className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest bg-blue-700 text-white">
+                <span className="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0" />
+                Campaña Georgia FOIA
+              </a>
+              <a href="/twilio-setup" className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition-colors">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
+                Twilio — Voz y SMS
+              </a>
             </div>
           </div>
         </header>
