@@ -7,6 +7,7 @@
     { "source": "/thank-you/es",   "destination": "/thank-you.html" },
     { "source": "/en",                  "destination": "/index.html" },
     { "source": "/es",                  "destination": "/index.html" },
-    { "source": "/georgia-dashboard",   "destination": "/georgia-dashboard.html" }
+    { "source": "/georgia-dashboard",   "destination": "/georgia-dashboard.html" },
+    { "source": "/twilio-setup",         "destination": "/twilio-setup.html" }
   ]
 }
