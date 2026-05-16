@@ -169,7 +169,9 @@ body::before{
 .thread.dark-thread.lit .thread-top-dot,
 .thread.dark-thread.lit .thread-bot-dot{border-color:var(--or);background:var(--or)}
 .thread.dark-thread .thread-pill{
-  background:rgba(255,107,26,.1);border-color:rgba(255,107,26,.25);
+  background:rgba(18,9,2,.96);
+  border-color:rgba(255,107,26,.55);
+  box-shadow:0 0 10px rgba(255,107,26,.12);
 }
 
 /* transition wrappers */
@@ -1191,8 +1193,8 @@ footer{
   content:'';
   position:absolute;
   bottom:0;left:0;right:0;
-  height:60%;
-  background:linear-gradient(to bottom, transparent, #161616 85%);
+  height:28%;
+  background:linear-gradient(to bottom, transparent, #161616 90%);
   pointer-events:none;
 }
 .imac-screen-content .imac-chrome{
@@ -1215,6 +1217,34 @@ footer{
 .imac-screen-content .stat-bar-wrap{
   width:40px;
 }
+
+/* activity log inside iMac */
+.imac-activity{
+  margin-top:14px;
+  border-top:1px solid rgba(255,255,255,.06);
+  padding-top:10px;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+.imac-act-label{
+  font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;
+  color:rgba(255,255,255,.22);padding:0 6px 8px;
+}
+.imac-act-row{
+  display:flex;align-items:center;gap:8px;
+  padding:5px 6px;border-radius:6px;
+  font-size:11px;color:rgba(255,255,255,.45);
+  line-height:1;
+}
+.imac-act-row:hover{background:rgba(255,255,255,.03)}
+.imac-act-icon{font-size:11px;flex-shrink:0;width:18px;text-align:center}
+.imac-act-name{flex:1;font-weight:500;color:rgba(255,255,255,.60)}
+.imac-act-status{font-size:10px;font-weight:700;letter-spacing:.04em}
+.imac-act-status.transfer{color:#FF6B1A}
+.imac-act-status.booked{color:rgba(255,255,255,.35)}
+.imac-act-status.filtered{color:rgba(239,68,68,.55)}
+.imac-act-time{font-size:10px;color:rgba(255,255,255,.20);flex-shrink:0}
 
 /* ─── PRICING SECTION ─────────────────────────── */
 #s-pricing{
@@ -1966,6 +1996,35 @@ footer{
               <div class="stat-label">Leads Filtered Out</div>
               <div class="stat-val red">37 <span class="stat-arrow">↓</span></div>
               <div class="stat-bar-wrap"><div class="stat-bar red" id="bar4"></div></div>
+            </div>
+          </div>
+
+          <!-- recent call activity -->
+          <div class="imac-activity">
+            <div class="imac-act-label">Recent activity</div>
+            <div class="imac-act-row">
+              <div class="imac-act-icon">📞</div>
+              <div class="imac-act-name">Jorge M.</div>
+              <div class="imac-act-status transfer">Live transfer</div>
+              <div class="imac-act-time">2m ago</div>
+            </div>
+            <div class="imac-act-row">
+              <div class="imac-act-icon">📅</div>
+              <div class="imac-act-name">Ana R.</div>
+              <div class="imac-act-status booked">Meeting booked</div>
+              <div class="imac-act-time">8m ago</div>
+            </div>
+            <div class="imac-act-row">
+              <div class="imac-act-icon">📞</div>
+              <div class="imac-act-name">Carlos V.</div>
+              <div class="imac-act-status transfer">Live transfer</div>
+              <div class="imac-act-time">14m ago</div>
+            </div>
+            <div class="imac-act-row">
+              <div class="imac-act-icon">🔻</div>
+              <div class="imac-act-name">David P.</div>
+              <div class="imac-act-status filtered">Filtered out</div>
+              <div class="imac-act-time">19m ago</div>
             </div>
           </div>
 
